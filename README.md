@@ -1,5 +1,6 @@
 # seed
-xubuntu seed script for installing a baseline of software and setting up dotfiles
+xubuntu seed script for installing a baseline of software and setting 
+up [dotfiles](https://github.com/petergardfjall/dotfiles).
 
 
 ## Install
