@@ -28,6 +28,9 @@ for arg in "${@}"; do
 	--laptop-mode=*)
 	    LAPTOP_MODE=${arg/*=/}
 	    ;;
+	--help)
+	    die_with_error "xubuntu seed: installs a baseline of software and sets up dotfiles"
+	    ;;	
 	*)
 	    die_with_error "error: unknown argument: ${arg}"
 	    ;;
