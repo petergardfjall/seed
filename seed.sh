@@ -230,14 +230,16 @@ sudo npm install -g grunt-cli
 # cloud utilities
 #
 sudo pip install awscli
-sudo pip install python-novaclient
-sudo pip install python-neutronclient
-sudo pip install python-glanceclient
-sudo pip install python-keystoneclient
-sudo pip install python-openstackclient
+
+sudo apt-get install -qy \
+     python-novaclient \
+     python-neutronclient \
+     python-glanceclient \
+     python-keystoneclient \
+     python-openstackclient
 
 # Azure CLI
-sudo apt-get update && sudo apt-get install azure-cli
+sudo apt-get install -qy azure-cli
 
 # Google Cloud's gcloud cli
 sudo apt-get install -qy google-cloud-sdk
