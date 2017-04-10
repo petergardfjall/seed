@@ -84,28 +84,29 @@ echo deb http://repository.spotify.com testing non-free | sudo tee /etc/apt/sour
 
 sudo apt-get update -yy
 sudo apt-get install -yy \
-  emacs24 \
-  chromium-browser \
-  google-chrome-stable \
-  screen \
-  sshfs \
-  htop \
-  curl \
-  jq \
-  inkscape \
-  gnuplot \
-  gimp \
-  openssh-server \
-  texlive-latex-base texlive-latex-extra \
-  wmctrl \
-  tree \
-  git tig subversion \
-  gnome-system-monitor \
-  xdotool \
-  markdown \
-  skype skype-bin \
-  spotify-client \
-  code
+     gparted \
+     emacs24 \
+     chromium-browser \
+     google-chrome-stable \
+     screen \
+     sshfs \
+     htop \
+     curl \
+     jq \
+     inkscape \
+     gnuplot \
+     gimp \
+     openssh-server \
+     texlive-latex-base texlive-latex-extra \
+     wmctrl \
+     tree \
+     git tig subversion \
+     gnome-system-monitor \
+     xdotool \
+     markdown \
+     skype skype-bin \
+     spotify-client \
+     code
 
 
 # for laptops
@@ -165,10 +166,10 @@ cd ~/bin && git clone https://github.com/petergardfjall/scripts
 
 
 sudo apt-get install -yy \
-  visualvm \
-  httperf \
-  virtualbox \
-  npm
+     visualvm \
+     httperf \
+     virtualbox \
+     npm
 
 # vagrant
 VAGRANT_VERSION=1.9.3
