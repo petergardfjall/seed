@@ -186,8 +186,12 @@ JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")"
 sudo ln -s ${JAVA_HOME} /opt/java
 
 # python
-sudo apt-get install -y build-essential python python-dev python-pip python-virtualenv
+sudo apt-get install -qy \
+     build-essential \
+     python python-dev python-pip python-virtualenv \
+     python3 python3-dev python3-pip python3-virtualenv
 sudo pip install ipython
+sudo pip3 install ipython
 
 sudo mkdir -p /opt
 # maven
