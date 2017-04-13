@@ -49,6 +49,7 @@ sudo apt-get install -yy \
   software-properties-common \
   apt-show-versions \
   aptitude \
+  debconf-utils \
   curl
 
 
