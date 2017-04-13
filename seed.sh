@@ -124,7 +124,7 @@ fi
 
 # emacs settings
 cd ~ && git clone https://github.com/petergardfjall/dotfiles.git
-ln -s ~/dotfiles/emacs.init ~/.emacs
+ln -s ~/dotfiles/emacs-init.el ~/.emacs
 
 # vim settings
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
