@@ -271,3 +271,10 @@ SLACK_VERSION=2.5.2
 sudo wget https://downloads.slack-edge.com/linux_releases/slack-desktop-${SLACK_VERSION}-amd64.deb -O /tmp/slack.deb
 sudo apt-get install -qy libappindicator1 libindicator7
 sudo dpkg -i /tmp/slack.deb
+
+#
+# kubectl
+#
+curl -L https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl -o /tmp/kubectl
+chmod +x /tmp/kubectl
+sudo mv /tmp//kubectl /usr/local/bin/kubectl
