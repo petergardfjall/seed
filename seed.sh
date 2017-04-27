@@ -88,6 +88,7 @@ echo deb http://repository.spotify.com testing non-free | sudo tee /etc/apt/sour
 
 sudo apt-get update -yy
 sudo apt-get install -yy \
+     pwgen \
      gparted \
      emacs24 \
      chromium-browser \
