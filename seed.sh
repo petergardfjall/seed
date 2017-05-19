@@ -226,6 +226,18 @@ sudo wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.
 sudo tar xvf /tmp/go-${GO_VERSION}.tar.gz -C /tmp/
 sudo mv /tmp/go /opt/go-${GO_VERSION}
 sudo ln -sfn /opt/go-${GO_VERSION} /opt/go
+export GOROOT=/opt/go
+export GOPATH=~/dev/go
+
+# Go development environment tools
+mkdir -p ${GOPATH}
+# additional go tools (godoc, guru, gorename, etc)
+go get -u golang.org/x/tools/cmd/...
+# auto-completion daemon for go (needed by emacs go-mode)
+go get -u github.com/nsf/gocode
+# locates symbol definitions in go code (needed by emacs go-mode)
+go get -u github.com/rogpeppe/godef
+
 
 
 # nodejs
@@ -251,7 +263,7 @@ sudo apt-get install -qy azure-cli
 sudo apt-get install -qy google-cloud-sdk
 
 # Terraform
-TERRAFORM_VERSION=0.9.4
+TERRAFORM_VERSION=0.9.5
 sudo wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -O /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 sudo unzip /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /opt/terraform-${TERRAFORM_VERSION}
 sudo ln -sfn /opt/terraform-${TERRAFORM_VERSION}/terraform /opt/bin/terraform
