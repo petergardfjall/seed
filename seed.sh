@@ -177,7 +177,7 @@ sudo apt-get install -yy \
      npm
 
 # vagrant
-VAGRANT_VERSION=1.9.4
+VAGRANT_VERSION=1.9.5
 wget https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -O /tmp/vagrant.deb
 sudo dpkg -i /tmp/vagrant.deb
 
