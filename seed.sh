@@ -57,8 +57,11 @@ sudo apt-get install -yy \
 sudo sed -i 's,# \(deb http://archive.canonical.com/ubuntu [a-z]* partner\),\1,' /etc/apt/sources.list
 
 # Docker
-sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-sudo sh -c "echo deb https://apt.dockerproject.org/repo ubuntu-xenial main > /etc/apt/sources.list.d/docker.list"
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
 
 # google chrome
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
@@ -168,8 +171,6 @@ cd ~/bin && git clone https://github.com/petergardfjall/scripts
 # dev
 #
 
-
-
 sudo apt-get install -yy \
      visualvm \
      httperf \
@@ -209,14 +210,13 @@ sudo tar xzvf /opt/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION
 sudo ln -sfn /opt/eclipse-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}/eclipse /opt/eclipse
 
 # docker
-docker_compose_version=1.11.2
+docker_compose_version=1.13.0
 # install Docker and some other utilities
-sudo apt-get install -qy docker-engine 
+sudo apt-get install -qy docker-ce
 # install docker-compose
 sudo curl -L https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
 sudo chmod +x /usr/local/bin/docker-compose
 # To be able to use docker without sudo/root privileges, you need to add users to the docker group.
-# usermod --append --groups docker ${SOME_USER}
 sudo usermod --append --groups docker peterg
 
 
