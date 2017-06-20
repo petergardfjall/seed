@@ -88,6 +88,9 @@ sudo apt-add-repository ppa:ansible/ansible -y
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
 echo deb http://repository.spotify.com testing non-free | sudo tee /etc/apt/sources.list.d/spotify.list
 
+# skype
+curl https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
+echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | sudo tee /etc/apt/sources.list.d/skype-stable.list
 
 sudo apt-get update -yy
 sudo apt-get install -yy \
@@ -112,7 +115,7 @@ sudo apt-get install -yy \
      gnome-system-monitor \
      xdotool \
      markdown \
-     skype skype-bin \
+     skypeforlinux \
      spotify-client \
      code
 
@@ -284,6 +287,7 @@ SLACK_VERSION=2.5.2
 sudo wget https://downloads.slack-edge.com/linux_releases/slack-desktop-${SLACK_VERSION}-amd64.deb -O /tmp/slack.deb
 sudo apt-get install -qy libappindicator1 libindicator7
 sudo dpkg -i /tmp/slack.deb
+
 
 #
 # kubectl
