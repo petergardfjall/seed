@@ -120,7 +120,8 @@ sudo apt-get install -yy \
      markdown \
      skypeforlinux \
      spotify-client \
-     code
+     code \
+     dos2unix
 
 
 # for laptops
