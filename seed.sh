@@ -92,6 +92,9 @@ echo deb http://repository.spotify.com testing non-free | sudo tee /etc/apt/sour
 curl https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
 echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | sudo tee /etc/apt/sources.list.d/skype-stable.list
 
+# duplicity backup tool
+sudo apt-add-repository -y ppa:duplicity-team/ppa
+
 sudo apt-get update -yy
 sudo apt-get install -yy \
      pwgen \
@@ -119,7 +122,8 @@ sudo apt-get install -yy \
      markdown \
      skypeforlinux \
      spotify-client \
-     code
+     code \
+     dos2unix
 
 
 # for laptops
@@ -297,3 +301,10 @@ sudo dpkg -i /tmp/slack.deb
 curl -L https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl -o /tmp/kubectl
 chmod +x /tmp/kubectl
 sudo mv /tmp//kubectl /usr/local/bin/kubectl
+
+
+#
+# backups to S3
+#
+sudo apt-get install -yy \
+     duplicity python-boto
