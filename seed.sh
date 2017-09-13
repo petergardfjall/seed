@@ -102,6 +102,8 @@ sudo apt-get install -yy \
      screen \
      sshfs \
      htop \
+     iftop \
+     bmon \
      curl \
      jq \
      inkscape \
