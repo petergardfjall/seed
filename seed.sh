@@ -230,7 +230,7 @@ sudo usermod --append --groups docker peterg
 
 
 # Go
-GO_VERSION=1.8
+GO_VERSION=1.9
 sudo wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz -O /tmp/go-${GO_VERSION}.tar.gz
 sudo tar xvf /tmp/go-${GO_VERSION}.tar.gz -C /tmp/
 sudo mv /tmp/go /opt/go-${GO_VERSION}
