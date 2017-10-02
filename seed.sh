@@ -247,7 +247,11 @@ go get -u github.com/nsf/gocode
 # locates symbol definitions in go code (needed by emacs go-mode)
 go get -u github.com/rogpeppe/godef
 
-
+# dep (Go dependency management)
+GODEP_VERSION=v0.3.1
+sudo wget https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-linux-amd64 -O /tmp/dep
+sudo chmod +x /tmp/dep
+sudo mv /tmp/dep /usr/local/bin/dep
 
 # nodejs
 sudo apt-get install nodejs npm
@@ -300,7 +304,7 @@ sudo dpkg -i /tmp/slack.deb
 #
 curl -L https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl -o /tmp/kubectl
 chmod +x /tmp/kubectl
-sudo mv /tmp//kubectl /usr/local/bin/kubectl
+sudo mv /tmp/kubectl /usr/local/bin/kubectl
 
 
 #
