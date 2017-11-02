@@ -212,7 +212,7 @@ sudo tar xzvf /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
 sudo ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven
 # eclipse
 ECLIPSE_MAJOR_VERSION=oxygen
-ECLIPSE_MINOR_VERSION=R
+ECLIPSE_MINOR_VERSION=1a
 sudo wget http://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/${ECLIPSE_MAJOR_VERSION}/${ECLIPSE_MINOR_VERSION}/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz -O /opt/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz
 sudo mkdir /opt/eclipse-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}
 sudo tar xzvf /opt/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz -C /opt/eclipse-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}
