@@ -253,8 +253,9 @@ sudo wget https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-l
 sudo chmod +x /tmp/dep
 sudo mv /tmp/dep /usr/local/bin/dep
 
-# nodejs
-sudo apt-get install nodejs npm
+# nodejs (https://nodejs.org/en/download/package-manager)
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
 sudo npm install -g grunt-cli
 
 #
