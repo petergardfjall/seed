@@ -313,3 +313,12 @@ sudo mv /tmp/kubectl /usr/local/bin/kubectl
 #
 sudo apt-get install -yy \
      duplicity python-boto
+
+#
+# rclone
+#
+RCLONE_VERSION=1.38
+sudo wget https://downloads.rclone.org/rclone-v${RCLONE_VERSION}-linux-amd64.zip -O /opt/rclone.zip
+sudo unzip -d /opt/ -o /opt/rclone.zip
+sudo rm -f /opt/rclone.zip
+sudo ln -sfn /opt/rclone-v${RCLONE_VERSION}-linux-amd64/rclone /opt/bin/rclone
