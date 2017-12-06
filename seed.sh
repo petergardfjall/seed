@@ -322,3 +322,10 @@ sudo wget https://downloads.rclone.org/rclone-v${RCLONE_VERSION}-linux-amd64.zip
 sudo unzip -d /opt/ -o /opt/rclone.zip
 sudo rm -f /opt/rclone.zip
 sudo ln -sfn /opt/rclone-v${RCLONE_VERSION}-linux-amd64/rclone /opt/bin/rclone
+
+#
+# CloudFlare's SSL tools
+#
+sudo curl -o /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+sudo curl -o /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+sudo chmod +x /usr/local/bin/cfssl*
