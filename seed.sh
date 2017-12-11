@@ -201,7 +201,7 @@ sudo apt-get install -qy \
      build-essential \
      python python-dev python-pip python-virtualenv \
      python3 python3-dev python3-pip python3-virtualenv python3-venv
-sudo pip install ipython
+sudo pip2 install ipython
 sudo pip3 install ipython
 
 sudo mkdir -p /opt
@@ -309,10 +309,11 @@ sudo mv /tmp/kubectl /usr/local/bin/kubectl
 
 
 #
-# backups to S3
+# backups to S3 and/or google drive
 #
 sudo apt-get install -yy \
      duplicity python-boto
+sudo pip2 install PyDrive
 
 #
 # rclone
