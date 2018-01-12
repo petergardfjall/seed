@@ -206,9 +206,11 @@ sudo apt-get install -yy \
 
 # vagrant
 VAGRANT_VERSION=2.0.1
-wget https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -O /tmp/vagrant.deb
-sudo dpkg -i /tmp/vagrant.deb
-sudo rm /tmp/vagrant.deb
+if ! vagrant version | grep ${VAGRANT_VERSION}; then
+    wget https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -O /tmp/vagrant.deb
+    sudo dpkg -i /tmp/vagrant.deb
+    sudo rm /tmp/vagrant.deb
+fi
 
 # OpenJDK java
 sudo apt-get install -y openjdk-8-jdk openjdk-8-source
@@ -229,19 +231,23 @@ sudo mkdir -p /opt
 
 # maven
 MAVEN_VERSION=3.5.2
-sudo wget http://apache.mirrors.spacedump.net/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-sudo tar xzvf /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
-sudo ln -sfn /opt/apache-maven-${MAVEN_VERSION} /opt/maven
-sudo rm /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+if ! mvn --version | grep ${MAVEN_VERSION}; then
+    sudo wget http://apache.mirrors.spacedump.net/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+    sudo tar xzvf /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
+    sudo ln -sfn /opt/apache-maven-${MAVEN_VERSION} /opt/maven
+    sudo rm /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+fi
 
 # eclipse
-ECLIPSE_MAJOR_VERSION=oxygen
-ECLIPSE_MINOR_VERSION=2
-sudo wget http://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/${ECLIPSE_MAJOR_VERSION}/${ECLIPSE_MINOR_VERSION}/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz -O /opt/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz
-sudo mkdir -p /opt/eclipse-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}
-sudo tar xzvf /opt/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz -C /opt/eclipse-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}
-sudo ln -sfn /opt/eclipse-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}/eclipse /opt/eclipse
-sudo rm /opt/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz
+ECLIPSE_MAJOR_V=oxygen
+ECLIPSE_MINOR_V=2
+if ! [ -d /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V} ]; then
+    sudo wget http://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/${ECLIPSE_MAJOR_V}/${ECLIPSE_MINOR_V}/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz -O /opt/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz
+    sudo mkdir -p /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}
+    sudo tar xzvf /opt/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz -C /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}
+    sudo ln -sfn /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}/eclipse /opt/eclipse
+    sudo rm /opt/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz
+fi
 
 # docker
 docker_compose_version=1.18.0
@@ -256,13 +262,15 @@ sudo usermod --append --groups docker $(whoami)
 
 # Go
 GO_VERSION=1.9
-sudo wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz -O /tmp/go-${GO_VERSION}.tar.gz
-sudo tar xvf /tmp/go-${GO_VERSION}.tar.gz -C /tmp/
-sudo mv /tmp/go /opt/go-${GO_VERSION}
-sudo ln -sfn /opt/go-${GO_VERSION} /opt/go
-export GOROOT=/opt/go
-export GOPATH=~/dev/go
-sudo rm /tmp/go-${GO_VERSION}.tar.gz
+if ! go version | grep ${GO_VERSION}; then
+    sudo wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz -O /tmp/go-${GO_VERSION}.tar.gz
+    sudo tar xvf /tmp/go-${GO_VERSION}.tar.gz -C /tmp/
+    sudo mv /tmp/go /opt/go-${GO_VERSION}
+    sudo ln -sfn /opt/go-${GO_VERSION} /opt/go
+    export GOROOT=/opt/go
+    export GOPATH=~/dev/go
+    sudo rm /tmp/go-${GO_VERSION}.tar.gz
+fi
 
 # Go development environment tools
 mkdir -p ${GOPATH}
@@ -276,9 +284,11 @@ go get -u github.com/rogpeppe/godef
 
 # dep (Go dependency management)
 GODEP_VERSION=v0.3.2
-sudo wget https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-linux-amd64 -O /tmp/dep
-sudo chmod +x /tmp/dep
-sudo mv /tmp/dep /usr/local/bin/dep
+if ! dep version | grep ${GO_VERSION}; then
+    sudo wget https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-linux-amd64 -O /tmp/dep
+    sudo chmod +x /tmp/dep
+    sudo mv /tmp/dep /usr/local/bin/dep
+fi
 
 # nodejs (https://nodejs.org/en/download/package-manager)
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
@@ -305,10 +315,12 @@ sudo apt-get install -qy google-cloud-sdk
 
 # Terraform
 TERRAFORM_VERSION=0.11.2
-sudo wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -O /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-sudo unzip /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /opt/terraform-${TERRAFORM_VERSION}
-sudo ln -sfn /opt/terraform-${TERRAFORM_VERSION}/terraform /opt/bin/terraform
-sudo rm /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+if ! terraform version | grep ${TERRAFORM_VERSION}; then
+    sudo wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -O /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+    sudo unzip /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o -d /opt/terraform-${TERRAFORM_VERSION}
+    sudo ln -sfn /opt/terraform-${TERRAFORM_VERSION}/terraform /opt/bin/terraform
+    sudo rm /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+fi
 
 # Ansible
 sudo apt-get install ansible -qy
@@ -330,10 +342,12 @@ sudo rm /tmp/skype.deb
 # Slack
 #
 SLACK_VERSION=2.5.2
-sudo wget https://downloads.slack-edge.com/linux_releases/slack-desktop-${SLACK_VERSION}-amd64.deb -O /tmp/slack.deb
-sudo apt-get install -qy libappindicator1 libindicator7
-sudo dpkg -i /tmp/slack.deb
-sudo rm /tmp/slack.deb
+if ! slack --version | grep ${SLACK_VERSION}; then
+    sudo wget https://downloads.slack-edge.com/linux_releases/slack-desktop-${SLACK_VERSION}-amd64.deb -O /tmp/slack.deb
+    sudo apt-get install -qy libappindicator1 libindicator7
+    sudo dpkg -i /tmp/slack.deb
+    sudo rm /tmp/slack.deb
+fi
 
 
 #
@@ -355,10 +369,12 @@ sudo pip2 install PyDrive
 # rclone
 #
 RCLONE_VERSION=1.38
-sudo wget https://downloads.rclone.org/rclone-v${RCLONE_VERSION}-linux-amd64.zip -O /opt/rclone.zip
-sudo unzip -d /opt/ -o /opt/rclone.zip
-sudo rm -f /opt/rclone.zip
-sudo ln -sfn /opt/rclone-v${RCLONE_VERSION}-linux-amd64/rclone /opt/bin/rclone
+if ! rclone --version | grep ${RCLONE_VERSION}; then
+    sudo wget https://downloads.rclone.org/rclone-v${RCLONE_VERSION}-linux-amd64.zip -O /opt/rclone.zip
+    sudo unzip -d /opt/ -o /opt/rclone.zip
+    sudo rm -f /opt/rclone.zip
+    sudo ln -sfn /opt/rclone-v${RCLONE_VERSION}-linux-amd64/rclone /opt/bin/rclone
+fi
 
 #
 # CloudFlare's SSL tools
