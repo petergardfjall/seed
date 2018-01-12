@@ -202,8 +202,7 @@ fi
 sudo apt-get install -yy \
      visualvm \
      httperf \
-     virtualbox \
-     npm
+     virtualbox
 
 # vagrant
 VAGRANT_VERSION=2.0.1
