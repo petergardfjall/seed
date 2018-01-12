@@ -268,6 +268,7 @@ sudo rm /tmp/go-${GO_VERSION}.tar.gz
 # Go development environment tools
 mkdir -p ${GOPATH}
 # additional go tools (godoc, guru, gorename, etc)
+export PATH=${PATH}:${GOROOT}/bin
 go get -u golang.org/x/tools/cmd/...
 # auto-completion daemon for go (needed by emacs go-mode)
 go get -u github.com/nsf/gocode
