@@ -41,6 +41,7 @@ echo "running with laptop-mode: ${LAPTOP_MODE}"
 
 
 sudo mkdir -p /opt/bin
+sudo mkdir -p /scratch
 sudo chmod 777 /scratch
 
 export DEBIAN_FRONTEND=noninteractive
