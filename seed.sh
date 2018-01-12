@@ -218,9 +218,9 @@ sudo ln -sfn ${JAVA_HOME} /opt/java
 
 # python
 sudo apt-get install -qy \
-     build-essential \
+     build-essential libssl-dev libffi-dev \
      python python-dev python-pip python-virtualenv \
-     python3 python3-dev python3-pip python3-virtualenv python3-venv
+     python3 python3-dev python3-pip python3-venv
 sudo pip install ipython
 sudo pip3 install ipython
 
