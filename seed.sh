@@ -9,15 +9,15 @@ set -e
 scriptname=$(basename ${0})
 
 function die_with_error() {
-    echo $1 2>&1
-    echo 
+    echo "error: $1" 2>&1
+    echo
     echo "usage: ${scriptname} [--laptop-mode true]"
     echo "  --laptop-mode=BOOL     Set to true to install laptop-mode-tools."
     exit 1
 }
 
 if [ "$(whoami)" = "root" ]; then
-    echo "please do not run this script as root"
+    die_with_error "please do not run this script as root"
     exit 1
 fi
 
@@ -30,9 +30,9 @@ for arg in "${@}"; do
 	    ;;
 	--help)
 	    die_with_error "xubuntu seed: installs a baseline of software and sets up dotfiles"
-	    ;;	
+	    ;;
 	*)
-	    die_with_error "error: unknown argument: ${arg}"
+	    die_with_error "unknown argument: ${arg}"
 	    ;;
     esac
 done
@@ -42,6 +42,8 @@ echo "running with laptop-mode: ${LAPTOP_MODE}"
 
 sudo mkdir -p /opt/bin
 sudo chmod 777 /scratch
+
+export DEBIAN_FRONTEND=noninteractive
 
 sudo apt-get update -yy
 sudo apt-get install -yy \
@@ -64,33 +66,39 @@ sudo add-apt-repository \
    stable"
 
 # google chrome
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - 
-sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo tee /etc/apt/sources.list.d/google-chrome.list <<EOF
+deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+EOF
 
 # visual studio code
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/microsoft.gpg
 sudo mv /tmp/microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-sudo sh -c 'echo "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+sudo tee /etc/apt/sources.list.d/vscode.list <<EOF
+deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main
+EOF
 
 # Azure cli
-echo "deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/azure-cli/ wheezy main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+sudo tee /etc/apt/sources.list.d/azure-cli.list <<EOF
+deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/azure-cli/ wheezy main
+EOF
 sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
 
 # Google Cloud's gcloud cli
 CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
-sudo echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list <<EOF
+deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main
+EOF
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
 # Ansible
-sudo apt-add-repository ppa:ansible/ansible -y
+sudo apt-add-repository -y ppa:ansible/ansible
 
 # spotify
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0DF731E45CE24F27EEEB1450EFDC8610341D9410
-echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
-
-# skype
-curl https://repo.skype.com/data/SKYPE-GPG-KEY | sudo apt-key add -
-echo "deb [arch=amd64] https://repo.skype.com/deb stable main" | sudo tee /etc/apt/sources.list.d/skype-stable.list
+sudo tee /etc/apt/sources.list.d/spotify.list <<EOF
+deb http://repository.spotify.com stable non-free
+EOF
 
 # duplicity backup tool
 sudo apt-add-repository -y ppa:duplicity-team/ppa
@@ -107,6 +115,7 @@ sudo apt-get install -yy \
      htop \
      iftop \
      bmon \
+     iperf \
      curl \
      jq \
      inkscape \
@@ -136,12 +145,18 @@ fi
 #
 
 # emacs settings
-cd ~ && git clone --recursive https://github.com/petergardfjall/dotfiles.git
-ln -s ~/dotfiles/emacs-init.el ~/.emacs
+if ! [ -d ~/dotfiles ]; then
+    cd ~ && git clone --recursive https://github.com/petergardfjall/dotfiles.git
+else
+    cd ~/dotfiles && git pull origin master
+fi
+ln -sf ~/dotfiles/emacs-init.el ~/.emacs
 
 # vim settings
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-ln -s ~/dotfiles/vim/vimrc ~/.vimrc
+if ! [ -d ~/.vim/bundle/Vundle.vim ]; then
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+fi
+ln -sf ~/dotfiles/vim/vimrc ~/.vimrc
 # NOTE: on first launch of vim, run :PluginInstall to have Vundle install the plugins configured in vimrc.
 
 # vscode settings
@@ -154,7 +169,7 @@ sudo ln -sfn ~/dotfiles/vscode/keybindings.json ~/.config/Code/User/keybindings.
 ~/dotfiles/setup-xfce4.sh
 
 # extra .bashrc modules
-tee -a ~/.bashrc <<'EOF'
+tee -a ~/.bashrc <<EOF
 #
 # source additional configuration modules
 #
@@ -162,7 +177,7 @@ source ~/dotfiles/bash.includes
 EOF
 
 # extra .profile modules
-tee -a ~/.profile <<'EOF'
+tee -a ~/.profile <<EOF
 #
 # source additional configuration modules
 #
@@ -170,11 +185,15 @@ source ~/dotfiles/bash.includes
 EOF
 
 # set up screen config
-ln -s ~/dotfiles/screen/screenrc ~/.screenrc
+ln -sfn ~/dotfiles/screen/screenrc ~/.screenrc
 
 # useful scripts
-mkdir ~/bin
-cd ~/bin && git clone https://github.com/petergardfjall/scripts
+mkdir -p ~/bin
+if ! [ -d ~/bin/scripts ]; then
+    cd ~/bin && git clone https://github.com/petergardfjall/scripts
+else
+    cd ~/bin/scripts && git pull origin master
+fi
 
 #
 # dev
@@ -187,14 +206,15 @@ sudo apt-get install -yy \
      npm
 
 # vagrant
-VAGRANT_VERSION=1.9.5
+VAGRANT_VERSION=2.0.1
 wget https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -O /tmp/vagrant.deb
 sudo dpkg -i /tmp/vagrant.deb
+sudo rm /tmp/vagrant.deb
 
 # OpenJDK java
 sudo apt-get install -y openjdk-8-jdk openjdk-8-source
 JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")"
-sudo ln -s ${JAVA_HOME} /opt/java
+sudo ln -sfn ${JAVA_HOME} /opt/java
 
 # python
 sudo apt-get install -qy \
@@ -205,28 +225,32 @@ sudo pip install ipython
 sudo pip3 install ipython
 
 sudo mkdir -p /opt
+
 # maven
-MAVEN_VERSION=3.3.9
+MAVEN_VERSION=3.5.2
 sudo wget http://apache.mirrors.spacedump.net/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
 sudo tar xzvf /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
-sudo ln -s /opt/apache-maven-${MAVEN_VERSION} /opt/maven
+sudo ln -sfn /opt/apache-maven-${MAVEN_VERSION} /opt/maven
+sudo rm /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+
 # eclipse
 ECLIPSE_MAJOR_VERSION=oxygen
-ECLIPSE_MINOR_VERSION=1a
+ECLIPSE_MINOR_VERSION=2
 sudo wget http://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/${ECLIPSE_MAJOR_VERSION}/${ECLIPSE_MINOR_VERSION}/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz -O /opt/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz
 sudo mkdir /opt/eclipse-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}
 sudo tar xzvf /opt/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz -C /opt/eclipse-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}
 sudo ln -sfn /opt/eclipse-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}/eclipse /opt/eclipse
+sudo rm /opt/eclipse-java-${ECLIPSE_MAJOR_VERSION}-${ECLIPSE_MINOR_VERSION}-linux-gtk-x86_64.tar.gz
 
 # docker
-docker_compose_version=1.13.0
+docker_compose_version=1.18.0
 # install Docker and some other utilities
 sudo apt-get install -qy docker-ce
 # install docker-compose
-sudo curl -L https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
+sudo curl -L https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose > /dev/null
 sudo chmod +x /usr/local/bin/docker-compose
 # To be able to use docker without sudo/root privileges, you need to add users to the docker group.
-sudo usermod --append --groups docker peterg
+sudo usermod --append --groups docker $(whoami)
 
 
 # Go
@@ -237,6 +261,7 @@ sudo mv /tmp/go /opt/go-${GO_VERSION}
 sudo ln -sfn /opt/go-${GO_VERSION} /opt/go
 export GOROOT=/opt/go
 export GOPATH=~/dev/go
+sudo rm /tmp/go-${GO_VERSION}.tar.gz
 
 # Go development environment tools
 mkdir -p ${GOPATH}
@@ -248,7 +273,7 @@ go get -u github.com/nsf/gocode
 go get -u github.com/rogpeppe/godef
 
 # dep (Go dependency management)
-GODEP_VERSION=v0.3.1
+GODEP_VERSION=v0.3.2
 sudo wget https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-linux-amd64 -O /tmp/dep
 sudo chmod +x /tmp/dep
 sudo mv /tmp/dep /usr/local/bin/dep
@@ -277,10 +302,11 @@ sudo apt-get install -qy azure-cli
 sudo apt-get install -qy google-cloud-sdk
 
 # Terraform
-TERRAFORM_VERSION=0.11.1
+TERRAFORM_VERSION=0.11.2
 sudo wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -O /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 sudo unzip /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /opt/terraform-${TERRAFORM_VERSION}
 sudo ln -sfn /opt/terraform-${TERRAFORM_VERSION}/terraform /opt/bin/terraform
+sudo rm /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 
 # Ansible
 sudo apt-get install ansible -qy
@@ -298,6 +324,7 @@ SLACK_VERSION=2.5.2
 sudo wget https://downloads.slack-edge.com/linux_releases/slack-desktop-${SLACK_VERSION}-amd64.deb -O /tmp/slack.deb
 sudo apt-get install -qy libappindicator1 libindicator7
 sudo dpkg -i /tmp/slack.deb
+sudo rm /tmp/slack.deb
 
 
 #
