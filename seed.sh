@@ -165,6 +165,13 @@ sudo ln -sfn ~/dotfiles/vscode/settings.json ~/.config/Code/User/settings.json
 sudo ln -sfn ~/dotfiles/vscode/keybindings.json ~/.config/Code/User/keybindings.json
 ~/dotfiles/vscode/install-extensions.sh
 
+#
+# Install xubuntu desktop (if on regular ubuntu). A no-op on xubuntu distro.
+#
+sudo apt-get install -qy xubuntu-desktop
+sudo apt-get remove ubuntu-desktop
+sudo apt-get autoremove
+
 # xfce config
 ~/dotfiles/setup-xfce4.sh
 
