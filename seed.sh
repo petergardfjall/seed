@@ -324,7 +324,7 @@ sudo locale-gen sv_SE
 # Skype
 #
 sudo wget https://go.skype.com/skypeforlinux-64.deb -O /tmp/skype.deb
-sudo dpki -i /tmp/skype.deb
+sudo dpkg -i /tmp/skype.deb
 sudo rm /tmp/skype.deb
 
 #
