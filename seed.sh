@@ -56,8 +56,8 @@ sudo apt-get install -yy \
   curl
 
 
-# enable Canoncial Partners sources (needed for skype). Software Updates > Other sofware.
-sudo sed -i 's,# \(deb http://archive.canonical.com/ubuntu [a-z]* partner\),\1,' /etc/apt/sources.list
+# enable Canoncial Partners sources. Software Updates > Other sofware.
+sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
 
 # Docker
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -130,7 +130,6 @@ sudo apt-get install -yy \
      gnome-system-monitor \
      xdotool \
      markdown \
-     skypeforlinux \
      spotify-client \
      code \
      dos2unix
@@ -317,6 +316,13 @@ sudo apt-get install ansible -qy
 #
 # generate swedish locale
 sudo locale-gen sv_SE
+
+#
+# Skype
+#
+sudo wget https://go.skype.com/skypeforlinux-64.deb -O /tmp/skype.deb
+sudo dpki -i /tmp/skype.deb
+sudo rm /tmp/skype.deb
 
 #
 # Slack
