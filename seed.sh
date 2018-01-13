@@ -178,20 +178,24 @@ sudo apt-get autoremove -y
 ~/dotfiles/setup-xfce4.sh
 
 # extra .bashrc modules
-tee -a ~/.bashrc <<EOF
+if ! grep 'source ~/dotfiles/bash.includes' ~/.bashrc; then
+    tee -a ~/.bashrc <<EOF
 #
 # source additional configuration modules
 #
 source ~/dotfiles/bash.includes
 EOF
+fi
 
 # extra .profile modules
-tee -a ~/.profile <<EOF
+if ! grep 'source ~/dotfiles/bash.includes' ~/.profile; then
+    tee -a ~/.profile <<EOF
 #
 # source additional configuration modules
 #
 source ~/dotfiles/bash.includes
 EOF
+fi
 
 # set up screen config
 ln -sfn ~/dotfiles/screen/screenrc ~/.screenrc
