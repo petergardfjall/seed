@@ -41,6 +41,8 @@ echo "running with laptop-mode: ${LAPTOP_MODE}"
 
 
 sudo mkdir -p /opt/bin
+# scratch area: for data of temporary nature (but not being cleared
+# on reboots like /tmp) and recreatable/non-precious data
 sudo mkdir -p /scratch
 sudo chmod 777 /scratch
 
@@ -169,8 +171,8 @@ sudo ln -sfn ~/dotfiles/vscode/keybindings.json ~/.config/Code/User/keybindings.
 # Install xubuntu desktop (if on regular ubuntu). A no-op on xubuntu distro.
 #
 sudo apt-get install -qy xubuntu-desktop
-sudo apt-get remove ubuntu-desktop
-sudo apt-get autoremove
+sudo apt-get remove ubuntu-desktop -y
+sudo apt-get autoremove -y
 
 # xfce config
 ~/dotfiles/setup-xfce4.sh
@@ -213,7 +215,7 @@ sudo apt-get install -yy \
 
 # vagrant
 VAGRANT_VERSION=2.0.1
-if ! vagrant version | grep ${VAGRANT_VERSION}; then
+if ! vagrant --version | grep ${VAGRANT_VERSION}; then
     wget https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -O /tmp/vagrant.deb
     sudo dpkg -i /tmp/vagrant.deb
     sudo rm /tmp/vagrant.deb
@@ -322,9 +324,9 @@ sudo apt-get install -qy google-cloud-sdk
 
 # Terraform
 TERRAFORM_VERSION=0.11.2
-if ! terraform version | grep ${TERRAFORM_VERSION}; then
+if ! terraform version | head -1 | grep ${TERRAFORM_VERSION}; then
     sudo wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -O /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
-    sudo unzip /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o -d /opt/terraform-${TERRAFORM_VERSION}
+    sudo unzip -o /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /opt/terraform-${TERRAFORM_VERSION}
     sudo ln -sfn /opt/terraform-${TERRAFORM_VERSION}/terraform /opt/bin/terraform
     sudo rm /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 fi
@@ -391,4 +393,4 @@ sudo curl -o /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux
 sudo chmod +x /usr/local/bin/cfssl*
 
 
-echo "Installer done."
+echo "[${scriptname}] completed successfully."
