@@ -134,7 +134,8 @@ sudo apt-get install -yy \
      markdown \
      spotify-client \
      code \
-     dos2unix
+     dos2unix \
+     gcolor2
 
 
 # for laptops
