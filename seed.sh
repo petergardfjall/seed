@@ -103,6 +103,12 @@ sudo tee /etc/apt/sources.list.d/spotify.list <<EOF
 deb http://repository.spotify.com stable non-free
 EOF
 
+# virtualbox
+wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+sudo tee /etc/apt/sources.list.d/virtualbox.list <<EOF
+deb https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib
+EOF
+
 # duplicity backup tool
 sudo apt-add-repository -y ppa:duplicity-team/ppa
 
@@ -215,8 +221,12 @@ fi
 
 sudo apt-get install -yy \
      visualvm \
-     httperf \
-     virtualbox
+     httperf
+
+# virtualbox
+VIRTUALBOX_VERSION=5.2
+sudo apt-get install -y \
+     virtualbox-${VIRTUALBOX_VERSION} dkms
 
 # vagrant
 VAGRANT_VERSION=2.0.1
