@@ -319,6 +319,9 @@ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm install -g grunt-cli
 
+# Rust
+sudo apt-get install -y rustc cargo rust-src rust-gdb
+
 #
 # cloud utilities
 #
