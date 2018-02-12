@@ -83,9 +83,12 @@ EOF
 
 # Azure cli
 sudo tee /etc/apt/sources.list.d/azure-cli.list <<EOF
-deb [arch=amd64] https://apt-mo.trafficmanager.net/repos/azure-cli/ wheezy main
+deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main
 EOF
-sudo apt-key adv --keyserver apt-mo.trafficmanager.net --recv-keys 417A0893
+curl -sSL https://packages.microsoft.com/keys/microsoft.asc > /tmp/microsoft.asc
+sudo apt-key add /tmp/microsoft.asc
+rm /tmp/microsoft.asc
+
 
 # Google Cloud's gcloud cli
 CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
@@ -248,8 +251,8 @@ sudo apt-get install -qy \
      python3 python3-dev python3-pip python3-venv
 sudo pip2 install --upgrade pip
 sudo pip3 install --upgrade pip
-sudo pip2 install ipython
-sudo pip3 install ipython
+sudo pip2 install ipython pipenv
+sudo pip3 install ipython pipenv
 
 sudo mkdir -p /opt
 
