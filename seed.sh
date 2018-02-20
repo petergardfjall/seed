@@ -144,7 +144,8 @@ sudo apt-get install -yy \
      spotify-client \
      code \
      dos2unix \
-     gcolor2
+     gcolor2 \
+     xsel
 
 
 # for laptops
