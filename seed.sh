@@ -145,8 +145,7 @@ sudo apt-get install -yy \
      code \
      dos2unix \
      gcolor2 \
-     xsel \
-     socat
+     xsel
 
 
 # for laptops
