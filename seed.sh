@@ -266,6 +266,17 @@ if ! mvn --version | grep ${MAVEN_VERSION}; then
     sudo rm /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
 fi
 
+# gradle
+GRADLE_VERSION=4.5.1
+if ! gradle -v | grep ${GRADLE_VERSION}; then
+    wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -O /tmp/gradle-${GRADLE_VERSION}-bin.zip
+    pushd /tmp/ > /dev/null
+    unzip -o gradle-${GRADLE_VERSION}-bin.zip
+    sudo mv gradle-${GRADLE_VERSION} /opt/gradle-${GRADLE_VERSION}
+    sudo ln -sfn /opt/gradle-${GRADLE_VERSION}/bin/gradle /opt/bin/gradle
+    popd > /dev/null
+fi
+
 # eclipse
 ECLIPSE_MAJOR_V=oxygen
 ECLIPSE_MINOR_V=2
