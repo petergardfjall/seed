@@ -425,5 +425,20 @@ sudo curl -o /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
 sudo curl -o /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 sudo chmod +x /usr/local/bin/cfssl*
 
+#
+# IntelliJ
+#
+INTELLIJ_VERSION=2017.3.4
+if ! [ -d /opt/intellij-${INTELLIJ_VERSION} ]; then
+    wget https://download.jetbrains.com/idea/ideaIC-${INTELLIJ_VERSION}-no-jdk.tar.gz -O /tmp/intellij.tar.gz
+    mkdir -p /tmp/intellij-${INTELLIJ_VERSION}
+    tar xzf /tmp/intellij.tar.gz -C /tmp/intellij-${INTELLIJ_VERSION} --strip-components=1
+    sudo mv /tmp/intellij-${INTELLIJ_VERSION} /opt/
+
+    sudo ln -sfn /opt/intellij-${INTELLIJ_VERSION}/bin/idea.sh /opt/bin/idea
+    sudo rm /tmp/intellij.tar.gz
+fi
+
+
 
 echo "[${scriptname}] completed successfully."
