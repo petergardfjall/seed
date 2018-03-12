@@ -55,7 +55,8 @@ sudo apt-get install -yy \
   apt-show-versions \
   aptitude \
   debconf-utils \
-  curl
+  curl \
+  dirmngr
 
 
 # enable Canoncial Partners sources. Software Updates > Other sofware.
@@ -63,54 +64,55 @@ sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) pa
 
 # Docker
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null <<EOF
+deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
+EOF
 
 # google chrome
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo tee /etc/apt/sources.list.d/google-chrome.list <<EOF
+sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null <<EOF
 deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
 EOF
 
 # visual studio code
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /tmp/microsoft.gpg
 sudo mv /tmp/microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
-sudo tee /etc/apt/sources.list.d/vscode.list <<EOF
+sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null <<EOF
 deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main
 EOF
 
 # Azure cli
-sudo tee /etc/apt/sources.list.d/azure-cli.list <<EOF
+sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 52E16F86FEE04B979B07E28DB02C46DF417A0893
+sudo tee /etc/apt/sources.list.d/azure-cli.list > /dev/null <<EOF
 deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main
 EOF
-curl -sSL https://packages.microsoft.com/keys/microsoft.asc > /tmp/microsoft.asc
-sudo apt-key add /tmp/microsoft.asc
-rm /tmp/microsoft.asc
 
 
 # Google Cloud's gcloud cli
 CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)"
-sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list <<EOF
+sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list > /dev/null <<EOF
 deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main
 EOF
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
 
 # Ansible
-sudo apt-add-repository -y ppa:ansible/ansible
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+sudo tee /etc/apt/sources.list.d/ansible.list > /dev/null <<EOF
+deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
+EOF
 
 # spotify
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0DF731E45CE24F27EEEB1450EFDC8610341D9410
-sudo tee /etc/apt/sources.list.d/spotify.list <<EOF
+sudo tee /etc/apt/sources.list.d/spotify.list > /dev/null <<EOF
 deb http://repository.spotify.com stable non-free
 EOF
 
 # virtualbox
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-sudo tee /etc/apt/sources.list.d/virtualbox.list <<EOF
+sudo tee /etc/apt/sources.list.d/virtualbox.list > /dev/null <<EOF
 deb https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib
 EOF
+
 
 # duplicity backup tool
 sudo apt-add-repository -y ppa:duplicity-team/ppa
@@ -146,7 +148,8 @@ sudo apt-get install -yy \
      dos2unix \
      gcolor2 \
      xsel \
-     meld
+     meld \
+     gitg
 
 
 # for laptops
@@ -191,7 +194,7 @@ sudo apt-get autoremove -y
 
 # extra .bashrc modules
 if ! grep 'source ~/dotfiles/bash.includes' ~/.bashrc; then
-    tee -a ~/.bashrc <<EOF
+    tee -a ~/.bashrc > /dev/null <<EOF
 #
 # source additional configuration modules
 #
@@ -201,7 +204,7 @@ fi
 
 # extra .profile modules
 if ! grep 'source ~/dotfiles/bash.includes' ~/.profile; then
-    tee -a ~/.profile <<EOF
+    tee -a ~/.profile > /dev/null <<EOF
 #
 # source additional configuration modules
 #
@@ -245,6 +248,7 @@ fi
 sudo apt-get install -y openjdk-8-jdk openjdk-8-source
 JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")"
 sudo ln -sfn ${JAVA_HOME} /opt/java
+sudo ln -sfn ${JAVA_HOME}/bin/java /opt/bin/java
 
 # python
 sudo apt-get install -qy \
@@ -264,6 +268,7 @@ if ! mvn --version | grep ${MAVEN_VERSION}; then
     sudo wget http://apache.mirrors.spacedump.net/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
     sudo tar xzvf /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
     sudo ln -sfn /opt/apache-maven-${MAVEN_VERSION} /opt/maven
+    sudo ln -sfn /opt/apache-maven-${MAVEN_VERSION}/bin/mvn /opt/bin/mvn
     sudo rm /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
 fi
 
@@ -286,31 +291,39 @@ if ! [ -d /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V} ]; then
     sudo mkdir -p /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}
     sudo tar xzvf /opt/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz -C /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}
     sudo ln -sfn /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}/eclipse /opt/eclipse
+    sudo ln -sfn /opt/eclipse/eclipse /opt/bin/eclipse
     sudo rm /opt/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz
 fi
 
-# docker
-docker_compose_version=1.18.0
+#
+# Docker
+#
+
 # install Docker and some other utilities
 sudo apt-get install -qy docker-ce
-# install docker-compose
-sudo curl -L https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose > /dev/null
-sudo chmod +x /usr/local/bin/docker-compose
 # To be able to use docker without sudo/root privileges, you need to add users to the docker group.
 sudo usermod --append --groups docker $(whoami)
 
+# install docker-compose
+docker_compose_version=1.18.0
+if ! docker-compose version | head -1 | grep ${docker_compose_version}; then
+    sudo curl -fsSL https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose > /dev/null
+    sudo chmod +x /usr/local/bin/docker-compose
+fi
+
 
 # Go
-GO_VERSION=1.9
+GO_VERSION=1.10
 if ! go version | grep ${GO_VERSION}; then
     sudo wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz -O /tmp/go-${GO_VERSION}.tar.gz
     sudo tar xvf /tmp/go-${GO_VERSION}.tar.gz -C /tmp/
     sudo mv /tmp/go /opt/go-${GO_VERSION}
     sudo ln -sfn /opt/go-${GO_VERSION} /opt/go
-    export GOROOT=/opt/go
-    export GOPATH=~/dev/go
+    sudo ln -sfn /opt/go-${GO_VERSION}/bin/go /opt/bin/go
     sudo rm /tmp/go-${GO_VERSION}.tar.gz
 fi
+export GOROOT=/opt/go
+export GOPATH=~/dev/go
 
 # Go development environment tools
 mkdir -p ${GOPATH}
@@ -331,7 +344,7 @@ if ! dep version | grep ${GO_VERSION}; then
 fi
 
 # nodejs (https://nodejs.org/en/download/package-manager)
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm install -g grunt-cli
 
@@ -396,7 +409,7 @@ fi
 #
 # kubectl
 #
-curl -L https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl -o /tmp/kubectl
+curl -fsSL https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl -o /tmp/kubectl
 chmod +x /tmp/kubectl
 sudo mv /tmp/kubectl /usr/local/bin/kubectl
 
@@ -422,8 +435,8 @@ fi
 #
 # CloudFlare's SSL tools
 #
-sudo curl -o /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
-sudo curl -o /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+sudo curl -fsSL -o /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+sudo curl -fsSL -o /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
 sudo chmod +x /usr/local/bin/cfssl*
 
 #
