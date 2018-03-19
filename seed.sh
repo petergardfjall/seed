@@ -186,6 +186,7 @@ sudo ln -sfn ~/dotfiles/vscode/keybindings.json ~/.config/Code/User/keybindings.
 # Install xubuntu desktop (if on regular ubuntu). A no-op on xubuntu distro.
 #
 sudo apt-get install -qy xubuntu-desktop
+sudo apt-get install -qy xfce4-pulseaudio-plugin
 sudo apt-get remove ubuntu-desktop -y
 sudo apt-get autoremove -y
 
