@@ -1,13 +1,12 @@
 #!/bin/bash
 
 #
-# Installation script to set up an Ubuntu system with XFCE as dektop
-# environment.
+# Installation script to set up a Debian system with XFCE as dektop environment.
 #
 # The installer assumes that sudo is installed and that the user running the
 # script (not root) is a sudoer.
 #
-# It has tried out against clean network install setups (e.g.,
+# It has been tried out against clean network install setups (e.g.,
 # debian-9.4.0-amd64-netinst.iso or firmware-9.4.0-amd64-netinst.iso) with
 # "XFCE desktop environment", "print server", and "standard system utilities"
 # installed.
@@ -88,7 +87,7 @@ sudo apt-get install -y wmctrl xdotool xsel
 sudo apt-get install -y emacs24 markdown dos2unix
 sudo apt-get install -y gparted sshfs
 sudo apt-get install -y htop iftop bmon iperf
-sudo apt-get install -y chromium-browser
+sudo apt-get install -y chromium
 sudo apt-get install -y inkscape gimp gcolor2 gnuplot
 sudo apt-get install -y openssh-server pwgen
 sudo apt-get install -y tree
@@ -115,19 +114,13 @@ sudo apt-get install -y fonts-dejavu fonts-noto
 # notify-send
 sudo apt-get install -y libnotify-bin
 sudo apt-get install -y greybird-gtk-theme
-sudo apt-get install -y xfce4-pulseaudio-plugin
 # generate swedish locale
 sudo locale-gen sv_SE
-# if we're on regular ubuntu, delete its default desktop environment
-sudo apt-get remove ubuntu-desktop -y && sudo apt-get autoremove -y
 
 
 #
 # Add package repositories
 #
-
-# enable Canoncial Partners sources. Software Updates > Other sofware.
-sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
 
 # Docker
 os=$(. /etc/os-release; echo "$ID")
@@ -373,7 +366,7 @@ sudo apt-get install -y nodejs
 sudo npm install -g grunt-cli
 
 # Rust
-sudo apt-get install -y rustc cargo rust-src rust-gdb
+sudo apt-get install -y rustc rust-gdb
 
 #
 # cloud utilities
