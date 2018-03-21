@@ -19,11 +19,20 @@ set -e
 
 scriptname=$(basename ${0})
 
+function print_usage() {
+    echo "usage: ${scriptname} [--laptop-mode=false] [--minimal=false]"
+    echo
+    echo "Installs a baseline of software and sets up dotfiles."
+    echo
+    echo "  --laptop-mode=BOOL   Set to true to install laptop-mode-tools."
+    echo "  --minimal=BOOL       Set to true to stop after installing a desktop"
+    echo "                       environment and basic utilities."
+}
+
 function die_with_error() {
     echo "error: $1" 2>&1
     echo
-    echo "usage: ${scriptname} [--laptop-mode true]"
-    echo "  --laptop-mode=BOOL     Set to true to install laptop-mode-tools."
+    print_usage
     exit 1
 }
 
@@ -33,14 +42,19 @@ if [ "$(whoami)" = "root" ]; then
 fi
 
 LAPTOP_MODE=false
+MINIMAL=false
 
 for arg in "${@}"; do
     case ${arg} in
 	--laptop-mode=*)
 	    LAPTOP_MODE=${arg/*=/}
 	    ;;
+	--minimal=*)
+	    MINIMAL=${arg/*=/}
+	    ;;	
 	--help)
-	    die_with_error "${scriptname}: installs a baseline of software and sets up dotfiles"
+	    print_usage
+	    exit 0
 	    ;;
 	*)
 	    die_with_error "unknown argument: ${arg}"
@@ -49,6 +63,7 @@ for arg in "${@}"; do
 done
 
 echo "running with laptop-mode: ${LAPTOP_MODE}"
+echo "running with minimal: ${MINIMAL}"
 
 
 sudo mkdir -p /opt/bin
@@ -229,6 +244,14 @@ if ! [ -d ~/bin/scripts ]; then
     cd ~/bin && git clone https://github.com/petergardfjall/scripts
 else
     cd ~/bin/scripts && git pull origin master
+fi
+
+#
+# End installation if run with --minimal
+#
+if [ "${MINIMAL}" = "true" ]; then
+    echo "[${scriptname}] minimal install completed successfully."
+    exit 0
 fi
 
 
