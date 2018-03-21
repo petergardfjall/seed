@@ -110,7 +110,6 @@ sudo apt-get install -y tree
 sudo apt-get install -y jq
 sudo apt-get install -y git gitg tig subversion meld
 sudo apt-get install -y screen
-sudo apt-get install -y texlive-latex-base texlive-latex-extra
 
 
 #
@@ -490,5 +489,8 @@ if ! [ -d /opt/intellij-${INTELLIJ_VERSION} ]; then
     sudo ln -sfn /opt/intellij-${INTELLIJ_VERSION}/bin/idea.sh /opt/bin/idea
     sudo rm /tmp/intellij.tar.gz
 fi
+
+# LaTeX
+sudo apt-get install -y texlive-latex-base texlive-latex-extra
 
 echo "[${scriptname}] completed successfully."
