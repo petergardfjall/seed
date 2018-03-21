@@ -20,6 +20,11 @@ set -e
 
 scriptname=$(basename ${0})
 
+function log() {
+    msg=${1}
+    echo -e "\e[32m[${scriptname}] ${msg}\e[0m"
+}
+
 function print_usage() {
     echo "usage: ${scriptname} [--laptop-mode=false] [--minimal=false]"
     echo
@@ -63,8 +68,8 @@ for arg in "${@}"; do
     esac
 done
 
-echo "running with laptop-mode: ${LAPTOP_MODE}"
-echo "running with minimal: ${MINIMAL}"
+log "running with laptop-mode: ${LAPTOP_MODE}"
+log "running with minimal: ${MINIMAL}"
 
 
 sudo mkdir -p /opt/bin
@@ -256,7 +261,7 @@ fi
 # End installation if run with --minimal
 #
 if [ "${MINIMAL}" = "true" ]; then
-    echo "[${scriptname}] minimal install completed successfully."
+    log "[${scriptname}] minimal install completed successfully."
     exit 0
 fi
 
@@ -493,4 +498,4 @@ fi
 # LaTeX
 sudo apt-get install -y texlive-latex-base texlive-latex-extra
 
-echo "[${scriptname}] completed successfully."
+log "[${scriptname}] completed successfully."
