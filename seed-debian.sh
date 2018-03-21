@@ -254,7 +254,7 @@ fi
 # End installation if run with --minimal
 #
 if [ "${MINIMAL}" = "true" ]; then
-    log "[${scriptname}] minimal install completed successfully."
+    log "minimal install completed successfully."
     exit 0
 fi
 
@@ -491,4 +491,4 @@ fi
 # LaTeX
 sudo apt-get install -y texlive-latex-base texlive-latex-extra
 
-log "[${scriptname}] completed successfully."
+log "completed successfully."
