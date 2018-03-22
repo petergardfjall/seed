@@ -8,7 +8,7 @@
 # script (not root) is a sudoer.
 #
 # NOTE: after first execution, you should reboot to let all changes take effect.
-#       In some cases, you may need to re-run
+#       When starting out from a pure Ubuntu distro, you may need to re-run
 #          ~/dotfiles/setup-xfce4-keyboard-shortcuts.sh 
 #       after first boot to make shortcuts take effect.
 #
