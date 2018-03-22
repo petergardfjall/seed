@@ -7,13 +7,10 @@
 # The installer assumes that sudo is installed and that the user running the
 # script (not root) is a sudoer.
 #
-# It has tried out against clean network install setups (e.g.,
-# debian-9.4.0-amd64-netinst.iso or firmware-9.4.0-amd64-netinst.iso) with
-# "XFCE desktop environment", "print server", and "standard system utilities"
-# installed.
-#
 # NOTE: after first execution, you should reboot to let all changes take effect.
-#
+#       In some cases, you may need to re-run
+#          ~/dotfiles/setup-xfce4-keyboard-shortcuts.sh 
+#       after first boot to make shortcuts take effect.
 #
 
 set -e
