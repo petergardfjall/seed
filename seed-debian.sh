@@ -414,7 +414,7 @@ sudo apt-get install -y azure-cli
 sudo apt-get install -y google-cloud-sdk
 
 # Terraform
-TERRAFORM_VERSION=0.11.2
+TERRAFORM_VERSION=0.11.6
 if ! terraform version | head -1 | grep ${TERRAFORM_VERSION}; then
     sudo wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -O /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
     sudo unzip -o /tmp/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /opt/terraform-${TERRAFORM_VERSION}
