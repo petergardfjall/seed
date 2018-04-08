@@ -396,8 +396,13 @@ curl -fsSL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm install -g grunt-cli
 
+#
 # Rust
-sudo apt-get install -y rustc cargo rust-src rust-gdb
+#
+
+# installs rustup, rustc, cargo and friends under ~/.cargo/bin/
+# be sure to add this directory to your PATH
+curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
 
 #
 # cloud utilities
