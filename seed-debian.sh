@@ -378,6 +378,8 @@ go get -u golang.org/x/tools/cmd/...
 go get -u github.com/nsf/gocode
 # locates symbol definitions in go code (needed by emacs go-mode)
 go get -u github.com/rogpeppe/godef
+# versioned go (vgo): prototype
+go get -u golang.org/x/vgo
 
 # dep (Go dependency management)
 GODEP_VERSION=v0.3.2

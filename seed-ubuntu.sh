@@ -9,7 +9,7 @@
 #
 # NOTE: after first execution, you should reboot to let all changes take effect.
 #       When starting out from a pure Ubuntu distro, you may need to re-run
-#          ~/dotfiles/setup-xfce4-keyboard-shortcuts.sh 
+#          ~/dotfiles/setup-xfce4-keyboard-shortcuts.sh
 #       after first boot to make shortcuts take effect.
 #
 
@@ -54,7 +54,7 @@ for arg in "${@}"; do
 	    ;;
 	--minimal=*)
 	    MINIMAL=${arg/*=/}
-	    ;;	
+	    ;;
 	--help)
 	    print_usage
 	    exit 0
@@ -382,6 +382,8 @@ go get -u golang.org/x/tools/cmd/...
 go get -u github.com/nsf/gocode
 # locates symbol definitions in go code (needed by emacs go-mode)
 go get -u github.com/rogpeppe/godef
+# versioned go (vgo): prototype
+go get -u golang.org/x/vgo
 
 # dep (Go dependency management)
 GODEP_VERSION=v0.3.2
