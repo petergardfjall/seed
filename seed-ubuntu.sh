@@ -386,7 +386,7 @@ go get -u github.com/rogpeppe/godef
 go get -u golang.org/x/vgo
 
 # dep (Go dependency management)
-GODEP_VERSION=v0.3.2
+GODEP_VERSION=v0.4.1
 if ! dep version | grep ${GO_VERSION}; then
     sudo wget https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-linux-amd64 -O /tmp/dep
     sudo chmod +x /tmp/dep
