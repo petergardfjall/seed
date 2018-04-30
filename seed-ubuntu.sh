@@ -276,7 +276,7 @@ fi
 
 # OpenJDK java
 sudo apt-get install -y openjdk-8-jdk openjdk-8-source
-JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")"
+JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 sudo ln -sfn ${JAVA_HOME} /opt/java
 sudo ln -sfn ${JAVA_HOME}/bin/java /opt/bin/java
 
@@ -285,8 +285,6 @@ sudo apt-get install -y \
      build-essential libssl-dev libffi-dev \
      python python-dev python-pip python-virtualenv \
      python3 python3-dev python3-pip python3-venv
-sudo pip2 install --upgrade pip
-sudo pip3 install --upgrade pip
 sudo pip2 install ipython pipenv
 sudo pip3 install ipython pipenv
 
