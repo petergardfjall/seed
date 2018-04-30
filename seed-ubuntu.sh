@@ -101,12 +101,13 @@ fi
 # Install basic tools
 #
 sudo apt-get update -y
+sudo apt-get install -y snapd
 sudo apt-get install -y wmctrl xdotool xsel
-sudo apt-get install -y emacs24 markdown dos2unix
+sudo apt-get install -y emacs25 markdown dos2unix
 sudo apt-get install -y gparted sshfs
 sudo apt-get install -y htop iftop bmon iperf
 sudo apt-get install -y chromium-browser
-sudo apt-get install -y inkscape gimp gcolor2 gnuplot
+sudo apt-get install -y inkscape gimp gpick gnuplot
 sudo apt-get install -y openssh-server pwgen
 sudo apt-get install -y tree
 sudo apt-get install -y jq
@@ -165,29 +166,10 @@ sudo tee /etc/apt/sources.list.d/azure-cli.list > /dev/null <<EOF
 deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main
 EOF
 
-# Google Cloud's gcloud cli
-CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -cs)"
-sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list > /dev/null <<EOF
-deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main
-EOF
-curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-
 # Ansible
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 sudo tee /etc/apt/sources.list.d/ansible.list > /dev/null <<EOF
 deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
-EOF
-
-# spotify
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0DF731E45CE24F27EEEB1450EFDC8610341D9410
-sudo tee /etc/apt/sources.list.d/spotify.list > /dev/null <<EOF
-deb http://repository.spotify.com stable non-free
-EOF
-
-# virtualbox
-wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-sudo tee /etc/apt/sources.list.d/virtualbox.list > /dev/null <<EOF
-deb https://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib
 EOF
 
 # load packages from added repos
@@ -266,7 +248,8 @@ fi
 #
 # Media
 #
-sudo apt-get install -y spotify-client
+sudo snap install spotify
+sudo apt-get install -y vlc
 
 
 #
@@ -281,11 +264,10 @@ sudo apt-get install -y visualvm
 sudo apt-get install -y httperf
 
 # virtualbox
-VIRTUALBOX_VERSION=5.2
-sudo apt-get install -y virtualbox-${VIRTUALBOX_VERSION} dkms
+sudo apt-get install -y virtualbox
 
 # vagrant
-VAGRANT_VERSION=2.0.1
+VAGRANT_VERSION=2.0.4
 if ! vagrant --version | grep ${VAGRANT_VERSION}; then
     wget https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -O /tmp/vagrant.deb
     sudo dpkg -i /tmp/vagrant.deb
@@ -326,22 +308,14 @@ if ! gradle -v | grep ${GRADLE_VERSION}; then
     wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -O /tmp/gradle-${GRADLE_VERSION}-bin.zip
     pushd /tmp/ > /dev/null
     unzip -o gradle-${GRADLE_VERSION}-bin.zip
-    sudo mv gradle-${GRADLE_VERSION} /opt/gradle-${GRADLE_VERSION}
+    sudo rm -rf /opt/gradle-${GRADLE_VERSION}
+    sudo mv gradle-${GRADLE_VERSION} /opt/
     sudo ln -sfn /opt/gradle-${GRADLE_VERSION}/bin/gradle /opt/bin/gradle
     popd > /dev/null
 fi
 
 # eclipse
-ECLIPSE_MAJOR_V=oxygen
-ECLIPSE_MINOR_V=2
-if ! [ -d /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V} ]; then
-    sudo wget http://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/${ECLIPSE_MAJOR_V}/${ECLIPSE_MINOR_V}/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz -O /opt/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz
-    sudo mkdir -p /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}
-    sudo tar xzvf /opt/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz -C /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}
-    sudo ln -sfn /opt/eclipse-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}/eclipse /opt/eclipse
-    sudo ln -sfn /opt/eclipse/eclipse /opt/bin/eclipse
-    sudo rm /opt/eclipse-java-${ECLIPSE_MAJOR_V}-${ECLIPSE_MINOR_V}-linux-gtk-x86_64.tar.gz
-fi
+sudo snap install eclipse --classic
 
 #
 # Docker
@@ -422,7 +396,7 @@ sudo apt-get install -y \
 sudo apt-get install -y azure-cli
 
 # Google Cloud's gcloud cli
-sudo apt-get install -y google-cloud-sdk
+sudo snap install google-cloud-sdk --classic
 
 # Terraform
 TERRAFORM_VERSION=0.11.6
@@ -439,20 +413,12 @@ sudo apt-get install ansible -y
 #
 # Skype
 #
-sudo wget https://go.skype.com/skypeforlinux-64.deb -O /tmp/skype.deb
-sudo dpkg -i /tmp/skype.deb
-sudo rm /tmp/skype.deb
+sudo snap install skype --classic
 
 #
 # Slack
 #
-SLACK_VERSION=2.5.2
-if ! slack --version | grep ${SLACK_VERSION}; then
-    sudo wget https://downloads.slack-edge.com/linux_releases/slack-desktop-${SLACK_VERSION}-amd64.deb -O /tmp/slack.deb
-    sudo apt-get install -y libappindicator1 libindicator7 gvfs-bin gconf2
-    sudo dpkg -i /tmp/slack.deb
-    sudo rm /tmp/slack.deb
-fi
+sudo snap install slack --classic
 
 
 #
@@ -488,16 +454,7 @@ sudo chmod +x /usr/local/bin/cfssl*
 #
 # IntelliJ
 #
-INTELLIJ_VERSION=2017.3.4
-if ! [ -d /opt/intellij-${INTELLIJ_VERSION} ]; then
-    wget https://download.jetbrains.com/idea/ideaIC-${INTELLIJ_VERSION}-no-jdk.tar.gz -O /tmp/intellij.tar.gz
-    mkdir -p /tmp/intellij-${INTELLIJ_VERSION}
-    tar xzf /tmp/intellij.tar.gz -C /tmp/intellij-${INTELLIJ_VERSION} --strip-components=1
-    sudo mv /tmp/intellij-${INTELLIJ_VERSION} /opt/
-
-    sudo ln -sfn /opt/intellij-${INTELLIJ_VERSION}/bin/idea.sh /opt/bin/idea
-    sudo rm /tmp/intellij.tar.gz
-fi
+sudo snap install intellij-idea-community --classic
 
 # LaTeX
 sudo apt-get install -y texlive-latex-base texlive-latex-extra
