@@ -379,6 +379,12 @@ sudo npm install -g grunt-cli
 curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
 
 #
+# C++
+#
+sudo apt-get install -y clang
+sudo apt-get install -y cmake
+
+#
 # cloud utilities
 #
 sudo pip3 install awscli
