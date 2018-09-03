@@ -274,6 +274,19 @@ if ! vagrant --version | grep ${VAGRANT_VERSION}; then
     sudo rm /tmp/vagrant.deb
 fi
 
+#
+# install KVM, libvirt, virsh and virt-manager
+#
+sudo apt-get install -y qemu-kvm libvirt-bin virtinst bridge-utils cpu-checker virt-manager
+# install dependencies of vagrant-libvirt
+sudo apt-get install -y ruby-libvirt qemu libvirt-bin ebtables dnsmasq libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev
+# make sure regular users can create VMs
+sudo sed -i 's/unix_sock_rw_perms = "0770"/unix_sock_rw_perms = "0777"/g' /etc/libvirt/libvirtd.conf
+sudo systemctl restart libvirtd
+# install libvirt provider for vagrant
+vagrant plugin install vagrant-libvirt
+
+
 # OpenJDK java
 sudo apt-get install -y openjdk-8-jdk openjdk-8-source
 JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
