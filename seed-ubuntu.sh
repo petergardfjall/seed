@@ -368,20 +368,19 @@ export GOPATH=~/dev/go
 mkdir -p ${GOPATH}
 # additional go tools (godoc, guru, gorename, etc)
 export PATH=${PATH}:${GOROOT}/bin
-go get -u golang.org/x/tools/cmd/...
+go get golang.org/x/tools/cmd/...
 # auto-completion daemon for go (needed by emacs go-mode)
-go get -u github.com/nsf/gocode
+go get github.com/nsf/gocode
 # locates symbol definitions in go code (needed by emacs go-mode)
-go get -u github.com/rogpeppe/godef
+go get github.com/rogpeppe/godef
 # versioned go (vgo): prototype
-go get -u golang.org/x/vgo
+go get golang.org/x/vgo
 
 # dep (Go dependency management)
 GODEP_VERSION=v0.4.1
-if ! dep version | grep ${GO_VERSION}; then
-    sudo wget https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-linux-amd64 -O /tmp/dep
-    sudo chmod +x /tmp/dep
-    sudo mv /tmp/dep /usr/local/bin/dep
+if ! dep version | grep ${GODEP_VERSION}; then
+    sudo curl -fsSL https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-linux-amd64 -o /opt/bin/dep
+    sudo chmod +x /opt/bin/dep
 fi
 
 # nodejs (https://nodejs.org/en/download/package-manager)
