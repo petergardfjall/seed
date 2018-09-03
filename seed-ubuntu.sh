@@ -453,6 +453,15 @@ sudo chmod +x /opt/bin/kubectl
 mkdir -p ~/.kube
 
 #
+# kops - Kubernetes Operations
+#
+KOPS_VERSION=1.10.0
+if ! kops version | grep "Version ${KOPS_VERSION}" > /dev/null 2>&1; then
+    sudo curl -fsSL -o /opt/bin/kops https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64
+    sudo chmod +x /opt/bin/kops
+fi
+
+ #
 # backups to S3 and/or google drive
 #
 sudo apt-get install -y duplicity python-boto
