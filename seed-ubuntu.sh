@@ -144,7 +144,10 @@ sudo apt-get remove ubuntu-desktop -y && sudo apt-get autoremove -y
 #
 
 # enable Canoncial Partners sources. Software Updates > Other sofware.
-sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
+sudo tee /etc/apt/sources.list.d/canonical-partners.list > /dev/null <<EOF
+deb http://archive.canonical.com/ubuntu $(lsb_release -cs) partner
+deb-src http://archive.canonical.com/ubuntu $(lsb_release -cs) partner
+EOF
 
 # Docker
 os=$(. /etc/os-release; echo "$ID")
