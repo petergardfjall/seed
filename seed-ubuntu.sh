@@ -405,7 +405,6 @@ sudo apt-get install -y cmake
 #
 # cloud utilities
 #
-sudo pip3 install awscli
 
 sudo apt-get install -y \
      python-novaclient \
@@ -414,7 +413,10 @@ sudo apt-get install -y \
      python-keystoneclient \
      python-openstackclient
 
-# Azure CLI
+# Amazon's az command-line client
+sudo apt-get install -y awscli
+
+# Azure's az command-line client
 sudo apt-get install -y azure-cli
 
 # Google Cloud's gcloud cli
