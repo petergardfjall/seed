@@ -169,6 +169,7 @@ sudo tee /etc/apt/sources.list.d/azure-cli.list > /dev/null <<EOF
 deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main
 EOF
 
+
 # Ansible
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 93C4A3FD7BB9C367
 sudo tee /etc/apt/sources.list.d/ansible.list > /dev/null <<EOF
@@ -287,7 +288,9 @@ sudo apt-get install -y ruby-libvirt qemu libvirt-bin ebtables dnsmasq libxslt-d
 sudo sed -i 's/unix_sock_rw_perms = "0770"/unix_sock_rw_perms = "0777"/g' /etc/libvirt/libvirtd.conf
 sudo systemctl restart libvirtd
 # install libvirt provider for vagrant
-vagrant plugin install vagrant-libvirt
+if ! vagrant plugin list | grep vagrant-libvirt > /dev/null; then
+    vagrant plugin install vagrant-libvirt
+fi
 
 
 # OpenJDK java
