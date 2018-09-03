@@ -352,7 +352,7 @@ fi
 
 
 # Go
-GO_VERSION=1.10
+GO_VERSION=1.11
 if ! go version | grep ${GO_VERSION}; then
     sudo wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz -O /tmp/go-${GO_VERSION}.tar.gz
     sudo tar xvf /tmp/go-${GO_VERSION}.tar.gz -C /tmp/
