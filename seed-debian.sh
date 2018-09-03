@@ -157,13 +157,13 @@ deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main
 EOF
 
 # Azure cli
-sudo apt-key adv --keyserver packages.microsoft.com --recv-keys 52E16F86FEE04B979B07E28DB02C46DF417A0893
+curl -L https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 sudo tee /etc/apt/sources.list.d/azure-cli.list > /dev/null <<EOF
 deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main
 EOF
 
 # Ansible
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 93C4A3FD7BB9C367
 sudo tee /etc/apt/sources.list.d/ansible.list > /dev/null <<EOF
 deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
 EOF
