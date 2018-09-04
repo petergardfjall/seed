@@ -2,7 +2,7 @@
 Seed script for installing an XFCE desktop environment and a baseline of
 software and [dotfiles](https://github.com/petergardfjall/dotfiles).
 
-The scripts comes in two editions depending on if a Debian or Ubuntu system is
+The scripts come in two editions depending on if a Debian or Ubuntu system is
 targeted.
 
 
