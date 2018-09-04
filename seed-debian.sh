@@ -162,6 +162,7 @@ sudo tee /etc/apt/sources.list.d/azure-cli.list > /dev/null <<EOF
 deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main
 EOF
 
+
 # Ansible
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 93C4A3FD7BB9C367
 sudo tee /etc/apt/sources.list.d/ansible.list > /dev/null <<EOF
@@ -285,7 +286,9 @@ sudo apt-get install -y ruby-libvirt qemu libvirt-bin ebtables dnsmasq libxslt-d
 sudo sed -i 's/unix_sock_rw_perms = "0770"/unix_sock_rw_perms = "0777"/g' /etc/libvirt/libvirtd.conf
 sudo systemctl restart libvirtd
 # install libvirt provider for vagrant
-vagrant plugin install vagrant-libvirt
+if ! vagrant plugin list | grep vagrant-libvirt > /dev/null; then
+    vagrant plugin install vagrant-libvirt
+fi
 
 
 # OpenJDK java
@@ -347,7 +350,7 @@ fi
 
 
 # Go
-GO_VERSION=1.10
+GO_VERSION=1.11
 if ! go version | grep ${GO_VERSION}; then
     sudo wget https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz -O /tmp/go-${GO_VERSION}.tar.gz
     sudo tar xvf /tmp/go-${GO_VERSION}.tar.gz -C /tmp/
@@ -363,20 +366,19 @@ export GOPATH=~/dev/go
 mkdir -p ${GOPATH}
 # additional go tools (godoc, guru, gorename, etc)
 export PATH=${PATH}:${GOROOT}/bin
-go get -u golang.org/x/tools/cmd/...
+go get golang.org/x/tools/cmd/...
 # auto-completion daemon for go (needed by emacs go-mode)
-go get -u github.com/nsf/gocode
+go get github.com/nsf/gocode
 # locates symbol definitions in go code (needed by emacs go-mode)
-go get -u github.com/rogpeppe/godef
+go get github.com/rogpeppe/godef
 # versioned go (vgo): prototype
-go get -u golang.org/x/vgo
+go get golang.org/x/vgo
 
 # dep (Go dependency management)
 GODEP_VERSION=v0.4.1
-if ! dep version | grep ${GO_VERSION}; then
-    sudo wget https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-linux-amd64 -O /tmp/dep
-    sudo chmod +x /tmp/dep
-    sudo mv /tmp/dep /usr/local/bin/dep
+if ! dep version | grep ${GODEP_VERSION}; then
+    sudo curl -fsSL https://github.com/golang/dep/releases/download/${GODEP_VERSION}/dep-linux-amd64 -o /opt/bin/dep
+    sudo chmod +x /opt/bin/dep
 fi
 
 # nodejs (https://nodejs.org/en/download/package-manager)
@@ -410,7 +412,10 @@ sudo apt-get install -y \
      python-keystoneclient \
      python-openstackclient
 
-# Azure CLI
+# Amazon's az command-line client
+sudo apt-get install -y awscli
+
+# Azure's az command-line client
 sudo apt-get install -y azure-cli
 
 # Google Cloud's gcloud cli
@@ -442,10 +447,18 @@ sudo snap install slack --classic
 #
 # kubectl
 #
-curl -fsSL https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl -o /tmp/kubectl
-chmod +x /tmp/kubectl
-sudo mv /tmp/kubectl /usr/local/bin/kubectl
+sudo curl -fsSL https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl -o /opt/bin/kubectl
+sudo chmod +x /opt/bin/kubectl
 mkdir -p ~/.kube
+
+#
+# kops - Kubernetes Operations
+#
+KOPS_VERSION=1.10.0
+if ! kops version | grep "Version ${KOPS_VERSION}" > /dev/null 2>&1; then
+    sudo curl -fsSL -o /opt/bin/kops https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64
+    sudo chmod +x /opt/bin/kops
+fi
 
 #
 # backups to S3 and/or google drive
