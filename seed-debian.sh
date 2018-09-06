@@ -114,7 +114,7 @@ sudo apt-get install -y openssh-server pwgen
 sudo apt-get install -y tree
 sudo apt-get install -y jq
 sudo apt-get install -y git gitg tig subversion meld
-sudo apt-get install -y screen
+sudo apt-get install -y screen tmux
 
 
 #
