@@ -103,17 +103,20 @@ fi
 sudo apt-get update -y
 sudo apt-get install -y snapd
 sudo apt-get install -y wmctrl xdotool xsel
-sudo apt-get install -y emacs25 markdown dos2unix
 sudo apt-get install -y gparted sshfs
-sudo apt-get install -y htop iftop bmon iperf
+sudo apt-get install -y htop iftop bmon iperf sysstat
 sudo apt-get install -y chromium-browser
 sudo apt-get install -y inkscape gimp gpick gnuplot
 sudo apt-get install -y openssh-server pwgen
 sudo apt-get install -y tree
 sudo apt-get install -y jq
 sudo apt-get install -y git gitg tig subversion meld
-sudo apt-get install -y screen tmux
-
+sudo apt-get install -y tmux
+# ag code search tool
+sudo apt-get install -y silversearcher-ag
+# GNU Global source tagging system (gtags creates tag files for use with emacs)
+sudo apt-get install -y global
+sudo apt-get install -y emacs25 markdown dos2unix
 
 #
 # install XFCE
@@ -227,9 +230,6 @@ source ~/dotfiles/bash.includes
 EOF
 fi
 
-# set up screen config
-ln -sfn ~/dotfiles/screen/screenrc ~/.screenrc
-
 #
 # Install useful helper scripts
 #
@@ -294,10 +294,11 @@ fi
 
 
 # OpenJDK java
-sudo apt-get install -y openjdk-8-jdk openjdk-8-source
-JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+sudo apt-get install -y openjdk-11-jdk openjdk-11-source
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 sudo ln -sfn ${JAVA_HOME} /opt/java
 sudo ln -sfn ${JAVA_HOME}/bin/java /opt/bin/java
+
 
 # python
 sudo apt-get install -y \
@@ -310,7 +311,7 @@ sudo pip3 install ipython pipenv
 sudo mkdir -p /opt
 
 # maven
-MAVEN_VERSION=3.5.2
+MAVEN_VERSION=3.5.4
 if ! mvn --version | grep ${MAVEN_VERSION}; then
     sudo wget http://apache.mirrors.spacedump.net/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
     sudo tar xzvf /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
@@ -385,7 +386,7 @@ fi
 
 # nodejs (https://nodejs.org/en/download/package-manager)
 curl -fsSL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-sudo apt-get install -y nodejs
+sudo apt-get install -y nodejs gulp
 sudo npm install -g grunt-cli
 
 #
