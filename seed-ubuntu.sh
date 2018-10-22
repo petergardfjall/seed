@@ -179,6 +179,12 @@ sudo tee /etc/apt/sources.list.d/ansible.list > /dev/null <<EOF
 deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
 EOF
 
+# BCC - Tools for BPF-based Linux IO analysis, networking, monitoring, and more
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4052245BD4284CDD
+sudo tee /etc/apt/sources.list.d/iovisor.list <<EOF
+deb https://repo.iovisor.org/apt/xenial bionic main
+EOF
+
 # load packages from added repos
 sudo apt-get update -y
 
@@ -333,7 +339,17 @@ if ! gradle -v | grep ${GRADLE_VERSION}; then
 fi
 
 # eclipse
-sudo snap install eclipse --classic
+ECLIPSE_VERSION="2018-09"
+if ! [ -d /opt/eclipse-${ECLIPSE_VERSION} ]; then
+    curl -fsSL https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/${ECLIPSE_VERSION}/R/eclipse-java-${ECLIPSE_VERSION}-linux-gtk-x86_64.tar.gz -o /tmp/eclipse-${ECLIPSE_VERSION}.tar.gz
+    mkdir -p /tmp/eclipse-${ECLIPSE_VERSION}
+    tar xf /tmp/eclipse-${ECLIPSE_VERSION}.tar.gz -C /tmp/eclipse-${ECLIPSE_VERSION}
+    sudo mv /tmp/eclipse-${ECLIPSE_VERSION}/eclipse /opt/eclipse-${ECLIPSE_VERSION}
+    sudo chown -R root:root /opt/eclipse-${ECLIPSE_VERSION}
+    sudo ln -sfn /opt/eclipse-${ECLIPSE_VERSION} /opt/eclipse
+    sudo ln -sfn /opt/eclipse/eclipse /opt/bin/eclipse
+fi
+
 
 #
 # Docker
@@ -402,6 +418,14 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
 #
 sudo apt-get install -y clang
 sudo apt-get install -y cmake
+
+#
+# BCC - Tools for BPF-based Linux IO analysis, networking, monitoring, and more
+#
+sudo apt-get install bcc-tools libbcc-examples linux-headers-$(uname -r)
+for tool in $(find /usr/share/bcc/tools/ -maxdepth 1 -type f); do
+    sudo ln -sfn ${tool} /opt/bin/$(basename ${tool})
+done
 
 #
 # cloud utilities
