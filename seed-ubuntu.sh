@@ -117,6 +117,7 @@ sudo apt-get install -y silversearcher-ag
 # GNU Global source tagging system (gtags creates tag files for use with emacs)
 sudo apt-get install -y global
 sudo apt-get install -y emacs25 markdown dos2unix
+sudo apt-get install -y pass
 
 #
 # install XFCE
