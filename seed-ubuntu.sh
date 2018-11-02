@@ -301,8 +301,14 @@ fi
 
 
 # OpenJDK java
-sudo apt-get install -y openjdk-11-jdk openjdk-11-source
-JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+# NOTE: temporary workaround until the openjdk-11-jdk package is upgraded
+#       from openjdk 10 to 11
+wget https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_linux-x64_bin.tar.gz -O /tmp/openjdk-11.0.1_linux-x64_bin.tar.gz
+sudo rm -rf /opt/jdk-11.0.1
+sudo tar xzvf /tmp/openjdk-11.0.1_linux-x64_bin.tar.gz -C /opt/
+JAVA_HOME=/opt/jdk-11.0.1
+# sudo apt-get install -y openjdk-11-jdk openjdk-11-source
+# JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 sudo ln -sfn ${JAVA_HOME} /opt/java
 sudo ln -sfn ${JAVA_HOME}/bin/java /opt/bin/java
 
