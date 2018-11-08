@@ -104,7 +104,7 @@ sudo apt-get update -y
 sudo apt-get install -y snapd
 sudo apt-get install -y wmctrl xdotool xsel
 sudo apt-get install -y gparted sshfs
-sudo apt-get install -y htop iftop bmon iperf sysstat
+sudo apt-get install -y htop iftop bmon iperf sysstat powertop
 sudo apt-get install -y chromium-browser
 sudo apt-get install -y inkscape gimp gpick gnuplot
 sudo apt-get install -y openssh-server pwgen
