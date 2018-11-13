@@ -181,9 +181,9 @@ deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
 EOF
 
 # BCC - Tools for BPF-based Linux IO analysis, networking, monitoring, and more
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4052245BD4284CDD
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 4052245BD4284CDD
 sudo tee /etc/apt/sources.list.d/iovisor.list <<EOF
-deb https://repo.iovisor.org/apt/xenial bionic main
+deb https://repo.iovisor.org/apt/xenial xenial main
 EOF
 
 # load packages from added repos
@@ -399,6 +399,8 @@ go get github.com/nsf/gocode
 go get github.com/rogpeppe/godef
 # versioned go (vgo): prototype
 go get golang.org/x/vgo
+# go server implementing the language server protocol (LSP), needed by emacs
+go get -u github.com/sourcegraph/go-langserver
 
 # dep (Go dependency management)
 GODEP_VERSION=v0.4.1
@@ -419,6 +421,7 @@ sudo npm install -g grunt-cli
 # installs rustup, rustc, cargo and friends under ~/.cargo/bin/
 # be sure to add this directory to your PATH
 curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
+rustup update
 
 #
 # C++
@@ -429,7 +432,7 @@ sudo apt-get install -y cmake
 #
 # BCC - Tools for BPF-based Linux IO analysis, networking, monitoring, and more
 #
-sudo apt-get install bcc-tools libbcc-examples linux-headers-$(uname -r)
+sudo apt-get install -y bcc-tools libbcc-examples linux-headers-$(uname -r)
 for tool in $(find /usr/share/bcc/tools/ -maxdepth 1 -type f); do
     sudo ln -sfn ${tool} /opt/bin/$(basename ${tool})
 done
