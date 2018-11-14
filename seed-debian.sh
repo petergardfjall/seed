@@ -105,17 +105,21 @@ fi
 sudo apt-get update -y
 sudo apt-get install -y snapd
 sudo apt-get install -y wmctrl xdotool xsel
-sudo apt-get install -y emacs25 markdown dos2unix
 sudo apt-get install -y gparted sshfs
-sudo apt-get install -y htop iftop bmon iperf
+sudo apt-get install -y htop iftop bmon iperf sysstat powertop
 sudo apt-get install -y chromium
 sudo apt-get install -y inkscape gimp gpick gnuplot
 sudo apt-get install -y openssh-server pwgen
 sudo apt-get install -y tree
 sudo apt-get install -y jq
 sudo apt-get install -y git gitg tig subversion meld
-sudo apt-get install -y screen tmux
-
+sudo apt-get install -y tmux
+# ag code search tool
+sudo apt-get install -y silversearcher-ag
+# GNU Global source tagging system (gtags creates tag files for use with emacs)
+sudo apt-get install -y global
+sudo apt-get install -y emacs25 markdown dos2unix
+sudo apt-get install -y pass
 
 #
 # install XFCE
@@ -225,9 +229,6 @@ source ~/dotfiles/bash.includes
 EOF
 fi
 
-# set up screen config
-ln -sfn ~/dotfiles/screen/screenrc ~/.screenrc
-
 #
 # Install useful helper scripts
 #
@@ -279,9 +280,9 @@ fi
 #
 # install KVM, libvirt, virsh and virt-manager
 #
-sudo apt-get install -y qemu-kvm libvirt-bin virtinst bridge-utils cpu-checker virt-manager
+sudo apt-get install -y qemu-kvm libvirt-daemon-system libvirt-dev libvirt-clients virtinst bridge-utils virt-manager
 # install dependencies of vagrant-libvirt
-sudo apt-get install -y ruby-libvirt qemu libvirt-bin ebtables dnsmasq libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev
+sudo apt-get install -y ruby-libvirt qemu ebtables dnsmasq libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev
 # make sure regular users can create VMs
 sudo sed -i 's/unix_sock_rw_perms = "0770"/unix_sock_rw_perms = "0777"/g' /etc/libvirt/libvirtd.conf
 sudo systemctl restart libvirtd
@@ -292,10 +293,17 @@ fi
 
 
 # OpenJDK java
-sudo apt-get install -y openjdk-8-jdk openjdk-8-source
-JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+# NOTE: temporary workaround until the openjdk-11-jdk package is upgraded
+#       from openjdk 10 to 11
+wget https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_linux-x64_bin.tar.gz -O /tmp/openjdk-11.0.1_linux-x64_bin.tar.gz
+sudo rm -rf /opt/jdk-11.0.1
+sudo tar xzvf /tmp/openjdk-11.0.1_linux-x64_bin.tar.gz -C /opt/
+JAVA_HOME=/opt/jdk-11.0.1
+# sudo apt-get install -y openjdk-11-jdk openjdk-11-source
+# JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 sudo ln -sfn ${JAVA_HOME} /opt/java
 sudo ln -sfn ${JAVA_HOME}/bin/java /opt/bin/java
+
 
 # python
 sudo apt-get install -y \
@@ -308,7 +316,7 @@ sudo pip3 install ipython pipenv
 sudo mkdir -p /opt
 
 # maven
-MAVEN_VERSION=3.5.2
+MAVEN_VERSION=3.5.4
 if ! mvn --version | grep ${MAVEN_VERSION}; then
     sudo wget http://apache.mirrors.spacedump.net/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
     sudo tar xzvf /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
@@ -330,7 +338,17 @@ if ! gradle -v | grep ${GRADLE_VERSION}; then
 fi
 
 # eclipse
-sudo snap install eclipse --classic
+ECLIPSE_VERSION="2018-09"
+if ! [ -d /opt/eclipse-${ECLIPSE_VERSION} ]; then
+    curl -fsSL https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/${ECLIPSE_VERSION}/R/eclipse-java-${ECLIPSE_VERSION}-linux-gtk-x86_64.tar.gz -o /tmp/eclipse-${ECLIPSE_VERSION}.tar.gz
+    mkdir -p /tmp/eclipse-${ECLIPSE_VERSION}
+    tar xf /tmp/eclipse-${ECLIPSE_VERSION}.tar.gz -C /tmp/eclipse-${ECLIPSE_VERSION}
+    sudo mv /tmp/eclipse-${ECLIPSE_VERSION}/eclipse /opt/eclipse-${ECLIPSE_VERSION}
+    sudo chown -R root:root /opt/eclipse-${ECLIPSE_VERSION}
+    sudo ln -sfn /opt/eclipse-${ECLIPSE_VERSION} /opt/eclipse
+    sudo ln -sfn /opt/eclipse/eclipse /opt/bin/eclipse
+fi
+
 
 #
 # Docker
@@ -373,6 +391,8 @@ go get github.com/nsf/gocode
 go get github.com/rogpeppe/godef
 # versioned go (vgo): prototype
 go get golang.org/x/vgo
+# go server implementing the language server protocol (LSP), needed by emacs
+go get -u github.com/sourcegraph/go-langserver
 
 # dep (Go dependency management)
 GODEP_VERSION=v0.4.1
@@ -393,6 +413,12 @@ sudo npm install -g grunt-cli
 # installs rustup, rustc, cargo and friends under ~/.cargo/bin/
 # be sure to add this directory to your PATH
 curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
+# install rustup toolchains
+rustup install stable nightly
+# needed by emacs
+rustup component add --toolchain=stable rls-preview rustfmt-preview
+rustup component add --toolchain=nightly rls-preview rustfmt-preview
+rustup update
 
 #
 # C++
@@ -458,6 +484,16 @@ KOPS_VERSION=1.10.0
 if ! kops version | grep "Version ${KOPS_VERSION}" > /dev/null 2>&1; then
     sudo curl -fsSL -o /opt/bin/kops https://github.com/kubernetes/kops/releases/download/${KOPS_VERSION}/kops-linux-amd64
     sudo chmod +x /opt/bin/kops
+fi
+
+#
+# Helm (Kubernetes package manager)
+#
+HELM_VERSION=2.11.0
+if ! helm version | grep "${HELM_VERSION}"; then
+    sudo curl -fsSL -o /tmp/helm.tar.gz https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz
+    sudo tar xzvf /tmp/helm.tar.gz -C /tmp
+    sudo mv /tmp/linux-amd64/helm /opt/bin/helm
 fi
 
 #
