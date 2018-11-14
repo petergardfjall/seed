@@ -421,6 +421,11 @@ sudo npm install -g grunt-cli
 # installs rustup, rustc, cargo and friends under ~/.cargo/bin/
 # be sure to add this directory to your PATH
 curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
+# install rustup toolchains
+rustup install stable nightly
+# needed by emacs
+rustup component add --toolchain=stable rls-preview rustfmt-preview
+rustup component add --toolchain=nightly rls-preview rustfmt-preview
 rustup update
 
 #
