@@ -371,8 +371,8 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path
 # install rustup toolchains
 rustup install stable nightly
 # needed by emacs
-rustup component add --toolchain=stable rls-preview rustfmt-preview
-rustup component add --toolchain=nightly rls-preview rustfmt-preview
+rustup component add --toolchain=stable rls-preview rustfmt-preview rust-analysis rust-src
+rustup component add --toolchain=nightly rls-preview rustfmt-preview rust-analysis rust-src
 rustup update
 
 #
@@ -380,6 +380,22 @@ rustup update
 #
 sudo apt-get install -y clang
 sudo apt-get install -y cmake
+# ccls C/C++ server implementing the Language Server Protocol (LSP) (used
+# by emacs). needs to be built from source with right version/tag.
+sudo apt-get install -y zlib1g-dev ncurses-dev
+if ! [ -d /opt/ccls ]; then
+    sudo git clone --recursive https://github.com/MaskRay/ccls /opt/ccls
+    sudo chown -R $(id -u):$(id -g) /opt/ccls
+fi
+pushd /opt/ccls/ > /dev/null
+git fetch
+CCLS_TAG=0.20181111
+if ! /opt/bin/ccls --version 2>&1 > /dev/null; then
+    git checkout -b ${CCLS_TAG} tags/${CCLS_TAG}
+    cmake -H. -BRelease && cmake --build Release
+    sudo ln -sfn /opt/ccls/Release/ccls /opt/bin/ccls
+fi
+popd > /dev/null
 
 #
 # cloud utilities
