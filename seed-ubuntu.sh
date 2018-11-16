@@ -324,14 +324,7 @@ sudo pip3 install ipython pipenv
 sudo mkdir -p /opt
 
 # maven
-MAVEN_VERSION=3.5.4
-if ! mvn --version | grep ${MAVEN_VERSION}; then
-    sudo wget http://apache.mirrors.spacedump.net/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-    sudo tar xzvf /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
-    sudo ln -sfn /opt/apache-maven-${MAVEN_VERSION} /opt/maven
-    sudo ln -sfn /opt/apache-maven-${MAVEN_VERSION}/bin/mvn /opt/bin/mvn
-    sudo rm /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-fi
+sudo apt-get install -y maven
 
 # gradle
 GRADLE_VERSION=4.5.1
