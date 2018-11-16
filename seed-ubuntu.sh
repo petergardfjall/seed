@@ -278,12 +278,7 @@ sudo apt-get install -y httperf
 sudo apt-get install -y virtualbox
 
 # vagrant
-VAGRANT_VERSION=2.0.4
-if ! vagrant --version | grep ${VAGRANT_VERSION}; then
-    wget https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -O /tmp/vagrant.deb
-    sudo dpkg -i /tmp/vagrant.deb
-    sudo rm /tmp/vagrant.deb
-fi
+sudo apt-get install -y vagrant
 
 #
 # install KVM, libvirt, virsh and virt-manager
@@ -356,17 +351,9 @@ fi
 #
 
 # install Docker and some other utilities
-sudo apt-get install -y docker-ce
+sudo apt-get install -y docker-ce docker-compose
 # To be able to use docker without sudo/root privileges, you need to add users to the docker group.
 sudo usermod --append --groups docker $(whoami)
-
-# install docker-compose
-docker_compose_version=1.18.0
-if ! docker-compose version | head -1 | grep ${docker_compose_version}; then
-    sudo curl -fsSL https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose > /dev/null
-    sudo chmod +x /usr/local/bin/docker-compose
-fi
-
 
 # Go
 GO_VERSION=1.11
@@ -530,18 +517,12 @@ sudo pip2 install PyDrive
 #
 # rclone
 #
-RCLONE_VERSION=1.40
-if ! rclone --version | grep ${RCLONE_VERSION}; then
-    sudo wget https://downloads.rclone.org/v1.40/rclone-v1.40-linux-amd64.deb -O /tmp/rclone.deb
-    sudo dpkg -i /tmp/rclone.deb
-fi
+sudo apt-get install -y rclone
 
 #
 # CloudFlare's SSL tools
 #
-sudo curl -fsSL -o /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
-sudo curl -fsSL -o /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-sudo chmod +x /usr/local/bin/cfssl*
+sudo apt-get install -y golang-cfssl
 
 #
 # IntelliJ
