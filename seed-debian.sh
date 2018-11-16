@@ -161,22 +161,12 @@ deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main
 EOF
 
 # Azure cli
+debian_release=stretch
 curl -L https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
 sudo tee /etc/apt/sources.list.d/azure-cli.list > /dev/null <<EOF
-deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main
+deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ ${debian_release} main
 EOF
 
-
-# Ansible
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 93C4A3FD7BB9C367
-sudo tee /etc/apt/sources.list.d/ansible.list > /dev/null <<EOF
-deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main
-EOF
-
-# debian stretch backports (virtualbox)
-sudo tee /etc/apt/sources.list.d/debian-stretch-backports.list > /dev/null <<EOF
-deb http://ftp.debian.org/debian stretch-backports main contrib
-EOF
 
 # load packages from added repos
 sudo apt-get update -y
@@ -270,12 +260,7 @@ sudo apt-get install -y httperf
 sudo apt-get install -y virtualbox
 
 # vagrant
-VAGRANT_VERSION=2.0.4
-if ! vagrant --version | grep ${VAGRANT_VERSION}; then
-    wget https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -O /tmp/vagrant.deb
-    sudo dpkg -i /tmp/vagrant.deb
-    sudo rm /tmp/vagrant.deb
-fi
+sudo apt-get install -y vagrant
 
 #
 # install KVM, libvirt, virsh and virt-manager
@@ -293,14 +278,8 @@ fi
 
 
 # OpenJDK java
-# NOTE: temporary workaround until the openjdk-11-jdk package is upgraded
-#       from openjdk 10 to 11
-wget https://download.java.net/java/GA/jdk11/13/GPL/openjdk-11.0.1_linux-x64_bin.tar.gz -O /tmp/openjdk-11.0.1_linux-x64_bin.tar.gz
-sudo rm -rf /opt/jdk-11.0.1
-sudo tar xzvf /tmp/openjdk-11.0.1_linux-x64_bin.tar.gz -C /opt/
-JAVA_HOME=/opt/jdk-11.0.1
-# sudo apt-get install -y openjdk-11-jdk openjdk-11-source
-# JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+JAVA_HOME=/usr/lib/jvm/default-java
+sudo apt-get install -y openjdk-11-jdk openjdk-11-source
 sudo ln -sfn ${JAVA_HOME} /opt/java
 sudo ln -sfn ${JAVA_HOME}/bin/java /opt/bin/java
 
@@ -316,26 +295,10 @@ sudo pip3 install ipython pipenv
 sudo mkdir -p /opt
 
 # maven
-MAVEN_VERSION=3.5.4
-if ! mvn --version | grep ${MAVEN_VERSION}; then
-    sudo wget http://apache.mirrors.spacedump.net/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -O /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-    sudo tar xzvf /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C /opt
-    sudo ln -sfn /opt/apache-maven-${MAVEN_VERSION} /opt/maven
-    sudo ln -sfn /opt/apache-maven-${MAVEN_VERSION}/bin/mvn /opt/bin/mvn
-    sudo rm /opt/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-fi
+sudo apt-get install -y maven
 
 # gradle
-GRADLE_VERSION=4.5.1
-if ! gradle -v | grep ${GRADLE_VERSION}; then
-    wget https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip -O /tmp/gradle-${GRADLE_VERSION}-bin.zip
-    pushd /tmp/ > /dev/null
-    unzip -o gradle-${GRADLE_VERSION}-bin.zip
-    sudo rm -rf /opt/gradle-${GRADLE_VERSION}
-    sudo mv gradle-${GRADLE_VERSION} /opt/
-    sudo ln -sfn /opt/gradle-${GRADLE_VERSION}/bin/gradle /opt/bin/gradle
-    popd > /dev/null
-fi
+sudo apt-get install -y gradle
 
 # eclipse
 ECLIPSE_VERSION="2018-09"
@@ -355,17 +318,9 @@ fi
 #
 
 # install Docker and some other utilities
-sudo apt-get install -y docker-ce
+sudo apt-get install -y docker-ce docker-compose
 # To be able to use docker without sudo/root privileges, you need to add users to the docker group.
 sudo usermod --append --groups docker $(whoami)
-
-# install docker-compose
-docker_compose_version=1.18.0
-if ! docker-compose version | head -1 | grep ${docker_compose_version}; then
-    sudo curl -fsSL https://github.com/docker/compose/releases/download/${docker_compose_version}/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose > /dev/null
-    sudo chmod +x /usr/local/bin/docker-compose
-fi
-
 
 # Go
 GO_VERSION=1.11
@@ -505,18 +460,12 @@ sudo pip2 install PyDrive
 #
 # rclone
 #
-RCLONE_VERSION=1.40
-if ! rclone --version | grep ${RCLONE_VERSION}; then
-    sudo wget https://downloads.rclone.org/v1.40/rclone-v1.40-linux-amd64.deb -O /tmp/rclone.deb
-    sudo dpkg -i /tmp/rclone.deb
-fi
+sudo apt-get install -y rclone
 
 #
 # CloudFlare's SSL tools
 #
-sudo curl -fsSL -o /usr/local/bin/cfssl https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
-sudo curl -fsSL -o /usr/local/bin/cfssljson https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-sudo chmod +x /usr/local/bin/cfssl*
+sudo apt-get install -y golang-cfssl
 
 #
 # IntelliJ
