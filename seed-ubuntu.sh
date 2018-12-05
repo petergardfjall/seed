@@ -449,8 +449,10 @@ sudo apt-get install -y \
      python-keystoneclient \
      python-openstackclient
 
-# Amazon's az command-line client
+# Amazon's aws command-line client
 sudo apt-get install -y awscli
+# aws-iam-authenticator: needed to authenticate against EKS clusters
+go get -u -v github.com/kubernetes-sigs/aws-iam-authenticator/cmd/aws-iam-authenticator
 
 # Azure's az command-line client
 sudo apt-get install -y azure-cli
