@@ -502,12 +502,7 @@ fi
 #
 # Helm (Kubernetes package manager)
 #
-HELM_VERSION=2.11.0
-if ! helm version | grep "${HELM_VERSION}"; then
-    sudo curl -fsSL -o /tmp/helm.tar.gz https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-amd64.tar.gz
-    sudo tar xzvf /tmp/helm.tar.gz -C /tmp
-    sudo mv /tmp/linux-amd64/helm /opt/bin/helm
-fi
+sudo snap install helm --classic
 
 #
 # backups to S3 and/or google drive
