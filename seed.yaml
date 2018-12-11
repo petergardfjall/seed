@@ -1,0 +1,17 @@
+- hosts: all
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  roles:
+    - base
+    - firewall
+    - desktop
+    - dev
+    - backup
+
+- hosts: laptop
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  roles:
+  - laptop

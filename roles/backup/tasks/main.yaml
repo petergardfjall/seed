@@ -1,0 +1,20 @@
+- name: "duplicity: install"
+  vars:
+    packages:
+      - duplicity
+      - python-boto
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+
+- name: "duplicity: Google Drive support"
+  pip:
+    name: PyDrive
+    executable: pip2
+
+- name: "rclone: install"
+  apt:
+    name: "rclone"
+    state: latest
+    install_recommends: yes

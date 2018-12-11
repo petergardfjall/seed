@@ -1,33 +1,24 @@
-# seed
-Seed script for installing an XFCE desktop environment and a baseline of
-software and [dotfiles](https://github.com/petergardfjall/dotfiles).
+## seed
+Ansible seed playbook for installing an XFCE desktop environment and a baseline
+of software and [dotfiles](https://github.com/petergardfjall/dotfiles).
 
-The scripts come in two editions depending on if a Debian or Ubuntu system is
-targeted.
+The script is intended to be run on an Ubuntu/Xubuntu system (tested on bionic)
+and has been tried out on Ansible 2.5 (version from the official repo in Ubuntu
+bionic at the time of writing).
 
+1. Install `git` and clone this repo:
 
-## Install
+        sudo apt-get update
+        sudo apt-get install -y git
 
-First, make sure that git is installed
+        git clone https://github.com/petergardfjall/seed
+        cd seed/
 
-    sudo apt update && sudo apt install git
+2. Install `ansible`:
 
-Then clone this repository
+        sudo apt-get install -y ansible
 
-    git clone https://github.com/petergardfjall/seed
+3. Run either of:
 
-and run [seed-ubuntu.sh](seed-ubuntu.sh) (on an Ubuntu-based system) or
-[seed-debian.sh](seed-debian.sh) (on a Debian-based system):
-
-	./seed/seed-ubuntu.sh
-
-For laptops, run with `--laptop-mode=true`.
-
-To only install a desktop environment and a few basic utility programs, specify
-`--minimal=true`. *Note: you can always start with `--minimal=true` and later
-re-run the script without the flag.*
-
-## Idempotency
-The script are written to be idempotent. Hence after an update, such as a new
-version of a particular software has been introduced, the scripts should be
-possible to re-run to have new software installed while keeping the old as-is.
+        ansible-playbook -i laptop.inventory --ask-become-pass seed.yaml
+        ansible-playbook -i desktop.inventory --ask-become-pass seed.yaml

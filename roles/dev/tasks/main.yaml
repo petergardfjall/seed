@@ -1,0 +1,603 @@
+- name: "apt key: docker"
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    state: present
+
+- name: "apt repo: docker"
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_release }} stable"
+    state: present
+
+- name: "apt: update cache"
+  apt:
+    update_cache: true
+  changed_when: False  # don't appear changed
+
+- name: "docker: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - docker-ce
+    - docker-compose
+
+- name: "docker: adding user to docker group"
+  user:
+    name: "{{ lookup('env', 'USER') }}"
+    groups: docker
+    append: yes
+
+- name: "apt key: vscode"
+  apt_key:
+    url: "https://packages.microsoft.com/keys/microsoft.asc"
+    state: present
+
+- name: "apt repo: vscode"
+  apt_repository:
+    repo: "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main"
+    state: present
+
+- name: "apt key: az"
+  apt_key:
+    url: "https://packages.microsoft.com/keys/microsoft.asc"
+    state: present
+
+- name: "apt repo: az"
+  apt_repository:
+    repo: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ubuntu_release }} main"
+    state: present
+
+- name: "apt key: iovisor"
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: 4052245BD4284CDD
+
+- name: "apt repo: iovisor"
+  apt_repository:
+    filename: "iovisor"
+    repo: "deb https://repo.iovisor.org/apt/{{ ubuntu_release }} {{ ubuntu_release }} main"
+    state: present
+
+- name: "apt: update cache"
+  apt:
+    update_cache: true
+  changed_when: False  # don't appear changed
+
+- name: "vscode: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - code
+
+- name: "vscode: install extensions"
+  become: no   # not as root
+  shell: "~/dotfiles/vscode/install-extensions.sh"
+  changed_when: False  # don't appear changed
+
+
+- name: "devtools: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - visualvm
+    - httperf
+    - virtualbox
+    - vagrant
+
+
+- name: "libvirt: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - qemu-kvm
+    - libvirt-bin
+    - virtinst
+    - bridge-utils
+    - cpu-checker
+    - virt-manager
+
+- name: "vagrant-libvirt: install dependencies {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - ruby-libvirt
+    - qemu
+    - ebtables
+    - dnsmasq
+    - libxslt-dev
+    - libxml2-dev
+    - libvirt-dev
+    - zlib1g-dev
+    - ruby-dev
+
+- name: "libvirt: make sure regular users can create vms"
+  replace:
+    path: /etc/libvirt/libvirtd.conf
+    regexp:  'unix_sock_rw_perms = "0770"'
+    replace: 'unix_sock_rw_perms = "0777"'
+    backup: yes
+  notify: "libvirtd: restart"
+
+- name: "vagrant libvirt plugin: check if installed"
+  become: no   # not as root
+  shell: vagrant plugin list | grep vagrant-libvirt
+  ignore_errors: true
+  changed_when: False  # read-only: won't change machine state
+  register: vagrant_libvirt_check
+
+- name: "vagrant libvirt plugin: install"
+  become: no   # not as root
+  shell: vagrant plugin install vagrant-libvirt
+  when: vagrant_libvirt_check.rc != 0
+
+
+- name: "openjdk-11: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - openjdk-11-jdk
+    - openjdk-11-source
+
+- name: "openjdk-11: /opt/java symlink"
+  file:
+    src: /usr/lib/jvm/default-java
+    dest: /opt/java
+    state: link
+
+- name: "openjdk-11: /opt/bin/java symlink"
+  file:
+    src: /usr/lib/jvm/default-java/bin/java
+    dest: /opt/bin/java
+    state: link
+
+- name: "maven: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - maven
+
+- name: "eclipse: check if installed"
+  shell: "snap info eclipse"
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: check
+
+- name: "eclipse: install"
+  shell: snap install eclipse --classic
+  when: check.failed
+
+- name: "python: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - build-essential
+    - libssl-dev
+    - libffi-dev
+    - python
+    - python-dev
+    - python-pip
+    - python-virtualenv
+    - python3
+    - python3-dev
+    - python3-pip
+    - python3-venv
+
+- name: "python2: install ipython"
+  pip:
+    name: ipython
+    executable: pip2
+
+- name: "python2: install pipenv"
+  pip:
+    name: pipenv
+    executable: pip2
+
+- name: "python3: install ipython"
+  pip:
+    name: ipython
+    executable: pip3
+
+- name: "python3: install pipenv"
+  pip:
+    name: pipenv
+    executable: pip3
+
+- name: "go: check current version"
+  command: /opt/bin/go version
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: go_v
+
+- name: "go: create {{ go_install_dir }}"
+  file:
+    path: "{{ go_install_dir }}"
+    state: directory
+
+- name: "go: download"
+  unarchive:
+    src: "https://dl.google.com/go/go{{ go_version }}.linux-amd64.tar.gz"
+    dest: "{{ go_install_dir }}/"
+    extra_opts: ['--strip-components=1']
+    remote_src: yes
+  when: (go_v is failed) or (not go_version in go_v.stdout)
+
+- name: "go: /opt/go -> {{ go_install_dir }} symlink"
+  file:
+    src: "{{ go_install_dir }}"
+    dest: "/opt/go"
+    force: yes
+    state: link
+
+- name: "go: /opt/bin/go symlink"
+  file:
+    src: "{{ go_install_dir }}/bin/go"
+    dest: "/opt/bin/go"
+    force: yes
+    state: link
+  when: (go_v is failed) or (not go_version in go_v.stdout)
+
+- name: "go: create {{ go_path_dir }}"
+  vars:
+    go_path_dir: "{{ go_path | expanduser }}"
+  become: no   # not as root
+  file:
+    path: "{{ go_path_dir }}"
+    state: directory
+
+- name: "go: install packages"
+  become: no   # not as root
+  environment:
+    GOPATH: "{{ go_path | expanduser }}"
+  command: "/opt/bin/go get {{ item }}"
+  changed_when: False   # don't view as changes in end result
+  loop:
+    # godoc, guru, gorename, etc
+    - "-u golang.org/x/tools/cmd/..."
+    # Auto-completion daemon for go, which _can_ be used by emacs go-mode
+    # (although the lsp-mode should make this redundant). This particular
+    # gocode fork supports Go modules. May want to exchange for
+    # github.com/nsf/gocode or github.com/mdempsky/gocode when modules are
+    # supported.
+    - "-u github.com/stamblerre/gocode"
+    # locates symbol definitions in go code (needed by emacs go-mode)
+    - "-u github.com/rogpeppe/godef"
+
+# go LSP (Language Server Protocol) server with module support, needed
+# by emacs
+# NOTE: only use until official golang.org/x/tools/cmd/golsp is ready
+- name: "go: git clone bingo lsp server"
+  git:
+    repo: 'https://github.com/saibing/bingo'
+    recursive: yes
+    dest: "/opt/bingo"
+    clone: yes
+    update: yes
+  tags: bingo
+
+- name: "go: build bingo lsp server"
+  shell: "/opt/bin/go build"
+  args:
+    chdir: "/opt/bingo"
+    creates: "/opt/bingo/bingo"
+  tags: bingo
+
+- name: "go: /opt/bin/bingo symlink"
+  file:
+    src: "/opt/bingo/bingo"
+    dest: "/opt/bin/bingo"
+    force: yes
+    state: link
+  tags: bingo
+
+- name: "dep: check current version"
+  command: /opt/bin/dep version
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: dep_v
+
+- name: "dep: download"
+  get_url:
+    url:  "https://github.com/golang/dep/releases/download/v{{ go_dep_version }}/dep-linux-amd64"
+    dest: /opt/bin/dep
+    mode: 0755
+    force: yes
+  when: (dep_v is failed) or (not go_dep_version in dep_v.stdout)
+
+- name: "nodejs: apt key"
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    state: present
+
+- name: "nodejs: apt repo"
+  apt_repository:
+    filename: "nodejs"
+    repo: "deb https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
+    state: present
+
+- name: "nodejs: apt repo src"
+  apt_repository:
+    filename: "nodejs"
+    repo: "deb-src https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
+    state: present
+
+- name: "apt: update cache"
+  apt:
+    update_cache: true
+  changed_when: False  # don't appear changed
+
+- name: "nodejs: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+    - nodejs
+
+- name: "nodejs: check if grunt-cli is installed"
+  shell: "npm list -g grunt-cli"
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: check
+
+- name: "nodejs: install grunt-cli"
+  shell: "npm install -g grunt-cli"
+  when: check.failed
+
+- name: "rust: check if rustup installed"
+  become: no
+  shell: "~/.cargo/bin/rustup --version"
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: check
+
+# installs rustup, rustc, cargo and friends under ~/.cargo/bin/.
+# be sure to add this directory to your PATH
+- name: "rust: install rustup under ~/.cargo/bin/"
+  become: no
+  shell: "curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path"
+  when: check.failed
+
+- name: "rust: install rustup toolchains"
+  become: no
+  shell: "{{ item }}"
+  changed_when: False  # don't display as "changed"
+  ignore_errors: yes   # nightly sometimes fails when components are missing
+  loop:
+    - "~/.cargo/bin/rustup update"
+    # install toolchain
+    - "~/.cargo/bin/rustup install stable"
+    # install toolchain
+    - "~/.cargo/bin/rustup install nightly"
+    - "~/.cargo/bin/rustup component add --toolchain=stable  rust-src rust-analysis rls rustfmt clippy"
+    - "~/.cargo/bin/rustup component add --toolchain=nightly rust-src rust-analysis rls rustfmt clippy"
+
+# c++
+- name: "c++: install {{ packages }}"
+  vars:
+    packages:
+    - clang
+    - cmake
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+
+# ccls C/C++ server implementing the Language Server Protocol (LSP) (used
+# by emacs). needs to be built from source with right version/tag.
+- name: "ccls: install dependencies: {{ packages }}"
+  vars:
+    packages:
+    - zlib1g-dev
+    - ncurses-dev
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+
+- name: "ccls: git clone"
+  git:
+    repo: 'https://github.com/MaskRay/ccls'
+    recursive: yes
+    dest: "/opt/ccls"
+    clone: yes
+    update: no
+
+- name: "ccls: check if installed"
+  # checks that the ccls binary exists and that it has been built from
+  # the expected release tag in the repository
+  shell: |
+    /opt/bin/ccls --version && \
+    cd /opt/ccls && \
+    git_tag=$(git branch | grep \* | cut -d ' ' -f2)
+    [ "${git_tag}" = "{{ ccls_version }}" ]
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: check
+
+- name: "ccls: build"
+  shell: |
+    cd /opt/ccls/
+    git fetch
+    CCLS_TAG={{ ccls_version }}
+    git checkout -b ${CCLS_TAG} tags/${CCLS_TAG}
+    cmake -H. -BRelease && cmake --build Release
+  when: check.failed
+
+- name: "ccls: /opt/bin/ccls symlink"
+  file:
+    src: "/opt/ccls/Release/ccls"
+    dest: "/opt/bin/ccls"
+    force: yes
+    state: link
+
+- name: "get kernel version"
+  shell: uname -r
+  register: uname_r
+  changed_when: False  # read-only: won't change machine state
+
+# installs tools under /usr/share/bcc/tools
+- name: "bcc: install {{ packages }}"
+  vars:
+    packages:
+    - "bcc-tools"
+    - "libbcc-examples"
+    - "linux-headers-{{ uname_r.stdout }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+
+
+- name: "openstack: install {{ packages }}"
+  vars:
+    packages:
+    - "python-novaclient"
+    - "python-neutronclient"
+    - "python-glanceclient"
+    - "python-keystoneclient"
+    - "python-openstackclient"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+
+- name: "awscli: install"
+  vars:
+    packages:
+    - "awscli"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+
+- name: "az: install"
+  vars:
+    packages:
+    - "azure-cli"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+
+- name: "gcloud: check if installed"
+  shell: "snap info google-cloud-sdk"
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: check
+
+- name: "gcloud: install"
+  shell: snap install google-cloud-sdk --classic
+  when: check.failed
+
+- name: "terraform: check current version"
+  shell: /opt/bin/terraform version | head -1
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: tf_v
+
+- name: "terraform: create {{ tf_install_dir }}"
+  file:
+    path: "{{ tf_install_dir }}"
+    state: directory
+
+- name: "terraform: download"
+  unarchive:
+    src: "https://releases.hashicorp.com/terraform/{{ tf_version }}/terraform_{{ tf_version }}_linux_amd64.zip"
+    dest: "{{ tf_install_dir }}/"
+    remote_src: yes
+  when: (tf_v is failed) or (not tf_version in tf_v.stdout)
+
+- name: "terraform: /opt/bin/terraform symlink"
+  file:
+    src: "{{ tf_install_dir }}/terraform"
+    dest: "/opt/bin/terraform"
+    force: yes
+    state: link
+  when: (tf_v is failed) or (not tf_version in tf_v.stdout)
+
+
+- name: "kubectl: check current version"
+  shell: "/opt/bin/kubectl version --client | grep v{{ kubectl_version }}"
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: kubectl_v
+
+- name: "kubectl: install"
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl
+    dest: /opt/bin/kubectl
+    mode: 0755
+    force: yes
+  when: (kubectl_v is failed) or (kubectl_version not in kubectl_v.stdout)
+
+- name: "create ~/.kube directory"
+  become: no
+  file:
+    path: "{{ '~/.kube' | expanduser }}"
+    state: directory
+    mode: 0755
+
+- name: "helm: check current version"
+  shell: /opt/bin/helm version | head -1
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: helm_v
+
+- name: "helm: create {{ helm_install_dir }}"
+  file:
+    path: "{{ helm_install_dir }}"
+    state: directory
+
+- name: "helm: install"
+  unarchive:
+    src: "https://storage.googleapis.com/kubernetes-helm/helm-v{{ helm_version }}-linux-amd64.tar.gz"
+    dest: "{{ helm_install_dir }}/"
+    extra_opts: ['--strip-components=1']
+    remote_src: yes
+  when: (helm_v is failed) or (not helm_version in helm_v.stdout)
+
+- name: "helm: /opt/bin/helm symlink"
+  file:
+    src: "{{ helm_install_dir }}/helm"
+    dest: "/opt/bin/helm"
+    force: yes
+    state: link
+
+- name: "cfssl: install"
+  apt:
+    name: golang-cfssl
+    state: latest
+    install_recommends: yes
+
+- name: "intellij: check if installed"
+  shell: "snap info intellij-idea-community"
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: check
+
+- name: "intellij: install"
+  shell: snap install intellij-idea-community --classic
+  when: check.failed
