@@ -372,9 +372,13 @@ export GOPATH=~/dev/go
 mkdir -p ${GOPATH}
 # additional go tools (godoc, guru, gorename, etc)
 export PATH=${PATH}:${GOROOT}/bin
-go get golang.org/x/tools/cmd/...
-# auto-completion daemon for go (needed by emacs go-mode)
-go get github.com/nsf/gocode
+go get -u golang.org/x/tools/cmd/...
+# Auto-completion daemon for go, which _can_ be used by emacs go-mode
+# (although the lsp-mode should make this redundant). This particular
+# gocode fork supports Go modules. May want to exchange for
+# github.com/nsf/gocode or github.com/mdempsky/gocode when modules are
+# supported.
+go get -u github.com/stamblerre/gocode
 # locates symbol definitions in go code (needed by emacs go-mode)
 go get github.com/rogpeppe/godef
 # versioned go (vgo): prototype
