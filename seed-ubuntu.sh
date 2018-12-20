@@ -380,11 +380,11 @@ go get -u golang.org/x/tools/cmd/...
 # supported.
 go get -u github.com/stamblerre/gocode
 # locates symbol definitions in go code (needed by emacs go-mode)
-go get github.com/rogpeppe/godef
-# versioned go (vgo): prototype
-go get golang.org/x/vgo
-# go server implementing the language server protocol (LSP), needed by emacs
-go get -u github.com/sourcegraph/go-langserver
+go get -u github.com/rogpeppe/godef
+# go LSP (Language Server Protocol) server with module support, needed
+# by emacs. NOTE: use until official golang.org/x/tools/cmd/golsp is ready
+go get -u github.com/saibing/bingo
+
 
 # dep (Go dependency management)
 GODEP_VERSION=v0.4.1
