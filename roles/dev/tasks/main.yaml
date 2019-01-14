@@ -301,7 +301,6 @@
   shell: "/opt/bin/go build"
   args:
     chdir: "/opt/bingo"
-    creates: "/opt/bingo/bingo"
   tags: bingo
 
 - name: "go: /opt/bin/bingo symlink"
