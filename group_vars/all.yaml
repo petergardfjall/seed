@@ -14,5 +14,5 @@ tf_version: "0.11.10"
 tf_install_dir: "/opt/tf-{{ tf_version }}"
 
 kubectl_version: "1.13.0"
-helm_version: "2.11.0"
+helm_version: "2.12.1"
 helm_install_dir: "/opt/helm-{{ helm_version }}"

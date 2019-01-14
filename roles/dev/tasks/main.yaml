@@ -564,11 +564,13 @@
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: helm_v
+  tags: helm
 
 - name: "helm: create {{ helm_install_dir }}"
   file:
     path: "{{ helm_install_dir }}"
     state: directory
+  tags: helm
 
 - name: "helm: install"
   unarchive:
@@ -577,6 +579,7 @@
     extra_opts: ['--strip-components=1']
     remote_src: yes
   when: (helm_v is failed) or (not helm_version in helm_v.stdout)
+  tags: helm
 
 - name: "helm: /opt/bin/helm symlink"
   file:
@@ -584,6 +587,7 @@
     dest: "/opt/bin/helm"
     force: yes
     state: link
+  tags: helm
 
 - name: "cfssl: install"
   apt:
