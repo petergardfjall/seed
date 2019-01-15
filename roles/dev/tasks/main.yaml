@@ -177,14 +177,16 @@
     - maven
 
 - name: "eclipse: check if installed"
-  shell: "snap info eclipse"
+  shell: "snap list eclipse"
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: check
+  tags: eclipse
 
 - name: "eclipse: install"
   shell: snap install eclipse --classic
   when: check.failed
+  tags: eclipse
 
 - name: "python: install"
   apt:
@@ -502,14 +504,16 @@
     install_recommends: yes
 
 - name: "gcloud: check if installed"
-  shell: "snap info google-cloud-sdk"
+  shell: "snap list google-cloud-sdk"
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: check
+  tags: gcloud
 
 - name: "gcloud: install"
   shell: snap install google-cloud-sdk --classic
   when: check.failed
+  tags: gcloud
 
 - name: "terraform: check current version"
   shell: /opt/bin/terraform version | head -1
@@ -596,7 +600,7 @@
     install_recommends: yes
 
 - name: "intellij: check if installed"
-  shell: "snap info intellij-idea-community"
+  shell: "snap list intellij-idea-community"
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: check
