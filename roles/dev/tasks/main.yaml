@@ -401,10 +401,15 @@
     packages:
     - clang
     - cmake
+    # man pages for c++ standard lib: man std::list, man std::unique_ptr
+    - libstdc++-8-doc
+    # /usr/share/cppreference/doc/html/en/index.html
+    - cppreference-doc-en-html
   apt:
     name: "{{ packages }}"
     state: latest
     install_recommends: yes
+  tags: c++
 
 # ccls C/C++ server implementing the Language Server Protocol (LSP) (used
 # by emacs). needs to be built from source with right version/tag.
@@ -417,6 +422,7 @@
     name: "{{ packages }}"
     state: latest
     install_recommends: yes
+  tags: c++
 
 - name: "ccls: git clone"
   git:
@@ -425,6 +431,7 @@
     dest: "/opt/ccls"
     clone: yes
     update: no
+  tags: c++
 
 - name: "ccls: check if installed"
   # checks that the ccls binary exists and that it has been built from
@@ -437,6 +444,7 @@
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: check
+  tags: c++
 
 - name: "ccls: build"
   shell: |
@@ -446,6 +454,7 @@
     git checkout -b ${CCLS_TAG} tags/${CCLS_TAG}
     cmake -H. -BRelease && cmake --build Release
   when: check.failed
+  tags: c++
 
 - name: "ccls: /opt/bin/ccls symlink"
   file:
@@ -453,6 +462,7 @@
     dest: "/opt/bin/ccls"
     force: yes
     state: link
+  tags: c++
 
 - name: "get kernel version"
   shell: uname -r
