@@ -232,11 +232,13 @@
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: go_v
+  tags: go
 
 - name: "go: create {{ go_install_dir }}"
   file:
     path: "{{ go_install_dir }}"
     state: directory
+  tags: go
 
 - name: "go: download"
   unarchive:
@@ -245,6 +247,7 @@
     extra_opts: ['--strip-components=1']
     remote_src: yes
   when: (go_v is failed) or (not go_version in go_v.stdout)
+  tags: go
 
 - name: "go: /opt/go -> {{ go_install_dir }} symlink"
   file:
@@ -252,6 +255,7 @@
     dest: "/opt/go"
     force: yes
     state: link
+  tags: go
 
 - name: "go: /opt/bin/go symlink"
   file:
@@ -260,6 +264,7 @@
     force: yes
     state: link
   when: (go_v is failed) or (not go_version in go_v.stdout)
+  tags: go
 
 - name: "go: create {{ go_path_dir }}"
   vars:
@@ -268,6 +273,7 @@
   file:
     path: "{{ go_path_dir }}"
     state: directory
+  tags: ['go']
 
 - name: "go: install packages"
   become: no   # not as root
@@ -286,6 +292,9 @@
     - "-u github.com/stamblerre/gocode"
     # locates symbol definitions in go code (needed by emacs go-mode)
     - "-u github.com/rogpeppe/godef"
+    # linter for Go
+    - "-u golang.org/x/lint/golint"
+  tags: go
 
 # go LSP (Language Server Protocol) server with module support, needed
 # by emacs
@@ -297,13 +306,13 @@
     dest: "/opt/bingo"
     clone: yes
     update: yes
-  tags: bingo
+  tags: ['bingo', 'go']
 
 - name: "go: build bingo lsp server"
   shell: "/opt/bin/go build"
   args:
     chdir: "/opt/bingo"
-  tags: bingo
+  tags: ['bingo', 'go']
 
 - name: "go: /opt/bin/bingo symlink"
   file:
@@ -311,13 +320,14 @@
     dest: "/opt/bin/bingo"
     force: yes
     state: link
-  tags: bingo
+  tags: ['bingo', 'go']
 
 - name: "dep: check current version"
   command: /opt/bin/dep version
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: dep_v
+  tags: go
 
 - name: "dep: download"
   get_url:
@@ -326,6 +336,7 @@
     mode: 0755
     force: yes
   when: (dep_v is failed) or (not go_dep_version in dep_v.stdout)
+  tags: go
 
 - name: "nodejs: apt key"
   apt_key:
