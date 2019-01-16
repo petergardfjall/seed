@@ -411,6 +411,7 @@
   vars:
     packages:
     - clang
+    - clang-format
     - cmake
     # man pages for c++ standard lib: man std::list, man std::unique_ptr
     - libstdc++-8-doc
