@@ -18,7 +18,7 @@ bionic at the time of writing).
 
         sudo apt-get install -y ansible
 
-3. Run either of:
+3. Run either of (you may append additional ansible command-line flags):
 
-        ansible-playbook -i laptop.inventory --ask-become-pass seed.yaml
-        ansible-playbook -i desktop.inventory --ask-become-pass seed.yaml
+        ./seed.sh --desktop
+        ./seed.sh --laptop
