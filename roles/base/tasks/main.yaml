@@ -106,9 +106,15 @@
 
 - name: "apt repo: emacs26"
   apt_repository:
+    filename: emacs26
     repo: "deb http://ppa.launchpad.net/kelleyk/emacs/ubuntu {{ ubuntu_release }} main"
     state: present
   tags: emacs
+
+- name: "apt: update cache"
+  apt:
+    update_cache: true
+  changed_when: False  # don't appear changed
 
 - name: "install: {{ packages }}"
   apt:
