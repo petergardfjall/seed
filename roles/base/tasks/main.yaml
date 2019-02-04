@@ -93,7 +93,6 @@
     # code/editing
     - silversearcher-ag
     - global
-    - emacs25
     - markdown
 
 - name: "apt key: emacs26"
