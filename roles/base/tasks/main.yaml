@@ -123,6 +123,8 @@
   vars:
     packages:
     - emacs26
+    # used by markdown-mode
+    - libtext-multimarkdown-perl
   tags: emacs
 
 - name: "truecolor terminal: create ~/xterm-24bit.terminfo file"
