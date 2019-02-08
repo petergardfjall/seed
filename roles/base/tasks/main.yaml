@@ -123,8 +123,12 @@
   vars:
     packages:
     - emacs26
-    # used by markdown-mode
-    - libtext-multimarkdown-perl
+  tags: emacs
+
+# pandoc is used by emacs markdown-preview-mode
+- name: "install: pandoc"
+  apt:
+    deb: "https://github.com/jgm/pandoc/releases/download/2.6/pandoc-2.6-1-amd64.deb"
   tags: emacs
 
 - name: "truecolor terminal: create ~/xterm-24bit.terminfo file"
