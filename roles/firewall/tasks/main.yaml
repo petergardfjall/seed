@@ -1,9 +1,11 @@
 - name: "ufw: deny all and enable"
   ufw:
     state: enabled
+    direction: incoming
     policy: deny
 
 - name: "ufw: allow ssh access (port 22)"
   ufw:
     rule: allow
+    direction: in
     port: 22
