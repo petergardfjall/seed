@@ -94,6 +94,8 @@
     - silversearcher-ag
     - global
     - markdown
+    # gpg password entry in text-mode
+    - pinentry-tty
 
 - name: "apt key: emacs26"
   apt_key:
