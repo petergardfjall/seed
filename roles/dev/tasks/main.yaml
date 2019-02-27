@@ -5,6 +5,7 @@
 
 - name: "apt repo: docker"
   apt_repository:
+    filename: "docker"
     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_release }} stable"
     state: present
 
@@ -36,6 +37,7 @@
 
 - name: "apt repo: vscode"
   apt_repository:
+    filename: "vscode"
     repo: "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main"
     state: present
 
@@ -46,6 +48,7 @@
 
 - name: "apt repo: az"
   apt_repository:
+    filename: "az"
     repo: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ubuntu_release }} main"
     state: present
 
