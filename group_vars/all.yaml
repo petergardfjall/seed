@@ -7,7 +7,7 @@ go_dep_version: "0.5.0"
 
 nodejs_repo_version: "node_8.x"
 
-ccls_version: "0.20181225.8"
+ccls_version: "0.20190301"
 
 # terraform
 tf_version: "0.11.10"
