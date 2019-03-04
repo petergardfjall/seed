@@ -96,6 +96,7 @@
     - markdown
     # gpg password entry in text-mode
     - pinentry-tty
+    - pinentry-curses
 
 - name: "apt key: emacs26"
   apt_key:
