@@ -9,6 +9,8 @@ nodejs_repo_version: "node_8.x"
 
 ccls_version: "0.20190301"
 
+python_language_server_version: "2019.1"
+
 # terraform
 tf_version: "0.11.10"
 tf_install_dir: "/opt/tf-{{ tf_version }}"

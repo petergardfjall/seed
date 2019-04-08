@@ -159,6 +159,9 @@
   shell: vagrant plugin install vagrant-libvirt
   when: vagrant_libvirt_check.rc != 0
 
+#
+# Java
+#
 
 - name: "openjdk-11: install"
   apt:
@@ -203,6 +206,11 @@
   when: check.failed
   tags: eclipse
 
+
+#
+# Python
+#
+
 - name: "python: install"
   apt:
     name: "{{ packages }}"
@@ -221,26 +229,29 @@
     - python3-dev
     - python3-pip
     - python3-venv
+  tags: python
 
-- name: "python2: install ipython"
+- name: "python2: install pip modules"
+  become: no   # not as root
   pip:
-    name: ipython
     executable: pip2
+    name:
+    - pipenv
+    - ipython
+  tags: python
 
-- name: "python2: install pipenv"
+- name: "python3: install pip modules"
+  become: no   # not as root
   pip:
-    name: pipenv
-    executable: pip2
-
-- name: "python3: install ipython"
-  pip:
-    name: ipython
     executable: pip3
+    name:
+    - ipython
+    - pipenv
+  tags: python
 
-- name: "python3: install pipenv"
-  pip:
-    name: pipenv
-    executable: pip3
+#
+# Go
+#
 
 - name: "go: check current version"
   command: /opt/bin/go version
@@ -364,6 +375,10 @@
   when: (dep_v is failed) or (not go_dep_version in dep_v.stdout)
   tags: go
 
+#
+# NodeJS
+#
+
 - name: "nodejs: apt key"
   apt_key:
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
@@ -404,6 +419,10 @@
   shell: "npm install -g grunt-cli"
   when: check.failed
 
+#
+# Rust
+#
+
 - name: "rust: check if rustup installed"
   become: no
   shell: "~/.cargo/bin/rustup --version"
@@ -432,7 +451,10 @@
     - "~/.cargo/bin/rustup component add --toolchain=stable  rust-src rust-analysis rls rustfmt clippy"
     - "~/.cargo/bin/rustup component add --toolchain=nightly rust-src rust-analysis rls rustfmt clippy"
 
-# c++
+#
+# C++
+#
+
 - name: "c++: install {{ packages }}"
   vars:
     packages:
@@ -501,6 +523,79 @@
     force: yes
     state: link
   tags: c++
+
+#
+# dotnet core (mainly for installing MS's python-language-server)
+#
+- name: "get ubuntu release version"
+  shell: lsb_release -rs
+  register: lsbrelease_rs
+  changed_when: False  # read-only: won't change machine state
+  tags: [ "dotnet", "python" ]
+
+- name: "dotnet: register MS key, product repo, install dependencies"
+  apt:
+    deb: https://packages.microsoft.com/config/ubuntu/{{ lsbrelease_rs.stdout }}/packages-microsoft-prod.deb
+  tags: [ "dotnet", "python" ]
+
+- name: "apt: update cache"
+  apt:
+    update_cache: true
+  changed_when: False  # don't appear changed
+  tags: [ "dotnet", "python" ]
+
+- name: "dotnet: install {{ packages }}"
+  vars:
+    packages:
+    - "dotnet-sdk-2.2"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  tags: [ "dotnet", "python" ]
+
+- name: "ms-python-language-server: git clone"
+  git:
+    repo: 'https://github.com/Microsoft/python-language-server.git'
+    recursive: yes
+    dest: "/opt/python-language-server"
+    clone: yes
+    update: no
+  tags: [ "dotnet", "python" ]
+
+- name: "ms-python-language-server: check if installed"
+  # checks that the language server binary exists
+  stat:
+    path: /opt/bin/ms-python-language-server
+  register: ms_ls_stat
+  tags: [ "dotnet", "python" ]
+
+- name: "ms-python-language-server: build"
+  shell: |
+    # checkout release tag
+    cd /opt/python-language-server
+    git fetch
+    TAG={{ python_language_server_version }}
+    git checkout -b ${TAG} tags/${TAG}
+    # build
+    cd src/LanguageServer/Impl
+    dotnet build -c Release
+    dotnet publish -c Release -r linux-x64
+    chmod o+x /opt/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer
+  when: not ms_ls_stat.stat.exists
+  tags: [ "dotnet", "python" ]
+
+- name: "ms-python-language-server: /opt/bin/ms-python-language-server symlink"
+  file:
+    src: "/opt/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"
+    dest: "/opt/bin/ms-python-language-server"
+    force: yes
+    state: link
+  tags: [ "dotnet", "python" ]
+
+#
+# Miscellaneous tools
+#
 
 - name: "get kernel version"
   shell: uname -r
