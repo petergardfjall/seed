@@ -751,3 +751,36 @@
 - name: "intellij: install"
   shell: snap install intellij-idea-community --classic
   when: check.failed
+
+#
+# protobuf compiler
+#
+- name: "protoc: check current version"
+  shell: /opt/bin/protoc --version | head -1
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: protoc_v
+  tags: ["grpc", "protoc"]
+
+- name: "protoc: create {{ protoc_install_dir }}"
+  file:
+    path: "{{ protoc_install_dir }}"
+    state: directory
+  tags: ["grpc", "protoc"]
+
+- name: "protoc: download"
+  unarchive:
+    src: "https://github.com/protocolbuffers/protobuf/releases/download/v{{ protoc_version }}/protoc-{{ protoc_version }}-linux-x86_64.zip"
+    dest: "{{ protoc_install_dir }}"
+    remote_src: yes
+  when: (protoc_v is failed) or (not protoc_version in protoc_v.stdout)
+  tags: ["grpc", "protoc"]
+
+- name: "protoc: /opt/bin/protoc symlink"
+  file:
+    src: "{{ protoc_install_dir }}/bin/protoc"
+    dest: "/opt/bin/protoc"
+    force: yes
+    state: link
+  when: (protoc_v is failed) or (not protoc_version in protoc_v.stdout)
+  tags: ["grpc", "protoc"]
