@@ -320,6 +320,9 @@
     - "-u github.com/rogpeppe/godef"
     # linter for Go
     - "-u golang.org/x/lint/golint"
+    # gRPC for Go
+    - "-u google.golang.org/grpc"
+    - "-u github.com/golang/protobuf/protoc-gen-go"
   tags: ["go"]
 
 - name: "go: install modules"
