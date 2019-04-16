@@ -386,23 +386,27 @@
   apt_key:
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
     state: present
+  tags: nodejs
 
 - name: "nodejs: apt repo"
   apt_repository:
     filename: "nodejs"
     repo: "deb https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
     state: present
+  tags: nodejs
 
 - name: "nodejs: apt repo src"
   apt_repository:
     filename: "nodejs"
     repo: "deb-src https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
     state: present
+  tags: nodejs
 
 - name: "apt: update cache"
   apt:
     update_cache: true
   changed_when: False  # don't appear changed
+  tags: nodejs
 
 - name: "nodejs: install"
   apt:
@@ -411,16 +415,28 @@
   vars:
     packages:
     - nodejs
+  tags: nodejs
+
+- name: "nodejs: user-local installation of packages"
+  copy:
+    dest: "{{ '~/.npmrc' | expanduser }}"
+    content: |
+      prefix=${HOME}/.npm-packages
+  tags: nodejs
 
 - name: "nodejs: check if grunt-cli is installed"
+  become: no
   shell: "npm list -g grunt-cli"
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: check
+  tags: nodejs
 
 - name: "nodejs: install grunt-cli"
+  become: no
   shell: "npm install -g grunt-cli"
   when: check.failed
+  tags: nodejs
 
 #
 # Rust
