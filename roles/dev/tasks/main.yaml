@@ -325,42 +325,24 @@
     - "-u github.com/golang/protobuf/protoc-gen-go"
   tags: ["go"]
 
-- name: "go: install modules"
-  become: no   # not as root
-  environment:
-    GO111MODULE: "on"
-  command: "/opt/bin/go get {{ item }}"
-  changed_when: False   # don't view as changes in end result
-  loop:
-    # go metalinter
-    - github.com/golangci/golangci-lint/cmd/golangci-lint@v1.15.0
-  tags: ["go", "modules"]
-
 # go LSP (Language Server Protocol) server with module support, needed
 # by emacs
 # NOTE: only use until official golang.org/x/tools/cmd/golsp is ready
-- name: "go: git clone bingo lsp server"
+- name: "go: git clone saibing's gopls fork"
   git:
-    repo: 'https://github.com/saibing/bingo'
+    repo: 'https://github.com/saibing/tools.git'
     recursive: yes
-    dest: "/opt/bingo"
+    dest: "/opt/gopls-saibing"
     clone: yes
     update: yes
-  tags: ['bingo', 'go']
+  tags: ['gopls', 'go']
 
-- name: "go: build bingo lsp server"
-  shell: "/opt/bin/go build"
+- name: "go: build saibing's gopls fork"
+  become: no # not as root (place on user's GOPATH)
+  shell: "/opt/bin/go install"
   args:
-    chdir: "/opt/bingo"
-  tags: ['bingo', 'go']
-
-- name: "go: /opt/bin/bingo symlink"
-  file:
-    src: "/opt/bingo/bingo"
-    dest: "/opt/bin/bingo"
-    force: yes
-    state: link
-  tags: ['bingo', 'go']
+    chdir: "/opt/gopls-saibing/cmd/gopls"
+  tags: ['gopls', 'go']
 
 - name: "dep: check current version"
   command: /opt/bin/dep version
