@@ -3,3 +3,7 @@
 
 # ansible
 *.retry
+
+# ignore go module artifacts generated when downloading go modules
+go.mod
+go.sum

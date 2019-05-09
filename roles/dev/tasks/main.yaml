@@ -325,6 +325,17 @@
     - "-u github.com/golang/protobuf/protoc-gen-go"
   tags: ["go"]
 
+- name: "go: install modules"
+  become: no   # not as root
+  environment:
+    GO111MODULE: "on"
+  command: "/opt/bin/go get {{ item }}"
+  changed_when: False   # don't view as changes in end result
+  loop:
+    # go metalinter
+    - github.com/golangci/golangci-lint/cmd/golangci-lint@v1.16.0
+  tags: ["go", "modules"]
+
 # go LSP (Language Server Protocol) server with module support, needed
 # by emacs
 # NOTE: only use until official golang.org/x/tools/cmd/golsp is ready
