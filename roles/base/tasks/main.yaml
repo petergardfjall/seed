@@ -156,6 +156,7 @@
   tags: ['emacs', 'ctags', 'gtags', 'global']
 
 - name: "global: place config under ~/.globalrc "
+  become: no
   copy:
     src: files/globalrc
     dest: "{{ '~/.globalrc' | expanduser }}"
