@@ -90,9 +90,6 @@
     - tig
     - subversion
     - meld
-    # code/editing
-    - silversearcher-ag
-    - global
     - markdown
     # gpg password entry in text-mode
     - pinentry-tty
@@ -127,7 +124,43 @@
   vars:
     packages:
     - emacs26
+    # a faster grep for code (used by emacs ag package)
+    - silversearcher-ag
+    # GNU global source code tagging (gtags) and querying (global)
+    - global
+    # extends global/gtags with support for C#, Py, Ruby, ...
+    # NOTE: for additional lang support (Go, D, Rust, Clojure) we also
+    # manually build/install universal-ctags below.
+    # NOTE: set GTAGSLABEL=exuberant-ctags to make use of this backend.
+    - exuberant-ctags
+    # extends global/gtags with support for F#, Haskell, ..
+    # NOTE: set GTAGSLABEL=pygments-parser to make use of this backend.
+    - python-pygments
   tags: emacs
+
+# universal-ctags extends language support for global/gtags
+# NOTE: set GTAGSLABEL=universal-ctags to make use of this backend.
+- name: "universal-ctags: clone git repo"
+  git:
+    repo: 'https://github.com/universal-ctags/ctags'
+    recursive: yes
+    dest: "/opt/universal-ctags"
+    clone: yes
+    update: no
+  tags: ['emacs', 'ctags', 'gtags', 'global']
+
+- name: "universal-ctags: build and install under /usr/local/bin/ctags"
+  shell: "./autogen.sh && ./configure --prefix=/usr/local && make && make install"
+  args:
+    chdir: "/opt/universal-ctags"
+  tags: ['emacs', 'ctags', 'gtags', 'global']
+
+- name: "global: place config under ~/.globalrc "
+  copy:
+    src: files/globalrc
+    dest: "{{ '~/.globalrc' | expanduser }}"
+    mode: 0644
+  tags: ['emacs', 'ctags', 'gtags', 'global']
 
 # pandoc is used by emacs markdown-preview-mode
 - name: "install: pandoc"
