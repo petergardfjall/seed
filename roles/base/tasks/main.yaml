@@ -95,6 +95,10 @@
     - pinentry-tty
     - pinentry-curses
     - dia
+    # common build utilities
+    - autoconf
+    - build-essential
+
 
 - name: "apt key: emacs26"
   apt_key:
