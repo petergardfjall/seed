@@ -218,7 +218,6 @@
     install_recommends: yes
   vars:
     packages:
-    - build-essential
     - libssl-dev
     - libffi-dev
     - python
