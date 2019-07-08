@@ -537,24 +537,24 @@
   tags: c++
 
 #
-# dotnet core (mainly for installing MS's python-language-server)
+# dotnet core
 #
 - name: "get ubuntu release version"
   shell: lsb_release -rs
   register: lsbrelease_rs
   changed_when: False  # read-only: won't change machine state
-  tags: [ "dotnet", "python" ]
+  tags: [ "dotnet" ]
 
 - name: "dotnet: register MS key, product repo, install dependencies"
   apt:
     deb: https://packages.microsoft.com/config/ubuntu/{{ lsbrelease_rs.stdout }}/packages-microsoft-prod.deb
-  tags: [ "dotnet", "python" ]
+  tags: [ "dotnet" ]
 
 - name: "apt: update cache"
   apt:
     update_cache: true
   changed_when: False  # don't appear changed
-  tags: [ "dotnet", "python" ]
+  tags: [ "dotnet" ]
 
 - name: "dotnet: install {{ packages }}"
   vars:
@@ -564,46 +564,7 @@
     name: "{{ packages }}"
     state: latest
     install_recommends: yes
-  tags: [ "dotnet", "python" ]
-
-- name: "ms-python-language-server: git clone"
-  git:
-    repo: 'https://github.com/Microsoft/python-language-server.git'
-    recursive: yes
-    dest: "/opt/python-language-server"
-    clone: yes
-    update: no
-  tags: [ "dotnet", "python" ]
-
-- name: "ms-python-language-server: check if installed"
-  # checks that the language server binary exists
-  stat:
-    path: /opt/bin/ms-python-language-server
-  register: ms_ls_stat
-  tags: [ "dotnet", "python" ]
-
-- name: "ms-python-language-server: build"
-  shell: |
-    # checkout release tag
-    cd /opt/python-language-server
-    git fetch
-    TAG={{ python_language_server_version }}
-    git checkout -b ${TAG} tags/${TAG}
-    # build
-    cd src/LanguageServer/Impl
-    dotnet build -c Release
-    dotnet publish -c Release -r linux-x64
-    chmod o+x /opt/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer
-  when: not ms_ls_stat.stat.exists
-  tags: [ "dotnet", "python" ]
-
-- name: "ms-python-language-server: /opt/bin/ms-python-language-server symlink"
-  file:
-    src: "/opt/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"
-    dest: "/opt/bin/ms-python-language-server"
-    force: yes
-    state: link
-  tags: [ "dotnet", "python" ]
+  tags: [ "dotnet" ]
 
 #
 # Miscellaneous tools
