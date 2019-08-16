@@ -324,7 +324,6 @@
     - "-u github.com/golang/protobuf/protoc-gen-go"
   tags: ["go"]
 
-
 - name: "go: install modules"
   become: no   # not as root
   environment:
@@ -335,6 +334,7 @@
     # go metalinter
     - github.com/golangci/golangci-lint/cmd/golangci-lint@v1.17.1
   tags: ["go", "modules"]
+
 
 # go LSP (Language Server Protocol) server with module support, needed
 # by emacs
@@ -636,11 +636,13 @@
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: tf_v
+  tags: terraform
 
 - name: "terraform: create {{ tf_install_dir }}"
   file:
     path: "{{ tf_install_dir }}"
     state: directory
+  tags: terraform
 
 - name: "terraform: download"
   unarchive:
@@ -648,6 +650,7 @@
     dest: "{{ tf_install_dir }}/"
     remote_src: yes
   when: (tf_v is failed) or (not tf_version in tf_v.stdout)
+  tags: terraform
 
 - name: "terraform: /opt/bin/terraform symlink"
   file:
@@ -656,7 +659,7 @@
     force: yes
     state: link
   when: (tf_v is failed) or (not tf_version in tf_v.stdout)
-
+  tags: terraform
 
 - name: "kubectl: check current version"
   shell: "/opt/bin/kubectl version --client | grep v{{ kubectl_version }}"
