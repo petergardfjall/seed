@@ -346,6 +346,9 @@
     dest: "/opt/gopls-saibing"
     clone: yes
     update: yes
+    # Repo version/commit to checkout (e.g. "HEAD", a branch name, a tag name,
+    # or a commit hash).
+    version: "{{ gopls_saibing_version }}"
   tags: ['gopls', 'go']
 
 - name: "go: build saibing's gopls fork"

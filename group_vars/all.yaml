@@ -5,6 +5,10 @@ go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
 go_dep_version: "0.5.0"
 
+# Repo version to checkout for saibing's gopls fork (e.g. "HEAD", a branch
+# name, a tag name, or a commit hash).
+gopls_saibing_version: "f60b6e7d"
+
 protoc_version: "3.7.1"
 protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
 
