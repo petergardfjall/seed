@@ -89,7 +89,9 @@
     - gitg
     - tig
     - subversion
+    - mercurial
     - meld
+    # markdown rendering
     - markdown
     # gpg password entry in text-mode
     - pinentry-tty
