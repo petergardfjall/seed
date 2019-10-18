@@ -335,6 +335,8 @@
     - github.com/golangci/golangci-lint/cmd/golangci-lint@v1.17.1
     # kind: kubernetes-in-docker
     - sigs.k8s.io/kind@v{{ kind_version }}
+    # clusterawsadm
+    - sigs.k8s.io/cluster-api-provider-aws/cmd/clusterawsadm@v{{ clusterawsadm_version }}
   tags: ["go", "modules"]
 
 

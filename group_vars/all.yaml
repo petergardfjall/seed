@@ -27,3 +27,4 @@ helm_version: "2.13.1"
 helm_install_dir: "/opt/helm-{{ helm_version }}"
 # kind: kubernetes-in-docker
 kind_version: "0.5.1"
+clusterawsadm_version: "0.4.2"
