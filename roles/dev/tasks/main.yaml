@@ -669,6 +669,7 @@
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: kubectl_v
+  tags: kubernetes
 
 - name: "kubectl: install"
   get_url:
@@ -677,6 +678,7 @@
     mode: 0755
     force: yes
   when: (kubectl_v is failed) or (kubectl_version not in kubectl_v.stdout)
+  tags: kubernetes
 
 - name: "create ~/.kube directory"
   become: no
@@ -684,19 +686,24 @@
     path: "{{ '~/.kube' | expanduser }}"
     state: directory
     mode: 0755
+  tags: kubernetes
 
 - name: "helm: check current version"
   shell: /opt/bin/helm version | head -1
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: helm_v
-  tags: helm
+  tags:
+  - helm
+  - kubernetes
 
 - name: "helm: create {{ helm_install_dir }}"
   file:
     path: "{{ helm_install_dir }}"
     state: directory
-  tags: helm
+  tags:
+  - helm
+  - kubernetes
 
 - name: "helm: install"
   unarchive:
@@ -705,7 +712,9 @@
     extra_opts: ['--strip-components=1']
     remote_src: yes
   when: (helm_v is failed) or (not helm_version in helm_v.stdout)
-  tags: helm
+  tags:
+  - helm
+  - kubernetes
 
 - name: "helm: /opt/bin/helm symlink"
   file:
@@ -713,7 +722,9 @@
     dest: "/opt/bin/helm"
     force: yes
     state: link
-  tags: helm
+  tags:
+  - helm
+  - kubernetes
 
 - name: "cfssl: install"
   apt:
