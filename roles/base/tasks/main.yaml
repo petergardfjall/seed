@@ -100,6 +100,9 @@
     # common build utilities
     - autoconf
     - build-essential
+    # webcam
+    - cheese
+  tags: basic-tools
 
 
 - name: "apt key: emacs26"
