@@ -437,6 +437,19 @@
     state: present
   tags: nodejs
 
+- name: "nodejs yarn: apt key"
+  apt_key:
+    url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
+    state: present
+  tags: nodejs
+
+- name: "nodejs yarn: apt repo"
+  apt_repository:
+    filename: "nodejs-yarn"
+    repo: "deb https://dl.yarnpkg.com/debian/ stable main"
+    state: present
+  tags: nodejs
+
 - name: "nodejs: apt repo src"
   apt_repository:
     filename: "nodejs"
@@ -457,6 +470,7 @@
   vars:
     packages:
     - nodejs
+    - yarn
   tags: nodejs
 
 - name: "nodejs: user-local installation of packages"
