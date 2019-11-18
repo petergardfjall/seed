@@ -7,10 +7,7 @@ go_dep_version: "0.5.0"
 
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
-gopls_version: "9cc4af7"
-# Repo version to checkout for saibing's gopls fork (e.g. "HEAD", a branch
-# name, a tag name, or a commit hash).
-gopls_saibing_version: "9c5d92334b9cfef9cb18277154186aa9c6bd1bb4"
+gopls_version: "5a76f03bc7c327212912ed6b2a76a10d7f39b224"
 
 protoc_version: "3.7.1"
 protoc_install_dir: "/opt/protoc-{{ protoc_version }}"

@@ -347,7 +347,7 @@
     - "sigs.k8s.io/kind@v{{ kind_version }}"
     # clusterawsadm
     - "sigs.k8s.io/cluster-api-provider-aws/cmd/clusterawsadm@v{{ clusterawsadm_version }}"
-  tags: ["go", "go-modules"]
+  tags: ["go", "go-modules", "gopls"]
 
 #
 # protobuf compiler
@@ -381,30 +381,6 @@
     state: link
   when: (protoc_v is failed) or (not protoc_version in protoc_v.stdout)
   tags: ["go", "grpc", "protoc"]
-
-#
-# go LSP (Language Server Protocol) server with module support, needed
-# by emacs
-# NOTE: only use until official golang.org/x/tools/cmd/golsp is ready
-#
-# - name: "go: git clone saibing's gopls fork"
-#   git:
-#     repo: 'https://github.com/saibing/tools.git'
-#     recursive: yes
-#     dest: "/opt/gopls-saibing"
-#     clone: yes
-#     update: yes
-#     # Repo version/commit to checkout (e.g. "HEAD", a branch name, a tag name,
-#     # or a commit hash).
-#     version: "{{ gopls_saibing_version }}"
-#   tags: ['gopls', 'go']
-
-# - name: "go: build saibing's gopls fork"
-#   become: no # not as root (place on user's GOPATH)
-#   shell: "/opt/bin/go install"
-#   args:
-#     chdir: "/opt/gopls-saibing/cmd/gopls"
-#   tags: ['gopls', 'go']
 
 - name: "dep: check current version"
   command: /opt/bin/dep version
