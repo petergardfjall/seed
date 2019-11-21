@@ -22,9 +22,10 @@ python_language_server_version: "2019.1"
 tf_version: "0.12.7"
 tf_install_dir: "/opt/tf-{{ tf_version }}"
 
-kubectl_version: "1.16.2"
-helm_version: "2.13.1"
+kubectl_version: "1.16.3"
+helm_version: "2.16.1"
 helm_install_dir: "/opt/helm-{{ helm_version }}"
+minikube_version: "1.5.2"
 # kind: kubernetes-in-docker
-kind_version: "0.5.1"
+kind_version: "0.6.0"
 clusterawsadm_version: "0.4.2"

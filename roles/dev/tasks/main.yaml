@@ -343,10 +343,6 @@
     - "golang.org/x/tools/gopls@{{ gopls_version }}"
     # go metalinter
     - "github.com/golangci/golangci-lint/cmd/golangci-lint@v1.21.0"
-    # kind: kubernetes-in-docker
-    - "sigs.k8s.io/kind@v{{ kind_version }}"
-    # clusterawsadm
-    - "sigs.k8s.io/cluster-api-provider-aws/cmd/clusterawsadm@v{{ clusterawsadm_version }}"
   tags: ["go", "go-modules", "gopls"]
 
 #
@@ -783,6 +779,27 @@
     state: link
   tags:
   - helm
+  - kubernetes
+
+- name: "minikube: install"
+  apt:
+    deb: "https://github.com/kubernetes/minikube/releases/download/v{{ minikube_version }}/minikube_{{ minikube_version }}.deb"
+  tags:
+  - minikube
+  - kubernetes
+
+- name: "kubernetes: install go-based modules"
+  become: no   # not as root
+  environment:
+    GO111MODULE: "on"
+  command: "/opt/bin/go get {{ item }}"
+  changed_when: False   # don't view as changes in end result
+  loop:
+    # kind: kubernetes-in-docker
+    - "sigs.k8s.io/kind@v{{ kind_version }}"
+    # clusterawsadm
+    - "sigs.k8s.io/cluster-api-provider-aws/cmd/clusterawsadm@v{{ clusterawsadm_version }}"
+  tags:
   - kubernetes
 
 - name: "cfssl: install"
