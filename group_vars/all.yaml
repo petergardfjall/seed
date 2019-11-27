@@ -1,13 +1,13 @@
 ubuntu_release: "bionic"
 
-go_version: "1.13"
+go_version: "1.13.4"
 go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
 go_dep_version: "0.5.0"
 
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
-gopls_version: "ad01d59"
+gopls_version: "724660f1afeb500e4880815f8718ea830aafb0f2"
 
 protoc_version: "3.7.1"
 protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
