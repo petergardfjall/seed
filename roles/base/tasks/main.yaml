@@ -212,7 +212,7 @@
 - name: "git: checkout dotfiles"
   become: no   # not as root
   git:
-    repo: 'https://github.com/petergardfjall/dotfiles.git'
+    repo: 'git@github.com:petergardfjall/dotfiles.git'
     recursive: yes
     dest: "{{ '~/dotfiles' | expanduser }}"
     clone: yes
