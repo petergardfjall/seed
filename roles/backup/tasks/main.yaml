@@ -7,14 +7,22 @@
     name: "{{ packages }}"
     state: latest
     install_recommends: yes
+  tags:
+  - backup
+  - python
 
 - name: "duplicity: Google Drive support"
   pip:
     name: PyDrive
     executable: pip2
+  tags:
+  - backup
+  - python
 
 - name: "rclone: install"
   apt:
     name: "rclone"
     state: latest
     install_recommends: yes
+  tags:
+  - backup

@@ -234,6 +234,7 @@
   become: no   # not as root
   pip:
     executable: pip2
+    extra_args: --user # install under ~/.local
     name:
     - ipython
     # note: pipenv installs pip under ~/.local/bin. To avoid conflicts
@@ -245,6 +246,7 @@
   become: no   # not as root
   pip:
     executable: pip3
+    extra_args: --user  # install under ~/.local
     name:
     - ipython
     # note: pipenv installs pip under ~/.local/bin. To avoid conflicts
