@@ -343,8 +343,6 @@
   loop:
     # gopls language server
     - "-u golang.org/x/tools/gopls@{{ gopls_version }}"
-    # go metalinter
-    - "github.com/golangci/golangci-lint/cmd/golangci-lint@v1.21.0"
   tags: ["go", "go-modules", "gopls"]
 
 #
