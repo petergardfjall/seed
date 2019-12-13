@@ -7,24 +7,33 @@
     packages:
     - mysql-client
     - postgresql-client
-  tags: ["database"]
-
+  tags:
+  - database
+  - apt
 
 - name: "apt key: docker"
   apt_key:
     url: "https://download.docker.com/linux/ubuntu/gpg"
     state: present
+  tags:
+  - apt-repos
 
 - name: "apt repo: docker"
   apt_repository:
     filename: "docker"
     repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_release }} stable"
     state: present
+  tags:
+  - apt-repos
 
 - name: "apt: update cache"
   apt:
     update_cache: true
   changed_when: False  # don't appear changed
+
+#
+# docker
+#
 
 - name: "docker: install"
   apt:
@@ -46,34 +55,46 @@
   apt_key:
     url: "https://packages.microsoft.com/keys/microsoft.asc"
     state: present
+  tags:
+  - apt-repos
 
 - name: "apt repo: vscode"
   apt_repository:
     filename: "vscode"
     repo: "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main"
     state: present
+  tags:
+  - apt-repos
 
 - name: "apt key: az"
   apt_key:
     url: "https://packages.microsoft.com/keys/microsoft.asc"
     state: present
+  tags:
+  - apt-repos
 
 - name: "apt repo: az"
   apt_repository:
     filename: "az"
     repo: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ubuntu_release }} main"
     state: present
+  tags:
+  - apt-repos
 
 - name: "apt key: iovisor"
   apt_key:
     keyserver: hkp://keyserver.ubuntu.com:80
     id: 4052245BD4284CDD
+  tags:
+  - apt-repos
 
 - name: "apt repo: iovisor"
   apt_repository:
     filename: "iovisor"
     repo: "deb https://repo.iovisor.org/apt/{{ ubuntu_release }} {{ ubuntu_release }} main"
     state: present
+  tags:
+  - apt-repos
 
 - name: "apt: update cache"
   apt:
@@ -402,40 +423,51 @@
   apt_key:
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
     state: present
-  tags: nodejs
+  tags:
+  - nodejs
+  - apt-repos
 
 - name: "nodejs: apt repo"
   apt_repository:
     filename: "nodejs"
     repo: "deb https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
     state: present
-  tags: nodejs
+  tags:
+  - nodejs
+  - apt-repos
 
 - name: "nodejs yarn: apt key"
   apt_key:
     url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
     state: present
-  tags: nodejs
+  tags:
+  - nodejs
+  - apt-repos
 
 - name: "nodejs yarn: apt repo"
   apt_repository:
     filename: "nodejs-yarn"
     repo: "deb https://dl.yarnpkg.com/debian/ stable main"
     state: present
-  tags: nodejs
+  tags:
+  - nodejs
+  - apt-repos
 
 - name: "nodejs: apt repo src"
   apt_repository:
     filename: "nodejs"
     repo: "deb-src https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
     state: present
-  tags: nodejs
+  tags:
+  - nodejs
+  - apt-repos
 
 - name: "apt: update cache"
   apt:
     update_cache: true
   changed_when: False  # don't appear changed
-  tags: nodejs
+  tags:
+  - nodejs
 
 - name: "nodejs: install"
   apt:
@@ -445,7 +477,8 @@
     packages:
     - nodejs
     - yarn
-  tags: nodejs
+  tags:
+  - nodejs
 
 - name: "nodejs: user-local installation of packages"
   copy:
@@ -585,7 +618,9 @@
 - name: "dotnet: register MS key, product repo, install dependencies"
   apt:
     deb: https://packages.microsoft.com/config/ubuntu/{{ lsbrelease_rs.stdout }}/packages-microsoft-prod.deb
-  tags: [ "dotnet" ]
+  tags:
+  - dotnet
+  - apt-repos
 
 - name: "apt: update cache"
   apt:
@@ -664,14 +699,18 @@
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     keyring: /usr/share/keyrings/cloud.google.gpg
     state: present
-  tags: gcloud
+  tags:
+  - gcloud
+  - apt-repos
 
 - name: "apt repo: gcloud"
   apt_repository:
     filename: "gcloud"
     repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main"
     state: present
-  tags: gcloud
+  tags:
+  - gcloud
+  - apt-repos
 
 - name: "apt: update cache"
   apt:

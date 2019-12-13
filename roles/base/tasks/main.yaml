@@ -34,11 +34,15 @@
   apt_repository:
     repo: "deb http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner"
     state: present
+  tags:
+  - apt-repos
 
 - name: "apt repo: canonical partner src"
   apt_repository:
     repo: "deb-src http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner"
     state: present
+  tags:
+  - apt-repos
 
 - name: "apt: update cache"
   apt:
@@ -110,7 +114,9 @@
     keyserver: "keyserver.ubuntu.com"
     id: "873503A090750CDAEB0754D93FF0E01EEAAFC9CD"
     state: present
-  tags: emacs
+  tags:
+  - emacs
+  - apt-repos
 
 
 - name: "apt repo: emacs26"
@@ -118,7 +124,9 @@
     filename: emacs26
     repo: "deb http://ppa.launchpad.net/kelleyk/emacs/ubuntu {{ ubuntu_release }} main"
     state: present
-  tags: emacs
+  tags:
+  - emacs
+  - apt-repos
 
 - name: "apt: update cache"
   apt:
