@@ -79,6 +79,8 @@
     - iperf
     - sysstat
     - powertop
+    # network
+    - nmap
     # graphics
     - inkscape
     - gimp
