@@ -22,6 +22,9 @@ python_language_server_version: "2019.1"
 tf_version: "0.12.19"
 tf_install_dir: "/opt/tf-{{ tf_version }}"
 
+# Packer
+packer_version: "1.5.1"
+
 #
 # Kubernetes
 #

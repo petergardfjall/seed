@@ -861,3 +861,12 @@
 - name: "intellij: install"
   shell: snap install intellij-idea-community --classic
   when: check.failed
+
+- name: "packer: install"
+  unarchive:
+    src: "https://releases.hashicorp.com/packer/{{ packer_version }}/packer_{{ packer_version }}_linux_amd64.zip"
+    dest: /opt/bin
+    remote_src: yes
+    creates: /opt/bin/packer
+  tags:
+  - packer
