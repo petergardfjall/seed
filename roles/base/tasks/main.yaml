@@ -44,6 +44,14 @@
   tags:
   - apt-repos
 
+- name: "apt repo: yq"
+  apt_repository:
+    filename: yq
+    repo: ppa:rmescandon/yq
+    state: present
+  tags:
+  - apt-repos
+
 - name: "apt: update cache"
   apt:
     update_cache: true
@@ -63,6 +71,7 @@
     - pwgen
     - tree
     - jq
+    - yq
     - pass
     - dos2unix
     # desktop/X
@@ -110,7 +119,6 @@
     - cheese
   tags: basic-tools
 
-
 - name: "apt key: emacs26"
   apt_key:
     keyserver: "keyserver.ubuntu.com"
@@ -119,7 +127,6 @@
   tags:
   - emacs
   - apt-repos
-
 
 - name: "apt repo: emacs26"
   apt_repository:
