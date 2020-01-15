@@ -32,3 +32,4 @@ minikube_version: "1.5.2"
 # kind: kubernetes-in-docker
 kind_version: "0.7.0"
 clusterawsadm_version: "0.4.2"
+kustomize_version: "3.3.0"

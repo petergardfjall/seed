@@ -841,6 +841,8 @@
     - "sigs.k8s.io/kind@v{{ kind_version }}"
     # clusterawsadm
     - "sigs.k8s.io/cluster-api-provider-aws/cmd/clusterawsadm@v{{ clusterawsadm_version }}"
+    # kustomize
+    - "sigs.k8s.io/kustomize/kustomize/v3@v{{ kustomize_version }}"
   tags:
   - kubernetes
 
