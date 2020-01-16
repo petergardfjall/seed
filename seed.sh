@@ -11,6 +11,10 @@ function print_usage() {
     echo "usage: $(basename ${0}) --desktop|--laptop"
 }
 
+if [ "$(id -u)" = "0" ]; then
+    die_with_error "don't run as root"
+fi
+
 type=""
 for arg in ${@}; do
     case ${arg} in
@@ -25,8 +29,8 @@ for arg in ${@}; do
             exit 0
             ;;
         *)
-	    # unrecognized option/argument, assume we are to pass the rest of
-	    # the arguments to ansible
+            # unrecognized option/argument, assume we are to pass the rest of
+            # the arguments to ansible
             break
             ;;
     esac
@@ -42,5 +46,3 @@ if [ "${type}" = "laptop" ]; then
 else
     ansible-playbook -i desktop.inventory --ask-become-pass seed.yaml $@
 fi
-
-
