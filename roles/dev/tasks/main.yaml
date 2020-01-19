@@ -535,6 +535,8 @@
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: check
+  tags:
+  - rust
 
 # installs rustup, rustc, cargo and friends under ~/.cargo/bin/.
 # be sure to add this directory to your PATH
@@ -542,6 +544,8 @@
   become: no
   shell: "curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path"
   when: check.failed
+  tags:
+  - rust
 
 - name: "rust: install rustup toolchains"
   become: no
@@ -556,6 +560,8 @@
     - "~/.cargo/bin/rustup install nightly"
     - "~/.cargo/bin/rustup component add --toolchain=stable  rust-src rust-analysis rls rustfmt clippy"
     - "~/.cargo/bin/rustup component add --toolchain=nightly rust-src rust-analysis rls rustfmt clippy"
+  tags:
+  - rust
 
 #
 # C++
