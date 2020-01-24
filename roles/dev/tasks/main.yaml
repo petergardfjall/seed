@@ -693,18 +693,12 @@
     install_recommends: yes
 
 
-- name: "openstack: install {{ packages }}"
-  vars:
-    packages:
-    - "python-novaclient"
-    - "python-neutronclient"
-    - "python-glanceclient"
-    - "python-keystoneclient"
-    - "python-openstackclient"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
+- name: "openstackclient: install"
+  become: no   # not as root
+  pip:
+    executable: pip3
+    extra_args: --user  # install under ~/.local
+    name: openstackclient
   tags: openstack
 
 - name: "awscli: install"
