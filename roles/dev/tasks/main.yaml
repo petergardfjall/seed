@@ -125,8 +125,30 @@
     packages:
     - visualvm
     - httperf
-    - virtualbox
+  tags:
+  - vm
+
+- name: "virtualbox: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - virtualbox-ext-pack
     - vagrant
+  tags:
+  - vm
+  - virtualbox
+
+- name: "virtualbox: add {{ lookup('env', 'USER') }} to vboxusers group"
+  user:
+    name:  "{{ lookup('env', 'USER') }}"
+    groups: vboxusers
+    append: yes
+  tags:
+  - vm
+  - virtualbox
 
 
 - name: "kvm/libvirt: install {{ packages }}"
