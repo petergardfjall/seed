@@ -165,8 +165,9 @@
     - cpu-checker
     - virt-manager
   tags:
+  - vm
   - kvm
-  - libvity
+  - libvirt
 
 - name: "kvm: add {{ lookup('env', 'USER') }} to kvm group"
   user:
@@ -174,8 +175,9 @@
     groups: kvm
     append: yes
   tags:
+  - vm
   - kvm
-  - libvity
+  - libvirt
 
 - name: "vagrant-libvirt: install dependencies {{ packages }}"
   apt:
@@ -194,8 +196,9 @@
     - zlib1g-dev
     - ruby-dev
   tags:
+  - vm
   - kvm
-  - libvity
+  - libvirt
 
 - name: "libvirt: make sure regular users can create vms"
   replace:
@@ -205,8 +208,9 @@
     backup: yes
   notify: "libvirtd: restart"
   tags:
+  - vm
   - kvm
-  - libvity
+  - libvirt
 
 - name: "vagrant libvirt plugin: check if installed"
   become: no   # not as root
@@ -215,16 +219,18 @@
   changed_when: False  # read-only: won't change machine state
   register: vagrant_libvirt_check
   tags:
+  - vm
   - kvm
-  - libvity
+  - libvirt
 
 - name: "vagrant libvirt plugin: install"
   become: no   # not as root
   shell: vagrant plugin install vagrant-libvirt
   when: vagrant_libvirt_check.rc != 0
   tags:
+  - vm
   - kvm
-  - libvity
+  - libvirt
 
 #
 # Java
@@ -239,18 +245,27 @@
     packages:
     - openjdk-11-jdk
     - openjdk-11-source
+  tags:
+  - java
+  - openjdk
 
 - name: "openjdk-11: /opt/java symlink"
   file:
     src: /usr/lib/jvm/default-java
     dest: /opt/java
     state: link
+  tags:
+  - java
+  - openjdk
 
 - name: "openjdk-11: /opt/bin/java symlink"
   file:
     src: /usr/lib/jvm/default-java/bin/java
     dest: /opt/bin/java
     state: link
+  tags:
+  - java
+  - openjdk
 
 - name: "maven: install"
   apt:
@@ -260,19 +275,25 @@
   vars:
     packages:
     - maven
+  tags:
+  - java
+  - maven
 
 - name: "eclipse: check if installed"
   shell: "snap list eclipse"
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: check
-  tags: eclipse
+  tags:
+  - java
+  - eclipse
 
 - name: "eclipse: install"
   shell: snap install eclipse --classic
   when: check.failed
-  tags: eclipse
-
+  tags:
+  - java
+  - eclipse
 
 #
 # Python
