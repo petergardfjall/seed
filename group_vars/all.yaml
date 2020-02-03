@@ -1,7 +1,7 @@
 ubuntu_release: "bionic"
 
 # commit to use for local emacs-27 build
-emacs27_commit: "45fd45a28309a75f46c686e1b5dbeff00b684cc1"
+emacs27_commit: "6f24f261dadb3cc373b24852d8145682f77d0056"
 
 go_version: "1.13.4"
 go_install_dir: "/opt/go-{{ go_version }}"
