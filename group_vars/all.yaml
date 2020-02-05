@@ -28,6 +28,9 @@ tf_install_dir: "/opt/tf-{{ tf_version }}"
 # Packer
 packer_version: "1.5.1"
 
+eclipse_version: "2019-12"
+eclipse_install_dir: "/opt/eclipse-{{ eclipse_version }}"
+
 #
 # Kubernetes
 #

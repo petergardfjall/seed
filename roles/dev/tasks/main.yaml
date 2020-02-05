@@ -279,18 +279,32 @@
   - java
   - maven
 
-- name: "eclipse: check if installed"
-  shell: "snap list eclipse"
-  ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
-  register: check
+- name: "eclipse: create {{ eclipse_install_dir }}"
+  file:
+    path: "{{ eclipse_install_dir }}"
+    state: directory
   tags:
   - java
   - eclipse
 
-- name: "eclipse: install"
-  shell: snap install eclipse --classic
-  when: check.failed
+- name: "eclipse: download {{ eclipse_version }}"
+  unarchive:
+    src: "http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/{{ eclipse_version }}/R/eclipse-java-{{ eclipse_version }}-R-linux-gtk-x86_64.tar.gz"
+    dest: "{{ eclipse_install_dir }}/"
+    remote_src: yes
+    creates: "{{ eclipse_install_dir }}/eclipse"
+    extra_opts:
+    - --transform
+    - s/^eclipse\///
+  tags:
+  - java
+  - eclipse
+
+- name: "eclipse: /opt/bin/eclipse symlink"
+  file:
+    src:  "{{ eclipse_install_dir }}/eclipse"
+    dest: "/opt/bin/eclipse"
+    state: link
   tags:
   - java
   - eclipse
