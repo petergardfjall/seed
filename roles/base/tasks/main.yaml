@@ -10,11 +10,6 @@
     state: directory
     mode: 0777
 
-- name: "apt: update cache"
-  apt:
-    update_cache: true
-  changed_when: False  # don't appear changed
-
 - name: "install package management tools: {{ packages }}"
   apt:
     name: "{{ packages }}"
@@ -29,11 +24,15 @@
     - curl
     - dirmngr
     - snapd
+  tags:
+  - apt
+  - package-management
 
 - name: "apt repo: canonical partner"
   apt_repository:
     repo: "deb http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner"
     state: present
+    update_cache: yes
   tags:
   - apt-repos
 
@@ -41,6 +40,7 @@
   apt_repository:
     repo: "deb-src http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner"
     state: present
+    update_cache: yes
   tags:
   - apt-repos
 
@@ -49,13 +49,9 @@
     filename: yq
     repo: ppa:rmescandon/yq
     state: present
+    update_cache: yes
   tags:
   - apt-repos
-
-- name: "apt: update cache"
-  apt:
-    update_cache: true
-  changed_when: False  # don't appear changed
 
 - name: "install basic tools: {{ packages }}"
   apt:
@@ -88,6 +84,7 @@
     - iperf
     - sysstat
     - powertop
+    - httperf
     # network
     - nmap
     # graphics
@@ -111,13 +108,33 @@
     # gpg password entry in text-mode
     - pinentry-tty
     - pinentry-curses
+    # diagrams
     - dia
-    # common build utilities
-    - autoconf
-    - build-essential
     # webcam
     - cheese
-  tags: basic-tools
+  tags:
+  - basictools
+
+- name: "build tools: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    # build tools that may be needed to build other base tools from source
+    packages:
+    - make
+    - pkg-config
+    - autoconf
+    - automake
+    - build-essential
+    - gcc
+  tags:
+  - buildtools
+
+#
+# Emacs
+#
 
 - name: "apt key: emacs26"
   apt_key:
@@ -133,14 +150,10 @@
     filename: emacs26
     repo: "deb http://ppa.launchpad.net/kelleyk/emacs/ubuntu {{ ubuntu_release }} main"
     state: present
+    update_cache: yes
   tags:
   - emacs
   - apt-repos
-
-- name: "apt: update cache"
-  apt:
-    update_cache: true
-  changed_when: False  # don't appear changed
 
 - name: "install: {{ packages }}"
   apt:
@@ -161,8 +174,26 @@
     - exuberant-ctags
     # extends global/gtags with support for F#, Haskell, ..
     # NOTE: set GTAGSLABEL=pygments-parser to make use of this backend.
-    - python-pygments
-  tags: emacs
+    - python3-pygments
+  tags:
+  - emacs
+  - global
+
+- name: "universal-ctags: install prerequisites: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - python3-docutils
+    - libseccomp-dev
+    - libjansson-dev
+    - libyaml-dev
+    - libxml2-dev
+  tags:
+  - emacs
+  - global
 
 # universal-ctags extends language support for global/gtags
 # NOTE: set GTAGSLABEL=universal-ctags to make use of this backend.
@@ -221,8 +252,6 @@
 - name: "emacs27: prerequisites: {{ packages }}"
   vars:
     packages:
-    - make
-    - gcc
     - texinfo
     - libgtk-3-dev
     - libxpm-dev
@@ -257,6 +286,7 @@
   # checks that the binary exists and that it has been built from the expected
   # commit in the repository
   shell: |
+    set -e
     # ensure emacs has been built
     /opt/bin/emacs27 --version > /dev/null || (echo "emacs27 binary not found" && exit 1)
     # ensure emacs27 branch exists
@@ -303,14 +333,20 @@
   apt:
     autoremove: true
 
+#
+# dot files
+#
+
 - name: "git: checkout dotfiles"
   become: no   # not as root
   git:
-    repo: 'git@github.com:petergardfjall/dotfiles.git'
+    repo: 'https://github.com/petergardfjall/dotfiles.git'
     recursive: yes
     dest: "{{ '~/dotfiles' | expanduser }}"
     clone: yes
     update: no
+  tags:
+  - dotfiles
 
 - name: "emacs: create symlink for ~/.emacs"
   become: no   # not as root
@@ -320,12 +356,15 @@
     state: link
   tags:
   - emacs
+  - dotfiles
 
 - name: "vscode: create config dir"
   become: no   # not as root
   file:
     path: "{{ '~/.config/Code/User' | expanduser }}"
     state: directory
+  tags:
+  - dotfiles
 
 - name: "vscode: symlink for settings.json"
   become: no   # not as root
@@ -333,6 +372,8 @@
     src: "{{ '~/dotfiles/vscode/settings.json' | expanduser }}"
     dest: "{{ '~/.config/Code/User/settings.json' | expanduser }}"
     state: link
+  tags:
+  - dotfiles
 
 - name: "vscode: symlink for keybindings.json"
   become: no   # not as root
@@ -340,6 +381,8 @@
     src: "{{ '~/dotfiles/vscode/keybindings.json' | expanduser }}"
     dest: "{{ '~/.config/Code/User/keybindings.json' | expanduser }}"
     state: link
+  tags:
+  - dotfiles
 
 - name: ".bashrc: extra modules"
   become: no   # not as root
@@ -350,6 +393,8 @@
       # source additional configuration modules
       #
       source ~/dotfiles/bash.includes
+  tags:
+  - dotfiles
 
 - name: ".profile: extra modules"
   become: no   # not as root
@@ -360,6 +405,8 @@
       # source additional configuration modules
       #
       source ~/dotfiles/bash.includes
+  tags:
+  - dotfiles
 
 - name: "git: checkout helper scripts"
   become: no   # not as root
@@ -369,3 +416,5 @@
     dest: "{{ '~/bin/scripts' | expanduser }}"
     clone: yes
     update: no
+  tags:
+  - dotfiles

@@ -63,29 +63,23 @@
   shell: "~/dotfiles/setup-xfce4.sh"
   changed_when: False  # don't appear changed
 
-- name: "skype: check if installed"
-  shell: "snap list skype"
-  ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
-  register: check
-  tags: spotify
-
 - name: "skype: install"
-  shell: snap install skype --classic
-  when: check.failed
-  tags: spotify
-
-- name: "slack: check if installed"
-  shell: "snap list slack"
-  ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
-  register: check
-  tags: slack
+  snap:
+    name:
+    - skype
+    channel: "stable"
+    classic: "yes"
+  tags:
+  - skype
 
 - name: "slack: install"
-  shell: snap install slack --classic
-  when: check.failed
-  tags: slack
+  snap:
+    name:
+    - slack
+    channel: "stable"
+    classic: "yes"
+  tags:
+  - slack
 
 - name: "vlc: install"
   apt:
@@ -96,14 +90,11 @@
     packages:
     - vlc
 
-- name: "spotify: check if installed"
-  shell: "snap list spotify"
-  ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
-  register: check
-  tags: spotify
-
 - name: "spotify: install"
-  shell: "snap install spotify"
-  when: check.failed
-  tags: spotify
+  snap:
+    name:
+    - spotify
+    channel: "stable"
+    classic: "yes"
+  tags:
+  - spotify

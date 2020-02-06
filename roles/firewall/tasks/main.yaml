@@ -3,9 +3,13 @@
     state: enabled
     direction: incoming
     policy: deny
+  tags:
+  - firewall
 
 - name: "ufw: allow ssh access (port 22)"
   ufw:
     rule: allow
     direction: in
     port: 22
+  tags:
+  - firewall

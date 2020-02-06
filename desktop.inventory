@@ -1,2 +1,5 @@
 [desktop]
 localhost ansible_connection=local
+
+[desktop:vars]
+ansible_python_interpreter=/usr/bin/python3

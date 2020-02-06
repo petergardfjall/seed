@@ -17,7 +17,7 @@ protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
 
 nodejs_repo_version: "node_8.x"
 
-ccls_version: "0.20190301"
+ccls_version: "0.20190823.5"
 
 python_language_server_version: "2019.1"
 
