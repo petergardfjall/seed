@@ -8,6 +8,16 @@
   - backup
   - duplicity
 
+# needed to allow cron job to run duplicity
+- name: "duplicity: symlink under /usr/bin"
+  file:
+    src:  "/snap/bin/duplicity"
+    dest: "/usr/bin/duplicity"
+    state: link
+  tags:
+  - backup
+  - duplicity
+
 - name: "rclone: install"
   apt:
     name: "rclone"
