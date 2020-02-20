@@ -1,7 +1,7 @@
 ubuntu_release: "bionic"
 
 # commit to use for local emacs-27 build
-emacs27_commit: "45fd45a28309a75f46c686e1b5dbeff00b684cc1"
+emacs27_commit: "1d10885763287f03a5fb348ba27715e049bb48f8"
 
 go_version: "1.13.4"
 go_install_dir: "/opt/go-{{ go_version }}"
@@ -10,7 +10,7 @@ go_dep_version: "0.5.0"
 
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
-gopls_version: "11eff242d136374289f76e9313c76e9312391172"
+gopls_version: "2086a0a691c028d6ad0311fe7310f2c003833844"
 
 protoc_version: "3.7.1"
 protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
