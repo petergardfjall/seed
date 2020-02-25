@@ -44,15 +44,6 @@
   tags:
   - apt-repos
 
-- name: "apt repo: yq"
-  apt_repository:
-    filename: yq
-    repo: ppa:rmescandon/yq
-    state: present
-    update_cache: yes
-  tags:
-  - apt-repos
-
 - name: "install basic tools: {{ packages }}"
   apt:
     name: "{{ packages }}"
@@ -67,7 +58,6 @@
     - pwgen
     - tree
     - jq
-    - yq
     - pass
     - dos2unix
     # desktop/X

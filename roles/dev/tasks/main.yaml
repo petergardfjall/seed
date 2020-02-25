@@ -337,6 +337,8 @@
     # note: pipenv installs pip under ~/.local/bin. To avoid conflicts
     # with system pip, place ~/.local/bin early on PATH.
     - pipenv
+    # jq-like tool for yaml
+    - yq
   tags: python
 
 
