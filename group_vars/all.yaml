@@ -10,7 +10,7 @@ go_dep_version: "0.5.0"
 
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
-gopls_version: "95d2e580d8ebe4f401d837412cc97c79829521d0"
+gopls_version: "de023d59a5d12fe28f29c985eb1f744aae7e7d73"
 
 protoc_version: "3.7.1"
 protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
