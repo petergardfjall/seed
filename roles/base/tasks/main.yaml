@@ -338,15 +338,17 @@
   tags:
   - dotfiles
 
-- name: "emacs: create symlink for ~/.emacs"
+- name: "git: checkout ~/.emacs.d/"
   become: no   # not as root
-  file:
-    src: "{{ '~/dotfiles/emacs-init.el' | expanduser }}"
-    dest: "{{ '~/.emacs' | expanduser }}"
-    state: link
+  git:
+    repo: 'https://github.com/petergardfjall/.emacs.d.git'
+    recursive: yes
+    dest: "{{ '~/.emacs.d' | expanduser }}"
+    clone: yes
+    update: yes
   tags:
-  - emacs
   - dotfiles
+  - emacs
 
 - name: "vscode: create config dir"
   become: no   # not as root
