@@ -242,12 +242,18 @@
 - name: "emacs27: prerequisites: {{ packages }}"
   vars:
     packages:
+    # see https://www.emacswiki.org/emacs/EmacsSnapshotAndDebian
     - texinfo
+    - xorg-dev
     - libgtk-3-dev
     - libxpm-dev
     - libjpeg-dev
     - libgif-dev
     - libtiff5-dev
+    - libm17n-dev
+    - libpng-dev
+    - librsvg2-dev
+    - libotf-dev
     - libgnutls28-dev
     - libncurses5-dev
     - libjansson-dev
@@ -295,9 +301,11 @@
 
 - name: "emacs-27: build commit {{ emacs27_commit }}"
   when: emacs27_check.failed
+  # see https://www.emacswiki.org/emacs/EmacsSnapshotAndDebian
   shell: |
     git checkout -B emacs27 {{ emacs27_commit }}
-    ./autogen.sh && ./configure && make
+    git clean -dxf # cleans up old files
+    ./autogen.sh && ./configure && make bootstrap && make
   args:
     chdir: "/opt/emacs-src"
   tags:
