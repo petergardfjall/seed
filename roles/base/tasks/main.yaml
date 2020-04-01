@@ -159,7 +159,7 @@
     repo: "https://github.com/emacs-mirror/emacs"
     dest: "/opt/emacs-src"
     clone: yes
-    update: yes
+    update: no
     version: master
   tags:
   - emacs
@@ -190,6 +190,7 @@
   when: emacs27_check.failed
   # see https://www.emacswiki.org/emacs/EmacsSnapshotAndDebian
   shell: |
+    git fetch origin emacs-27
     git checkout -B emacs27 {{ emacs27_commit }}
     git clean -dxf # cleans up old files
     ./autogen.sh && ./configure && make bootstrap && make
