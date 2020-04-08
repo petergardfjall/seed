@@ -325,6 +325,8 @@
     dest: "{{ '~/dotfiles' | expanduser }}"
     clone: yes
     update: no
+    # avoid overwriting origin (if set up for ssh access)
+    remote: h
   tags:
   - dotfiles
 
@@ -335,7 +337,9 @@
     recursive: yes
     dest: "{{ '~/.emacs.d' | expanduser }}"
     clone: yes
-    update: yes
+    update: no
+    # avoid overwriting origin (if set up for ssh access)
+    remote: h
   tags:
   - dotfiles
   - emacs
@@ -398,5 +402,7 @@
     dest: "{{ '~/bin/scripts' | expanduser }}"
     clone: yes
     update: no
+    # avoid overwriting origin (if set up for ssh access)
+    remote: h
   tags:
   - dotfiles
