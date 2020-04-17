@@ -1,19 +1,22 @@
-- name: "duplicity: install"
-  snap:
-    name:
-    - duplicity
-    channel: "stable"
-    classic: "yes"
+- name: "duplicity: install prerequisites: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - librsync-dev
   tags:
   - backup
   - duplicity
 
-# needed to allow cron job to run duplicity
-- name: "duplicity: symlink under /usr/bin"
-  file:
-    src:  "/snap/bin/duplicity"
-    dest: "/usr/bin/duplicity"
-    state: link
+- name: "duplicity: install"
+  become: yes # want to be able to backup privileged directories
+  pip:
+    name:
+    - duplicity>0.8
+    - PyDrive>1.3
+    - boto3>1.12
   tags:
   - backup
   - duplicity
