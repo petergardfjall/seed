@@ -317,7 +317,7 @@
 # dot files
 #
 
-- name: "git: checkout dotfiles"
+- name: "git: checkout ~/dotfiles"
   become: no   # not as root
   git:
     repo: 'https://github.com/petergardfjall/dotfiles.git'
@@ -325,8 +325,16 @@
     dest: "{{ '~/dotfiles' | expanduser }}"
     clone: yes
     update: no
-    # avoid overwriting origin (if set up for ssh access)
-    remote: h
+  tags:
+  - dotfiles
+
+- name: "git: set ssh remote for ~/dotfiles"
+  become: no
+  git_config:
+    name:  remote.origin.url
+    value: git@github.com:petergardfjall/dotfiles.git
+    scope: local
+    repo:  "{{ '~/dotfiles' | expanduser }}"
   tags:
   - dotfiles
 
@@ -338,8 +346,17 @@
     dest: "{{ '~/.emacs.d' | expanduser }}"
     clone: yes
     update: no
-    # avoid overwriting origin (if set up for ssh access)
-    remote: h
+  tags:
+  - dotfiles
+  - emacs
+
+- name: "git: set ssh remote for ~/.emacs.d"
+  become: no
+  git_config:
+    name:  remote.origin.url
+    value: git@github.com:petergardfjall/.emacs.d.git
+    scope: local
+    repo:  "{{ '~/.emacs.d' | expanduser }}"
   tags:
   - dotfiles
   - emacs
@@ -394,7 +411,7 @@
   tags:
   - dotfiles
 
-- name: "git: checkout helper scripts"
+- name: "git: checkout ~/bin/scripts"
   become: no   # not as root
   git:
     repo: 'https://github.com/petergardfjall/scripts'
@@ -402,7 +419,15 @@
     dest: "{{ '~/bin/scripts' | expanduser }}"
     clone: yes
     update: no
-    # avoid overwriting origin (if set up for ssh access)
-    remote: h
+  tags:
+  - dotfiles
+
+- name: "git: set ssh remote for ~/bin/scripts"
+  become: no
+  git_config:
+    name:  remote.origin.url
+    value: git@github.com:petergardfjall/scripts.git
+    scope: local
+    repo:  "{{ '~/bin/scripts' | expanduser }}"
   tags:
   - dotfiles
