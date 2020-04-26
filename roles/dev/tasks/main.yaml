@@ -742,24 +742,6 @@
 #
 
 
-- name: "apt key: iovisor"
-  apt_key:
-    keyserver: hkp://keyserver.ubuntu.com:80
-    id: 4052245BD4284CDD
-  tags:
-  - apt-repos
-  - bcc
-
-- name: "apt repo: iovisor"
-  apt_repository:
-    filename: "iovisor"
-    repo: "deb https://repo.iovisor.org/apt/{{ ubuntu_release }} {{ ubuntu_release }} main"
-    state: present
-    update_cache: yes
-  tags:
-  - apt-repos
-  - bcc
-
 - name: "get kernel version"
   shell: uname -r
   register: uname_r
@@ -767,12 +749,11 @@
   tags:
   - bcc
 
-# installs tools under /usr/share/bcc/tools
+# installs several eBPF-based tools under /usr/sbin/*-bpfcc
 - name: "bcc: install {{ packages }}"
   vars:
     packages:
-    - "bcc-tools"
-    - "libbcc-examples"
+    - "bpfcc-tools"
     - "linux-headers-{{ uname_r.stdout }}"
   apt:
     name: "{{ packages }}"
