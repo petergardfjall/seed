@@ -1,4 +1,4 @@
-ubuntu_release: "bionic"
+ubuntu_release: "focal"
 
 # commit to use for local emacs-27 build
 emacs27_commit: "fc55f65305e855b31a8594764cfadfb5bf0f107f"
