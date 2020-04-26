@@ -13,6 +13,8 @@
     - libnotify-bin
     - greybird-gtk-theme
     - xfce4-pulseaudio-plugin
+  tags:
+  - xfce
 
 - name: "xfce: check session save-on-exit property"
   become: no   # not as root
@@ -20,17 +22,23 @@
   register: save_on_exit
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
+  tags:
+  - xfce
 
 - name: "xfce: disable session save-on-exit when not set"
   become: no   # not as root
   shell: xfconf-query -c xfce4-session -p /general/SaveOnExit -n -t bool -s false
   changed_when: False  # don't appear changed
   when: save_on_exit.stdout == ""
+  tags:
+  - xfce
 
 - name: "xfce: disable session save-on-exit when true"
   become: no   # not as root
   shell: xfconf-query -c xfce4-session -p /general/SaveOnExit -t bool -s false
   when: save_on_exit.stdout == "true"
+  tags:
+  - xfce
 
 - name: "xfce: clear any existing sessions"
   file:
@@ -38,6 +46,8 @@
     path: "{{ '~/.cache/sessions/' | expanduser }}"
     state: absent
   changed_when: False  # don't appear changed
+  tags:
+  - xfce
 
 - name: "xfce: prevent from saving sessions"
   become: no   # not as root
@@ -46,6 +56,8 @@
     state: directory
     mode: 0500
   changed_when: False  # don't appear changed
+  tags:
+  - xfce
 
 - name: "remove ubuntu-desktop (if installed)"
   apt:
@@ -62,6 +74,8 @@
   become: no   # not as root
   shell: "~/dotfiles/setup-xfce4.sh"
   changed_when: False  # don't appear changed
+  tags:
+  - xfce
 
 - name: "skype: install"
   snap:
