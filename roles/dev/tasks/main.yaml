@@ -18,22 +18,6 @@
 # docker
 #
 
-- name: "apt key: docker"
-  apt_key:
-    url: "https://download.docker.com/linux/ubuntu/gpg"
-    state: present
-  tags:
-  - apt-repos
-
-- name: "apt repo: docker"
-  apt_repository:
-    filename: "docker"
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_release }} stable"
-    state: present
-    update_cache: yes
-  tags:
-  - apt-repos
-
 - name: "docker: install"
   apt:
     name: "{{ packages }}"
@@ -41,16 +25,27 @@
     install_recommends: yes
   vars:
     packages:
-    - docker-ce
+    - docker.io
     - docker-compose
+  tags:
+  - docker
 
 - name: "docker: adding user to docker group"
   user:
     name: "{{ lookup('env', 'USER') }}"
     groups: docker
     append: yes
+  tags:
+  - docker
 
-
+- name: "docker: enable"
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+    masked: no
+  tags:
+  - docker
 
 #
 # VS Code
