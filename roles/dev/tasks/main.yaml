@@ -815,7 +815,7 @@
   pip:
     executable: pip3
     extra_args: --user  # install under ~/.local
-    name: awscli
+    name: azure-cli
   tags:
   - azure
 
