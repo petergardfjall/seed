@@ -85,7 +85,6 @@
     # communication
     - openssh-server
     - openssh-client
-    - chromium-browser
     # version control
     - git
     - gitg
@@ -121,6 +120,37 @@
     - gcc
   tags:
   - buildtools
+
+
+#
+# chrome
+#
+- name: "apt key: google chrome"
+  apt_key:
+    url: "https://dl.google.com/linux/linux_signing_key.pub"
+    state: present
+  tags:
+  - apt-repos
+  - chrome
+
+- name: "apt repo: google chrome"
+  apt_repository:
+    filename: "google-chrome"
+    repo: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+    state: present
+    update_cache: yes
+  tags:
+  - apt-repos
+  - chrome
+
+- name: "google chrome: install"
+  apt:
+    name: google-chrome-stable
+    state: latest
+    install_recommends: yes
+  tags:
+  - chrome
+
 
 #
 # Emacs
