@@ -290,19 +290,6 @@
 # Python
 #
 
-- name: "python2: install"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
-  vars:
-    packages:
-    - python-minimal
-    - python-virtualenv
-  tags:
-  - python
-  - python2
-
 - name: "python3: install"
   apt:
     name: "{{ packages }}"
