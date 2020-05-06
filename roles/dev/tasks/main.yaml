@@ -818,7 +818,8 @@
   vars:
     packages:
     - google-cloud-sdk
-  tags: gcloud
+  tags:
+  - gcloud
 
 #
 # Terraform
