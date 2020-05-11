@@ -433,7 +433,11 @@
   loop:
     # gopls language server
     - "golang.org/x/tools/gopls@{{ gopls_version }}"
-  tags: ["go", "go-modules", "gopls"]
+    - "github.com/golangci/golangci-lint/cmd/golangci-lint@{{ golangci_lint_version }}"
+  tags:
+  - go
+  - go-modules
+  - gopls
 
 #
 # protobuf compiler
