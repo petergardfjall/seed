@@ -10,7 +10,7 @@ go_dep_version: "0.5.0"
 
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
-gopls_version: "v0.4.1-pre1"
+gopls_version: "v0.4.1-pre2"
 
 golangci_lint_version: "v1.26.0"
 
