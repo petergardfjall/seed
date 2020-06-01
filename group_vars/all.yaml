@@ -1,7 +1,7 @@
 ubuntu_release: "focal"
 
 # commit to use for local emacs-27 build
-emacs27_commit: "bd7b681dc432ce77fbe3634c919fe49ca335f8e1"
+emacs27_commit: "44c0e074f7cb84481785cb49515a4bd7235a074b"
 
 go_version: "1.14"
 go_install_dir: "/opt/go-{{ go_version }}"
