@@ -434,6 +434,7 @@
     # gopls language server
     - "golang.org/x/tools/gopls@{{ gopls_version }}"
     - "github.com/golangci/golangci-lint/cmd/golangci-lint@{{ golangci_lint_version }}"
+    - "github.com/oklog/ulid/cmd/ulid"
   tags:
   - go
   - go-modules
