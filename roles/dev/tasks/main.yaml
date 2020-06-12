@@ -555,21 +555,24 @@
     dest: "{{ '~/.npmrc' | expanduser }}"
     content: |
       prefix=${HOME}/.npm-packages
-  tags: nodejs
+  tags:
+  - nodejs
 
-- name: "nodejs: check if grunt-cli is installed"
+- name: "nodejs: install packages"
   become: no
-  shell: "npm list -g grunt-cli"
-  ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
-  register: check
-  tags: nodejs
-
-- name: "nodejs: install grunt-cli"
-  become: no
-  shell: "npm install -g grunt-cli"
-  when: check.failed
-  tags: nodejs
+  npm:
+    name: "{{ item }}"
+    # npm install -g <pkg>
+    global: yes
+  loop:
+  - grunt-cli
+  # js/typescript language protocol server (user by emacs' lsp-mode)
+  - javascript-typescript-langserver
+  # html language protocol server (user by emacs' lsp-mode)
+  - vscode-html-languageserver-bin
+  tags:
+  - nodejs
+  - npm
 
 #
 # Rust
