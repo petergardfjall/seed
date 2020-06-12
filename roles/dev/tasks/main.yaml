@@ -435,6 +435,8 @@
     - "golang.org/x/tools/gopls@{{ gopls_version }}"
     - "github.com/golangci/golangci-lint/cmd/golangci-lint@{{ golangci_lint_version }}"
     - "github.com/oklog/ulid/cmd/ulid"
+      # bundle static assets in Go binaries
+    - "github.com/gobuffalo/packr/v2/packr2"
   tags:
   - go
   - go-modules
