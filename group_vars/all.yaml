@@ -12,7 +12,7 @@ go_dep_version: "0.5.0"
 # name, a tag name, or a commit hash).
 gopls_version: "v0.4.1"
 
-golangci_lint_version: "v1.26.0"
+golangci_lint_version: "v1.27.0"
 
 protoc_version: "3.7.1"
 protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
