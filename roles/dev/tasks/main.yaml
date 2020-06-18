@@ -437,6 +437,7 @@
     - "github.com/oklog/ulid/cmd/ulid"
       # bundle static assets in Go binaries
     - "github.com/gobuffalo/packr/v2/packr2"
+    - "github.com/go-swagger/go-swagger/cmd/swagger"
   tags:
   - go
   - go-modules
