@@ -19,6 +19,7 @@ protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
 
 nodejs_repo_version: "node_12.x"
 
+clangd_version: "10.0.0"
 ccls_version: "0.20190823.5"
 
 dotnet_sdk_version: "3.1"
