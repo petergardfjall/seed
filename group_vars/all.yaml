@@ -21,7 +21,8 @@ nodejs_repo_version: "node_12.x"
 
 ccls_version: "0.20190823.5"
 
-python_language_server_version: "2019.1"
+dotnet_sdk_version: "3.1"
+python_language_server_version: "0.2"
 
 # terraform
 tf_version: "0.12.19"

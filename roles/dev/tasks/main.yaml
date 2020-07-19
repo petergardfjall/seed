@@ -726,19 +726,76 @@
 - name: "dotnet: install {{ packages }}"
   vars:
     packages:
-    - "dotnet-sdk-2.2"
+    - "dotnet-sdk-{{ dotnet_sdk_version }}"
   apt:
     name: "{{ packages }}"
     state: latest
     install_recommends: yes
     update_cache: yes
   tags:
-  - "dotnet"
+  - dotnet
+  - python
+
+#
+# Python language server
+#
+
+- name: "ms-python-language-server: git clone"
+  git:
+    repo: https://github.com/Microsoft/python-language-server.git
+    recursive: yes
+    dest: /opt/python-language-server
+    clone: yes
+    update: no
+  tags:
+  - mspyls
+  - python
+
+- name: "ms-python-language-server: check if installed"
+  # checks that the binary exists and that it has been built from
+  # the expected release tag in the repository
+  shell: |
+    [ -f "/opt/bin/ms-python-language-server" ] && \
+    cd /opt/python-language-server && \
+    git_tag=$(git branch | grep \* | cut -d ' ' -f2)
+    [ "${git_tag}" = "{{ python_language_server_version }}" ]
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: check_mspyls
+  tags:
+  - mspyls
+  - python
+
+- name: "ms-python-language-server: build"
+  shell: |
+    # checkout release tag
+    cd /opt/python-language-server && git fetch
+    TAG={{ python_language_server_version }}
+    git checkout -b ${TAG} tags/${TAG}
+    # build
+    cd src/LanguageServer/Impl
+    dotnet build -c Release
+    dotnet publish -c Release -r linux-x64
+    chmod o+x /opt/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer
+  when: check_mspyls.failed
+  tags:
+  - mspyls
+  - python
+
+- name: "ms-python-language-server: /opt/bin/ms-python-language-server symlink"
+  file:
+    src: "/opt/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"
+    dest: "/opt/bin/ms-python-language-server"
+    force: yes
+    state: link
+  tags:
+  - mspyls
+  - python
+
 
 #
 # Miscellaneous tools
 #
-
 
 - name: "get kernel version"
   shell: uname -r
