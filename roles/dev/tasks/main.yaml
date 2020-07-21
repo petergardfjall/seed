@@ -767,6 +767,29 @@
   - mspyls
   - python
 
+#
+# Ruby
+#
+- name: "ruby: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - ruby
+    - ruby-dev
+  tags:
+  - ruby
+
+# install ruby language server
+- name: "ruby: install solargraph language server"
+  gem:
+    name: solargraph
+    state: latest
+    user_install: no   # global
+  tags:
+  - ruby
 
 #
 # Miscellaneous tools
