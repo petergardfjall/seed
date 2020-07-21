@@ -573,6 +573,8 @@
   - javascript-typescript-langserver
   # html language protocol server (user by emacs' lsp-mode)
   - vscode-html-languageserver-bin
+  # used by emacs' lsp-mode
+  - bash-language-server
   tags:
   - nodejs
   - npm
