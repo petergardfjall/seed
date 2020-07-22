@@ -438,6 +438,8 @@
       # bundle static assets in Go binaries
     - "github.com/gobuffalo/packr/v2/packr2"
     - "github.com/go-swagger/go-swagger/cmd/swagger"
+    # terraform language server (use by emacs' lsp-mode)
+    - "github.com/juliosueiras/terraform-lsp@{{ tf_ls_version }}"
   tags:
   - go
   - go-modules
