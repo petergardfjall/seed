@@ -6,6 +6,7 @@ emacs27_commit: "de68572742f37f70c128c7192576182347eb8f4b"
 go_version: "1.14.6"
 go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
+delve_version: "1.5.0"
 go_dep_version: "0.5.0"
 
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
