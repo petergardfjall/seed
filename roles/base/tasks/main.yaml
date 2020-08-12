@@ -156,7 +156,7 @@
 # Emacs
 #
 
-- name: "emacs27: prerequisites: {{ packages }}"
+- name: "emacs: prerequisites: {{ packages }}"
   vars:
     packages:
     # see https://www.emacswiki.org/emacs/EmacsSnapshotAndDebian
@@ -182,55 +182,16 @@
     install_recommends: yes
   tags:
   - emacs
-  - emacs27
 
-- name: "emacs-27: clone https://github.com/emacs-mirror/emacs"
-  git:
-    repo: "https://github.com/emacs-mirror/emacs"
-    dest: "/opt/emacs-src"
-    clone: yes
-    update: no
-    version: master
-  tags:
-  - emacs
-  - emacs27
-
-- name: "emacs-27: check if installed"
-  # checks that the binary exists and that it has been built from the expected
-  # commit in the repository
+- name: "emacs: build {{ emacs_branch }}, tag/commit: {{ emacs_rev }}"
   shell: |
-    set -e
-    # ensure emacs has been built
-    /opt/bin/emacs27 --version > /dev/null || (echo "emacs27 binary not found" && exit 1)
-    # ensure emacs27 branch exists
-    git show-ref --verify --quiet refs/heads/emacs27 || (echo "no emacs27 branch" && exit 1)
-    # ensure that the branch is on the expected commit
-    git checkout emacs27
-    [ "$(git rev-parse HEAD)" = {{ emacs27_commit | quote }} ] || (echo "emacs27 branch on wrong commit" && exit 1)
+    {{ role_path}}/scripts/build-emacs.sh {{ emacs_branch | quote }} {{ emacs_rev | quote }}
   args:
-    chdir: "/opt/emacs-src"
-  ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
-  register: emacs27_check
+    creates: "/opt/emacs-src/.BUILT_{{ emacs_branch }}_{{ emacs_rev }}"
   tags:
   - emacs
-  - emacs27
 
-- name: "emacs-27: build commit {{ emacs27_commit }}"
-  when: emacs27_check.failed
-  # see https://www.emacswiki.org/emacs/EmacsSnapshotAndDebian
-  shell: |
-    git fetch origin emacs-27
-    git checkout -B emacs27 {{ emacs27_commit }}
-    git clean -dxf # cleans up old files
-    ./autogen.sh && ./configure && make bootstrap && make
-  args:
-    chdir: "/opt/emacs-src"
-  tags:
-  - emacs
-  - emacs27
-
-- name: "emacs-27: /usr/local/bin/emacs symlink"
+- name: "emacs: /usr/local/bin/emacs symlink"
   file:
     src:  /opt/emacs-src/src/emacs
     dest: /usr/local/bin/emacs
@@ -238,7 +199,6 @@
     state: link
   tags:
   - emacs
-  - emacs27
 
 - name: "install: {{ packages }}"
   apt:

@@ -1,7 +1,10 @@
 ubuntu_release: "focal"
 
-# commit to use for local emacs-27 build
-emacs27_commit: "86d8d76aa36037184db0b2897c434cdaab1a9ae8"
+# branch to use for local emacs build
+emacs_branch: "emacs-27"
+# tag or commit on said branch to use for local emacs build
+# for example, "emacs-27.1" or "86d8d76aa3"
+emacs_rev: "emacs-27.1"
 
 go_version: "1.14.6"
 go_install_dir: "/opt/go-{{ go_version }}"
