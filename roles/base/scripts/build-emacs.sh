@@ -17,14 +17,12 @@ function log {
 build_dir=${build_dir:-/opt/emacs-src}
 build_marker_prefix=".BUILT"
 
-[ -z "${1}" ] && die "no emacs branch given"
-[ -z "${2}" ] && die "no emacs revision given"
+[ -z "${1}" ] && die "no emacs revision (tag or commit) given"
 
-branch=${1}
-revision=${2}
-build_marker="${build_marker_prefix}_${branch}_${revision}"
+revision=${1}
+build_marker="${build_marker_prefix}_${revision}"
 
-log "ensuring emacs built from branch ${1} revision ${revision} ..."
+log "ensuring emacs built from revision (tag/commit) ${revision} ..."
 
 # clone and/or fetch
 if ! [ -d "${build_dir}" ]; then
@@ -63,7 +61,7 @@ make            >> ${build_log} 2>&1
 
 log "emacs binary built in ${build_dir}/src/emacs"
 
-# create a build marker file: BUILT_${branch}_${revision}
+# create a build marker file: BUILT_${revision}
 log "creating build marker ${build_marker} ..."
 touch "${build_marker}"
 

@@ -183,11 +183,11 @@
   tags:
   - emacs
 
-- name: "emacs: build {{ emacs_branch }}, tag/commit: {{ emacs_rev }}"
+- name: "emacs: build tag/commit: {{ emacs_rev }}"
   shell: |
-    {{ role_path}}/scripts/build-emacs.sh {{ emacs_branch | quote }} {{ emacs_rev | quote }}
+    {{ role_path}}/scripts/build-emacs.sh {{ emacs_rev | quote }}
   args:
-    creates: "/opt/emacs-src/.BUILT_{{ emacs_branch }}_{{ emacs_rev }}"
+    creates: "/opt/emacs-src/.BUILT_{{ emacs_rev }}"
   tags:
   - emacs
 
