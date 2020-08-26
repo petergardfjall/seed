@@ -4,23 +4,26 @@ ubuntu_release: "focal"
 # for example, "emacs-27.1" or "86d8d76aa3"
 emacs_rev: "emacs-27.1"
 
+#
+# Go
+#
 go_version: "1.14.6"
 go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
 delve_version: "1.5.0"
 go_dep_version: "0.5.0"
-
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
 gopls_version: "v0.4.4"
-
 golangci_lint_version: "v1.27.0"
-
 protoc_version: "3.7.1"
 protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
 
 nodejs_repo_version: "node_12.x"
 
+#
+# C/C++
+#
 clangd_version: "10.0.0"
 ccls_version: "0.20190823.5"
 
@@ -33,7 +36,15 @@ pyenv_version: "v1.2.20"
 # python versions to install in pyenv
 pyenv_py_versions: ["2.7.18", "3.8.5"]
 
-# terraform
+#
+# Ruby
+#
+# lsp server
+solargraph_version: "0.39.15"
+
+#
+# Terraform
+#
 tf_version: "0.12.19"
 tf_install_dir: "/opt/tf-{{ tf_version }}"
 # language server version

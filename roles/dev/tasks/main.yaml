@@ -813,6 +813,7 @@
 - name: "ruby: install solargraph language server"
   gem:
     name: solargraph
+    version: "{{ solargraph_version }}"
     state: latest
     user_install: no   # global
   tags:
