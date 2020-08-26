@@ -344,6 +344,29 @@
   - python
   - python3
 
+- name: "pyenv: install"
+  become: no   # not as root
+  git:
+    repo: https://github.com/pyenv/pyenv.git
+    dest: "{{ '~/.pyenv' | expanduser }}"
+    version: "{{ pyenv_version }}"
+    clone: yes
+    update: no
+  tags:
+  - python
+  - pyenv
+
+- name: "pyenv: install python versions {{ pyenv_py_versions }}"
+  become: no   # not as root
+  shell: "pyenv install {{ item }}"
+  args:
+    creates: "{{ '~/.pyenv' | expanduser }}/versions/{{ item }}"
+  with_items:
+  - "{{ pyenv_py_versions }}"
+  tags:
+  - python
+  - pyenv
+
 #
 # Go
 #

@@ -24,8 +24,14 @@ nodejs_repo_version: "node_12.x"
 clangd_version: "10.0.0"
 ccls_version: "0.20190823.5"
 
+#
+# Python
+#
 dotnet_sdk_version: "3.1"
 python_language_server_version: "0.2"
+pyenv_version: "v1.2.20"
+# python versions to install in pyenv
+pyenv_py_versions: ["2.7.18", "3.8.5"]
 
 # terraform
 tf_version: "0.12.19"
