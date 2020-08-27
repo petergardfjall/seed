@@ -367,6 +367,19 @@
   - python
   - pyenv
 
+- name: "pyenv-virtualenv: install"
+  become: no   # not as root
+  git:
+    repo: https://github.com/pyenv/pyenv-virtualenv.git
+    dest: "{{ '~/.pyenv/plugins/pyenv-virtualenv' | expanduser }}"
+    version: "{{ pyenv_virtualenv_version }}"
+    clone: yes
+    update: no
+  tags:
+  - python
+  - pyenv
+
+
 #
 # Go
 #
