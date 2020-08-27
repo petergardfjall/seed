@@ -829,7 +829,6 @@
   gem:
     name: solargraph
     version: "{{ solargraph_version }}"
-    state: latest
     user_install: no   # global
   tags:
   - ruby
