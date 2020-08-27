@@ -602,6 +602,8 @@
   - vscode-html-languageserver-bin
   # used by emacs' lsp-mode
   - bash-language-server
+  # language server for Python
+  - "pyright@{{ pyright_ls_version }}"
   tags:
   - nodejs
   - npm
