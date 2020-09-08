@@ -69,6 +69,7 @@ eclipse_install_dir: "/opt/eclipse-{{ eclipse_version }}"
 kubectl_version: "1.16.3"
 helm_version: "2.16.1"
 helm_install_dir: "/opt/helm-{{ helm_version }}"
+helm_secrets_version: "v2.0.2"
 minikube_version: "1.5.2"
 # kind: kubernetes-in-docker
 kind_version: "0.7.0"

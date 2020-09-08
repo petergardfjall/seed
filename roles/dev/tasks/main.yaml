@@ -1064,6 +1064,25 @@
   - helm
   - kubernetes
 
+- name: "helm: check if secrets plugin is installed"
+  become: no
+  shell: "helm secrets --help"
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: secrets_installed
+  tags:
+  - helm
+  - kubernetes
+
+- name: "helm: install secrets plugin"
+  become: no  # not as root, stored under HELM_PLUGINS (see 'helm env')
+  shell: "helm plugin install https://github.com/zendesk/helm-secrets --version={{ helm_secrets_version }}"
+  when: secrets_installed.rc != 0
+  tags:
+  - helm
+  - kubernetes
+
+
 - name: "minikube: install"
   apt:
     deb: "https://github.com/kubernetes/minikube/releases/download/v{{ minikube_version }}/minikube_{{ minikube_version }}.deb"
