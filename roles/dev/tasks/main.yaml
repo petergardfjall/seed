@@ -346,6 +346,33 @@
   - python
   - python3
 
+# pyenv builds python from source, so it needs a few things to be installed.
+# see https://github.com/pyenv/pyenv/wiki/common-build-problems#prerequisites
+- name: "pyenv: prerequisites"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - build-essential
+    - libssl-dev
+    - zlib1g-dev
+    - libbz2-dev
+    - libreadline-dev
+    - libsqlite3-dev
+    - llvm
+    - libncurses5-dev
+    - libncursesw5-dev
+    - xz-utils
+    - tk-dev
+    - libffi-dev
+    - liblzma-dev
+    - python-openssl
+  tags:
+  - python
+  - pyenv
+
 - name: "pyenv: install"
   become: no   # not as root
   git:
@@ -381,6 +408,12 @@
   - python
   - pyenv
 
+- name: "pyenv: set global interpreters {{ pyenv_global_versions }}"
+  become: no
+  shell: "{{ '~/.pyenv/bin/pyenv' | expanduser }} global {{ pyenv_global_versions }}"
+  tags:
+  - python
+  - pyenv
 
 #
 # Go
