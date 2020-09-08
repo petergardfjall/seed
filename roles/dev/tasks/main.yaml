@@ -1087,6 +1087,25 @@
   tags:
   - kubernetes
 
+
+- name: "helmfile: check current version"
+  shell: /opt/bin/helmfile --version
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: helmfile_v
+  tags:
+  - helmfile
+
+- name: "helmfile: download"
+  get_url:
+    url: "https://github.com/roboll/helmfile/releases/download/v{{ helmfile_version }}/helmfile_linux_amd64"
+    dest: "/opt/bin/helmfile"
+    mode: "0755"
+  when: (helmfile_v is failed) or (not helmfile_version in helmfile_v.stdout)
+  tags:
+  - helmfile
+
+
 # TODO: get as module?
 - name: "cfssl: install"
   apt:
