@@ -1026,6 +1026,10 @@
     mode: 0755
   tags: kubernetes
 
+#
+# helm
+#
+
 - name: "helm: check current version"
   shell: /opt/bin/helm version | head -1
   ignore_errors: yes
@@ -1064,6 +1068,10 @@
   - helm
   - kubernetes
 
+#
+# helm secrets plugin
+#
+
 - name: "helm: check if secrets plugin is installed"
   become: no
   shell: "helm secrets --help"
@@ -1082,6 +1090,9 @@
   - helm
   - kubernetes
 
+#
+# minikube
+#
 
 - name: "minikube: install"
   apt:
@@ -1106,6 +1117,9 @@
   tags:
   - kubernetes
 
+#
+# helmfile
+#
 
 - name: "helmfile: check current version"
   shell: /opt/bin/helmfile --version
