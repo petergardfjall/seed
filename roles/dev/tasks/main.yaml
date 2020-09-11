@@ -1090,6 +1090,24 @@
   - helm
   - kubernetes
 
+- name: "helm: check if diff plugin is installed"
+  become: no
+  shell: "helm diff --help"
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: diff_installed
+  tags:
+  - helm
+  - kubernetes
+
+- name: "helm: install diff plugin"
+  become: no  # not as root, stored under HELM_PLUGINS (see 'helm env')
+  shell: "helm plugin install https://github.com/databus23/helm-diff --version={{ helm_diff_version }}"
+  when: diff_installed.rc != 0
+  tags:
+  - helm
+  - kubernetes
+
 #
 # minikube
 #
