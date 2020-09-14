@@ -1027,46 +1027,109 @@
   tags: kubernetes
 
 #
-# helm
+# helm2
 #
 
-- name: "helm: check current version"
-  shell: /opt/bin/helm version | head -1
+- name: "helm2: check current version"
+  shell: /opt/bin/helm2 version | head -1
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
-  register: helm_v
+  register: helm2_v
   tags:
   - helm
+  - helm2
   - kubernetes
 
-- name: "helm: create {{ helm_install_dir }}"
+- name: "helm2: create {{ helm2_install_dir }}"
   file:
-    path: "{{ helm_install_dir }}"
+    path: "{{ helm2_install_dir }}"
     state: directory
   tags:
   - helm
+  - helm2
   - kubernetes
 
-- name: "helm: install"
+- name: "helm2: install"
   unarchive:
-    src: "https://storage.googleapis.com/kubernetes-helm/helm-v{{ helm_version }}-linux-amd64.tar.gz"
-    dest: "{{ helm_install_dir }}/"
+    src: "https://get.helm.sh/helm-v{{ helm2_version }}-linux-amd64.tar.gz"
+    dest: "{{ helm2_install_dir }}/"
     extra_opts: ['--strip-components=1']
     remote_src: yes
-  when: (helm_v is failed) or (not helm_version in helm_v.stdout)
+  when: (helm2_v is failed) or (not helm2_version in helm2_v.stdout)
   tags:
   - helm
+  - helm2
   - kubernetes
+
+- name: "helm2: /opt/bin/helm2 symlink"
+  file:
+    src: "{{ helm2_install_dir }}/helm"
+    dest: "/opt/bin/helm2"
+    force: yes
+    state: link
+  tags:
+  - helm
+  - helm2
+  - kubernetes
+
+#
+# helm3
+#
+
+- name: "helm3: check current version"
+  shell: /opt/bin/helm3 version | head -1
+  ignore_errors: yes
+  changed_when: False  # read-only: won't change machine state
+  register: helm3_v
+  tags:
+  - helm
+  - helm3
+  - kubernetes
+
+- name: "helm3: create {{ helm3_install_dir }}"
+  file:
+    path: "{{ helm3_install_dir }}"
+    state: directory
+  tags:
+  - helm
+  - helm3
+  - kubernetes
+
+- name: "helm3: install"
+  unarchive:
+    src: "https://get.helm.sh/helm-v{{ helm3_version }}-linux-amd64.tar.gz"
+    dest: "{{ helm3_install_dir }}/"
+    extra_opts: ['--strip-components=1']
+    remote_src: yes
+  when: (helm3_v is failed) or (not helm3_version in helm3_v.stdout)
+  tags:
+  - helm
+  - helm3
+  - kubernetes
+
+- name: "helm3: /opt/bin/helm3 symlink"
+  file:
+    src: "{{ helm3_install_dir }}/helm"
+    dest: "/opt/bin/helm3"
+    force: yes
+    state: link
+  tags:
+  - helm
+  - helm3
+  - kubernetes
+
 
 - name: "helm: /opt/bin/helm symlink"
   file:
-    src: "{{ helm_install_dir }}/helm"
+    src: "{{ helm3_install_dir }}/helm"
     dest: "/opt/bin/helm"
     force: yes
     state: link
   tags:
   - helm
+  - helm3
   - kubernetes
+
 
 #
 # helm secrets plugin
