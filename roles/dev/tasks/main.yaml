@@ -1163,3 +1163,25 @@
     name: golang-cfssl
     state: latest
     install_recommends: yes
+
+
+#
+# tinyproxy
+#
+- name: "tinyproxy: clone git repo"
+  git:
+    repo: 'https://github.com/tinyproxy/tinyproxy'
+    recursive: yes
+    dest: "/opt/tinyproxy"
+    clone: yes
+    update: no
+    version: "{{ tinyproxy_version }}"
+  tags:
+  - tinyproxy
+
+- name: "tinyproxy: build and install under /usr/local/bin/tinyproxy"
+  shell: "./autogen.sh && ./configure --prefix=/usr/local && make && make install"
+  args:
+    chdir: "/opt/tinyproxy"
+  tags:
+  - tinyproxy
