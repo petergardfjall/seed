@@ -1177,7 +1177,7 @@
 
 - name: "minikube: install"
   apt:
-    deb: "https://github.com/kubernetes/minikube/releases/download/v{{ minikube_version }}/minikube_{{ minikube_version }}.deb"
+    deb: "https://github.com/kubernetes/minikube/releases/download/v{{ minikube_version }}/minikube_{{ minikube_version }}-0_amd64.deb"
   tags:
   - minikube
   - kubernetes
