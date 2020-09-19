@@ -1147,7 +1147,7 @@
 
 - name: "helm: install secrets plugin"
   become: no  # not as root, stored under HELM_PLUGINS (see 'helm env')
-  shell: "helm plugin install https://github.com/zendesk/helm-secrets --version={{ helm_secrets_version }}"
+  shell: "helm init --client-only && helm plugin install https://github.com/zendesk/helm-secrets --version={{ helm_secrets_version }}"
   when: secrets_installed.rc != 0
   tags:
   - helm
