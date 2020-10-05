@@ -100,6 +100,7 @@
     - pinentry-curses
     # diagrams
     - dia
+    - graphviz
     # webcam
     - cheese
   tags:
