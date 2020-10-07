@@ -964,6 +964,16 @@
   tags:
   - gcloud
 
+- name: "cloud_sql_proxy: install"
+  get_url:
+    url: https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64
+    dest: /opt/bin/cloud_sql_proxy
+    mode: 0755
+  tags:
+  - gcloud
+  - cloud_sql_proxy
+
+
 #
 # Terraform
 #
