@@ -256,7 +256,7 @@
 
 - name: "eclipse: download {{ eclipse_version }}"
   unarchive:
-    src: "http://eclipse.mirror.garr.it/mirrors/eclipse//technology/epp/downloads/release/{{ eclipse_version }}/R/eclipse-java-{{ eclipse_version }}-R-linux-gtk-x86_64.tar.gz"
+    src: "https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/{{ eclipse_version }}/R/eclipse-java-{{ eclipse_version }}-R-linux-gtk-x86_64.tar.gz"
     dest: "{{ eclipse_install_dir }}/"
     remote_src: yes
     creates: "{{ eclipse_install_dir }}/eclipse"
