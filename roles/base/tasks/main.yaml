@@ -120,6 +120,7 @@
     - automake
     - build-essential
     - gcc
+    - gettext
   tags:
   - buildtools
 
