@@ -387,7 +387,7 @@
 
 - name: "pyenv: install python versions {{ pyenv_py_versions }}"
   become: no   # not as root
-  shell: "pyenv install {{ item }}"
+  shell: "{{ '~/.pyenv/bin/pyenv' | expanduser }} install {{ item }}"
   args:
     creates: "{{ '~/.pyenv' | expanduser }}/versions/{{ item }}"
   with_items:
@@ -1147,7 +1147,7 @@
 
 - name: "helm: check if secrets plugin is installed"
   become: no
-  shell: "helm secrets --help"
+  shell: "/opt/bin/helm secrets --help"
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: secrets_installed
@@ -1157,7 +1157,7 @@
 
 - name: "helm: install secrets plugin"
   become: no  # not as root, stored under HELM_PLUGINS (see 'helm env')
-  shell: "helm init --client-only && helm plugin install https://github.com/zendesk/helm-secrets --version={{ helm_secrets_version }}"
+  shell: "/opt/bin/helm plugin install https://github.com/zendesk/helm-secrets --version={{ helm_secrets_version }}"
   when: secrets_installed.rc != 0
   tags:
   - helm
@@ -1165,7 +1165,7 @@
 
 - name: "helm: check if diff plugin is installed"
   become: no
-  shell: "helm diff --help"
+  shell: "/opt/bin/helm diff --help"
   ignore_errors: yes
   changed_when: False  # read-only: won't change machine state
   register: diff_installed
@@ -1175,7 +1175,7 @@
 
 - name: "helm: install diff plugin"
   become: no  # not as root, stored under HELM_PLUGINS (see 'helm env')
-  shell: "helm plugin install https://github.com/databus23/helm-diff --version={{ helm_diff_version }}"
+  shell: "/opt/bin/helm plugin install https://github.com/databus23/helm-diff --version={{ helm_diff_version }}"
   when: diff_installed.rc != 0
   tags:
   - helm
