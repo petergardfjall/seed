@@ -10,13 +10,14 @@
   - backup
   - duplicity
 
-- name: "duplicity: install"
+- name: "duplicity: root install"
   become: yes # want to be able to backup privileged directories
   pip:
     name:
     - duplicity>0.8
     - PyDrive>1.3
     - boto3>1.12
+    - future
   tags:
   - backup
   - duplicity
