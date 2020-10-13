@@ -10,17 +10,23 @@
   - backup
   - duplicity
 
-- name: "duplicity: root install"
+- name: "duplicity: root install ({{ duplicity_packages }})"
   become: yes # want to be able to backup privileged directories
   pip:
-    name:
-    - duplicity>0.8
-    - PyDrive>1.3
-    - boto3>1.12
-    - future
+    name: "{{ duplicity_packages }}"
   tags:
   - backup
   - duplicity
+
+- name: "duplicity: user install ({{ duplicity_packages }})"
+  become: no
+  pip:
+    extra_args: --user  # install under ~/.local
+    name: "{{ duplicity_packages }}"
+  tags:
+  - backup
+  - duplicity
+
 
 - name: "rclone: install"
   apt:

@@ -82,3 +82,9 @@ helmfile_version: "0.128.0"
 
 # tinyproxy tag/commit to build
 tinyproxy_version: "17e19a67cfd2af4d05d50981d3a09a46bec684ac"
+
+#
+# backup
+#
+# pip packages needed to install duplicity
+duplicity_packages: "duplicity>0.8,PyDrive>1.3,boto3>1.12,future"
