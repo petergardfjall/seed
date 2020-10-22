@@ -1229,6 +1229,36 @@
   tags:
   - helmfile
 
+#
+# Telepresence
+#
+- name: "apt key: telepresence"
+  apt_key:
+    url: "https://packagecloud.io/datawireio/telepresence/gpgkey"
+    state: present
+  tags:
+  - kubernetes
+  - telepresence
+
+- name: "apt repo: telepresence"
+  apt_repository:
+    filename: "telepresence"
+    repo: "deb https://packagecloud.io/datawireio/telepresence/ubuntu/ {{ ubuntu_release }} main"
+    state: present
+    update_cache: yes
+  tags:
+  - kubernetes
+  - telepresence
+
+- name: "telepresence: install"
+  apt:
+    name: "telepresence"
+    state: latest
+    install_recommends: no
+  tags:
+  - kubernetes
+  - telepresence
+
 
 # TODO: get as module?
 - name: "cfssl: install"
