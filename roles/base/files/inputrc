@@ -1,0 +1,18 @@
+#
+# Make terminal region behave as emacs.
+#
+# Most emacs keybindings already work:
+#   https://catonmat.net/ftp/readline-emacs-editing-mode-cheat-sheet.pdf
+#
+
+# Ctrl+space: set mark
+"\e ": set-mark
+
+# Ctrl+w: cut region
+"\C-w": kill-region
+
+# Alt+w: copy region
+"\ew": copy-region-as-kill
+
+# Ctrl+Y: yank
+"\C-y": yank

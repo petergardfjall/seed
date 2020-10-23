@@ -125,6 +125,16 @@
   - buildtools
 
 
+- name: "~/inputrc: emacs copy/paste in terminal"
+  become: no
+  copy:
+    src: files/inputrc
+    dest: "{{ '~/.inputrc' | expanduser }}"
+    mode: 0644
+  tags:
+  - terminal
+
+
 #
 # chrome
 #
