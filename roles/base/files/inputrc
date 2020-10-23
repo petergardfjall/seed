@@ -4,6 +4,8 @@
 # Most emacs keybindings already work:
 #   https://catonmat.net/ftp/readline-emacs-editing-mode-cheat-sheet.pdf
 #
+# Note: `bind -p` shows all bindings
+#
 
 # Ctrl+space: set mark
 "\e ": set-mark
