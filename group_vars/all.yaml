@@ -78,7 +78,7 @@ minikube_version: "1.13.0"
 kind_version: "0.9.0"
 clusterawsadm_version: "0.4.2"
 kustomize_version: "3.3.0"
-helmfile_version: "0.128.0"
+helmfile_version: "0.134.0"
 
 # tinyproxy tag/commit to build
 tinyproxy_version: "17e19a67cfd2af4d05d50981d3a09a46bec684ac"
