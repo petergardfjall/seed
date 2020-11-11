@@ -5,6 +5,7 @@
 #   https://catonmat.net/ftp/readline-emacs-editing-mode-cheat-sheet.pdf
 #
 # Note: `bind -p` shows all bindings
+# Note: global settings in `/etc/inputrc`
 #
 
 # Ctrl+space: set mark
