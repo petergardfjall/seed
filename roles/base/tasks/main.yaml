@@ -252,6 +252,20 @@
   - emacs
   - global
 
+- name: "emacs vterm: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - libtool-bin
+    - libvterm-dev
+  tags:
+  - emacs
+  - vterm
+
+
 # universal-ctags extends language support for global/gtags
 # NOTE: set GTAGSLABEL=universal-ctags to make use of this backend.
 - name: "universal-ctags: clone git repo"
