@@ -323,6 +323,8 @@
     - pipenv
     # jq-like tool for yaml
     - yq
+    # markdown preprocessor with support for `!INCLUDE <file>` macro
+    - MarkdownPP
   tags: python
 
 
