@@ -654,6 +654,8 @@
   - bash-language-server
   # language server for Python
   - "pyright@{{ pyright_ls_version }}"
+  # converter of markdown to pdf documents
+  - md-to-pdf
   tags:
   - nodejs
   - npm
