@@ -103,8 +103,42 @@
     - graphviz
     # webcam
     - cheese
+    # allow directory-level encryption
+    - gocryptfs
+    - libpam-mount # needed to support mounting of encrypted gocrypt filesystem on login
   tags:
   - basictools
+
+# `gocryptfs` is a stacked file-system that allows mounting of encrypted
+# folders. Useful for encrypting designated user folders. Example use:
+#
+#    mkdir dir.enc dir
+#    # enter secret password and ALSO TAKE NOTE of the "emergency master key"
+#    gocryptfs -init dir.enc/
+#
+#    # mount at ./dir (you will be prompted for secret password)
+#    gocryptfs dir.enc/ dir
+#
+#    # the encrypted directory can stay mounted for the user session, or be
+#    # unmounted manually.
+#    fusermount -u dir
+#
+- name: "gocryptfs: filesystem encryption tool: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    # allow directory-level encryption
+    - gocryptfs
+    # needed to support mounting of encrypted gocrypt filesystem on login
+    # see https://github.com/rfjakob/gocryptfs/wiki/Mounting-on-login-using-pam_mount
+    - libpam-mount
+  tags:
+  - fs-encryption
+  - gocryptfs
+
 
 - name: "build tools: {{ packages }}"
   apt:
