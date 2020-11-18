@@ -139,6 +139,58 @@
   - fs-encryption
   - gocryptfs
 
+# fscrypt: a high-level tool for managing linux filesystem encryption (the
+# kernel part is sometimes also referred to as `fscrypt`)
+#
+# `fscrypt` is built from source since the current apt package version (`0.2.5`)
+# doesn't support v2 encryption policy (fixes some ssh-related issues) out of
+# the box.
+#
+# NOTE: if you later decide to switch to using the Ubuntu package for fscrypt,
+# you'll have to first manually run `sudo make uninstall PREFIX=/usr`.
+- name: "fscrypt: prerequisites: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - libpam0g-dev
+  tags:
+  - fs-encryption
+  - fscrypt
+
+- name: "fscrypt: git clone"
+  become: yes
+  git:
+    repo:    https://github.com/google/fscrypt.git
+    dest:    "{{ fscrypt_repo_dir }}"
+    version: "{{ fscrypt_version }}"
+    clone: yes
+    update: no
+  tags:
+  - fs-encryption
+  - fscrypt
+
+# installs fscrypt into /usr/bin, pam_fscrypt.so into /usr/lib/security, and
+# pam_fscrypt/config into /usr/share/pam-configs
+- name: "fscrypt: make install PREFIX=/usr"
+  become: yes
+  make:
+    chdir: "{{ fscrypt_repo_dir }}"
+    target: install
+    params:
+      # note: Ubuntu only recognizes PAM configuration files in /usr, not in
+      # /usr/local
+      PREFIX=/usr
+  environment:
+    # need go executable on PATH
+    PATH: "/opt/bin:{{ lookup('env', 'PATH') }}"
+  tags:
+  - fs-encryption
+  - fscrypt
+
+
 
 - name: "build tools: {{ packages }}"
   apt:
