@@ -190,6 +190,15 @@
   - fs-encryption
   - fscrypt
 
+# To support the login password protector, we need to apply the fscrypt pam
+# (Pluggable Authentication Modules) settings in /usr/share/pam-configs/fscrypt
+- name: "fscrypt: enable password-protection via pam module"
+  become: yes
+  command:
+    cmd: /usr/sbin/pam-auth-update --enable fscrypt
+  tags:
+  - fs-encryption
+  - fscrypt
 
 
 - name: "build tools: {{ packages }}"
