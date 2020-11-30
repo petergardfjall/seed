@@ -14,7 +14,7 @@ delve_version: "1.5.0"
 go_dep_version: "0.5.0"
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
-gopls_version: "v0.5.4-pre.1"
+gopls_version: "v0.5.4"
 golangci_lint_version: "v1.32.2"
 protoc_version: "3.7.1"
 protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
