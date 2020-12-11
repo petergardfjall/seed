@@ -8,6 +8,7 @@
     - desktop
     - dev
     - backup
+    - fscrypt
 
 - hosts: laptop
   gather_facts: no
