@@ -83,6 +83,7 @@
     - gimp
     - gpick
     - gnuplot
+    - libheif-examples  # heif-convert: .heif -> .jpg conversion
     # communication
     - openssh-server
     - openssh-client
