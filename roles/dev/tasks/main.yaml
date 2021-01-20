@@ -492,9 +492,6 @@
     - "-u github.com/rogpeppe/godef"
     # linter for Go
     - "-u golang.org/x/lint/golint"
-    # gRPC for Go
-    - "-u google.golang.org/grpc"
-    - "-u github.com/golang/protobuf/protoc-gen-go"
   tags: ["go"]
 
 - name: "go: install modules"
@@ -515,6 +512,9 @@
     - "github.com/go-swagger/go-swagger/cmd/swagger"
     # terraform language server (use by emacs' lsp-mode)
     - "github.com/juliosueiras/terraform-lsp@{{ tf_ls_version }}"
+    # gRPC for Go
+    - "google.golang.org/protobuf/cmd/protoc-gen-go@{{ protoc_gen_go_version }}"
+    - "google.golang.org/grpc/cmd/protoc-gen-go-grpc@{{ grpc_gen_go_version }}"
   tags:
   - go
   - go-modules
