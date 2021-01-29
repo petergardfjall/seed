@@ -63,7 +63,7 @@ tf_ls_version: "v0.0.11-beta2"
 # Packer
 packer_version: "1.5.1"
 
-eclipse_version: "2019-12"
+eclipse_version: "2020-12"
 eclipse_install_dir: "/opt/eclipse-{{ eclipse_version }}"
 
 #
