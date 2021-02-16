@@ -656,6 +656,9 @@
   - "pyright@{{ pyright_ls_version }}"
   # converter of markdown to pdf documents
   - md-to-pdf
+  # an opinionated code-formatter (for JavaScript, JSX)
+  # https://prettier.io/. Used in Emacs.
+  - prettier
   tags:
   - nodejs
   - npm
