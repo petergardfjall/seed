@@ -646,6 +646,9 @@
     global: yes
   loop:
   - grunt-cli
+  # recommended js/typescript language protocol server (user by emacs' lsp-mode)
+  - typescript
+  - "typescript-language-server@{{ typescript_lsp_server_version }}"
   # js/typescript language protocol server (user by emacs' lsp-mode)
   - javascript-typescript-langserver
   # html language protocol server (user by emacs' lsp-mode)

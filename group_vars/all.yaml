@@ -22,7 +22,11 @@ protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
 protoc_gen_go_version: "v1.25.0"
 grpc_gen_go_version: "v1.0.1"
 
+#
+# JavaScript/NodeJS
+#
 nodejs_repo_version: "node_12.x"
+typescript_lsp_server_version: "0.5.1"
 
 #
 # C/C++
