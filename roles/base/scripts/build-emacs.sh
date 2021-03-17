@@ -2,6 +2,9 @@
 
 set -e
 
+build_dir=${build_dir:-/opt/emacs-src}
+compile_flags=${compile_flags:-}
+
 script="$(basename ${0})"
 
 function die {
@@ -13,8 +16,6 @@ function log {
     echo -e "\e[32m[${script}] ${1}\e[39m"
 }
 
-
-build_dir=${build_dir:-/opt/emacs-src}
 build_marker_prefix=".BUILT"
 
 [ -z "${1}" ] && die "no emacs revision (tag or commit) given"
@@ -53,11 +54,12 @@ build_log=${build_dir}/build.log
 git checkout -B ${revision}-branch ${rev_commit}
 log "building on branch ${revision}-branch (see ${build_log}) ..."
 
-git clean -dxf  > ${build_log}  2>&1
-./autogen.sh    >> ${build_log} 2>&1
-./configure     >> ${build_log} 2>&1
-make bootstrap  >> ${build_log} 2>&1
-make            >> ${build_log} 2>&1
+export CC="gcc-10"
+git clean -dxf                > ${build_log}  2>&1
+./autogen.sh                 >> ${build_log} 2>&1
+./configure ${compile_flags} >> ${build_log} 2>&1
+make bootstrap               >> ${build_log} 2>&1
+make -j $(nproc) install     >> ${build_log} 2>&1
 
 log "emacs binary built in ${build_dir}/src/emacs"
 
