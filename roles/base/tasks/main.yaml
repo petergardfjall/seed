@@ -67,6 +67,8 @@
     # filesystem
     - gparted
     - sshfs
+    # files
+    - hexyl # similar to hexdump but with nice color coding
     # monitoring
     - htop
     - iftop
