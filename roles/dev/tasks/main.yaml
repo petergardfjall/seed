@@ -882,26 +882,6 @@
 # Miscellaneous tools
 #
 
-- name: "get kernel version"
-  shell: uname -r
-  register: uname_r
-  changed_when: False  # read-only: won't change machine state
-  tags:
-  - bcc
-
-# installs several eBPF-based tools under /usr/sbin/*-bpfcc
-- name: "bcc: install {{ packages }}"
-  vars:
-    packages:
-    - "bpfcc-tools"
-    - "linux-headers-{{ uname_r.stdout }}"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
-  tags:
-  - bcc
-
 #
 # Openstack
 #
