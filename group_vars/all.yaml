@@ -2,7 +2,7 @@ ubuntu_release: "focal"
 
 # emacs version (tag or commit) to build from source.
 # for example, "emacs-27.1" or "86d8d76aa3"
-emacs_rev: "3e133cc050926284109fe61f4789f67676491ffa"
+emacs_rev: "7ba816ee1cba00cf29cc79f60e731d86c8dc3a07"
 emacs_dir: "/opt/emacs-src"
 emacs_compile_flags: "--with-native-compilation"
 
@@ -44,11 +44,11 @@ dotnet_sdk_version: "3.1"
 pyright_ls_version: "1.1.65"
 # alternative python language server
 python_language_server_version: "0.2"
-pyenv_version: "v1.2.20"
+pyenv_version: "v1.2.24.1"
 # python versions to install in pyenv
-pyenv_py_versions: ["2.7.18", "3.8.5"]
+pyenv_py_versions: ["2.7.18", "3.9.2"]
 # interpreters to set as default, globally
-pyenv_global_versions: "3.8.5 2.7.18"
+pyenv_global_versions: "3.9.2 2.7.18"
 pyenv_virtualenv_version: "v1.1.5"
 
 #
