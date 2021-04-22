@@ -23,6 +23,8 @@ protoc_version: "3.14.0"
 protoc_install_dir: "/opt/protoc-{{ protoc_version }}"
 protoc_gen_go_version: "v1.25.0"
 grpc_gen_go_version: "v1.0.1"
+# go mod visualization
+modgv_version: "v0.2.1"
 
 #
 # JavaScript/NodeJS
