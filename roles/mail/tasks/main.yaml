@@ -1,0 +1,51 @@
+#
+# offlineimap: bidirectional maildir synchronization via IMAP
+#
+- name: "offlineimap: install"
+  vars:
+    packages:
+    - offlineimap
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  tags:
+  - mail
+  - offlineimap
+
+#
+# mu mail indexer
+#
+
+- name: "mu: prerequisites: {{ packages }}"
+  vars:
+    packages:
+    - libgmime-3.0-dev
+    - libxapian-dev
+    # optional
+    - guile-2.2-dev
+    - html2text
+    - xdg-utils
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  tags:
+  - mail
+  - mu
+  - mu4e
+
+#
+# builds and installs
+# - mu:   /usr/local/bin/mu
+# - mu4e: /usr/local/share/emacs/site-lisp/mu4e
+#
+- name: "mu: build tag/commit: {{ mu_rev }}"
+  shell: |
+    build_dir={{ mu_dir }} {{ role_path }}/scripts/build-mu.sh {{ mu_rev | quote }}
+  args:
+    creates: "/opt/mu-src/.BUILT_{{ mu_rev }}"
+  tags:
+  - mail
+  - mu
+  - mu4e

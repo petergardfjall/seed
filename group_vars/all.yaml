@@ -106,3 +106,10 @@ duplicity_packages: "duplicity>0.8,PyDrive>1.3,boto3>1.12,future"
 # any encrypted folders in use.
 fscrypt_version: "v0.2.9"
 fscrypt_repo_dir: "/opt/fscrypt"
+
+#
+# email
+#
+# commit/tag of mu to build
+mu_dir: "/opt/mu-src"
+mu_rev: "v1.4.15"
