@@ -3,13 +3,14 @@
   become: yes
   become_method: sudo
   roles:
-    - base
-    - firewall
-    - desktop
-    - dev
-    - backup
-    - fscrypt
-    - mail
+  - base
+  - emacs
+  - firewall
+  - desktop
+  - dev
+  - backup
+  - fscrypt
+  - mail
 
 - hosts: laptop
   gather_facts: no

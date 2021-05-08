@@ -1,0 +1,190 @@
+- name: "git: checkout ~/.emacs.d/"
+  become: no   # not as root
+  git:
+    repo: 'https://github.com/petergardfjall/.emacs.d.git'
+    recursive: yes
+    dest: "{{ '~/.emacs.d' | expanduser }}"
+    clone: yes
+    update: no
+  tags:
+  - dotfiles
+  - emacs
+
+- name: "git: set ssh remote for ~/.emacs.d"
+  become: no
+  git_config:
+    name:  remote.origin.url
+    value: git@github.com:petergardfjall/.emacs.d.git
+    scope: local
+    repo:  "{{ '~/.emacs.d' | expanduser }}"
+  tags:
+  - dotfiles
+  - emacs
+
+
+- name: "emacs: prerequisites: {{ packages }}"
+  vars:
+    packages:
+    # see https://www.emacswiki.org/emacs/EmacsSnapshotAndDebian
+    - texinfo
+    - xorg-dev
+    - libgtk-3-dev
+    - libxpm-dev
+    - libjpeg-dev
+    - libgif-dev
+    - libtiff5-dev
+    - libm17n-dev
+    - libpng-dev
+    - librsvg2-dev
+    - libotf-dev
+    - libgnutls28-dev
+    - libncurses5-dev
+    - libjansson-dev
+    - libharfbuzz-dev
+    - libharfbuzz-bin
+    # needed for native compilation (emacs 28+)
+    - gcc-10
+    - libgccjit0
+    - libgccjit-10-dev
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  tags:
+  - emacs
+
+- name: "emacs: build tag/commit: {{ emacs_rev }}"
+  shell: |
+    build_dir={{ emacs_dir }} compile_flags={{ emacs_compile_flags }} {{ role_path }}/scripts/build-emacs.sh {{ emacs_rev | quote }}
+  args:
+    creates: "/opt/emacs-src/.BUILT_{{ emacs_rev }}"
+  tags:
+  - emacs
+
+- name: "emacs: /usr/local/bin/emacs symlink"
+  file:
+    src:  /opt/emacs-src/src/emacs
+    dest: /usr/local/bin/emacs
+    force: yes
+    state: link
+  tags:
+  - emacs
+
+- name: "install: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    # a faster grep for code (used by emacs ag package)
+    - silversearcher-ag
+    # GNU global source code tagging (gtags) and querying (global)
+    - global
+    # extends global/gtags with support for C#, Py, Ruby, ...
+    # NOTE: for additional lang support (Go, D, Rust, Clojure) we also
+    # manually build/install universal-ctags below.
+    # NOTE: set GTAGSLABEL=exuberant-ctags to make use of this backend.
+    - exuberant-ctags
+    # extends global/gtags with support for F#, Haskell, ..
+    # NOTE: set GTAGSLABEL=pygments-parser to make use of this backend.
+    - python3-pygments
+  tags:
+  - emacs
+  - global
+
+- name: "universal-ctags: install prerequisites: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - python3-docutils
+    - libseccomp-dev
+    - libjansson-dev
+    - libyaml-dev
+    - libxml2-dev
+  tags:
+  - emacs
+  - global
+
+- name: "emacs vterm: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+    - libtool-bin
+    - libvterm-dev
+  tags:
+  - emacs
+  - vterm
+
+
+# universal-ctags extends language support for global/gtags
+# NOTE: set GTAGSLABEL=universal-ctags to make use of this backend.
+- name: "universal-ctags: clone git repo"
+  git:
+    repo: 'https://github.com/universal-ctags/ctags'
+    recursive: yes
+    dest: "/opt/universal-ctags"
+    clone: yes
+    update: no
+  tags:
+  - emacs
+  - ctags
+  - gtags
+  - global
+
+- name: "universal-ctags: build and install under /usr/local/bin/ctags"
+  shell: "./autogen.sh && ./configure --prefix=/usr/local && make && make install"
+  args:
+    chdir: "/opt/universal-ctags"
+  tags:
+  - emacs
+  - ctags
+  - gtags
+  - global
+
+- name: "global: place config under ~/.globalrc "
+  become: no
+  copy:
+    src: files/globalrc
+    dest: "{{ '~/.globalrc' | expanduser }}"
+    mode: 0644
+  tags:
+  - emacs
+  - ctags
+  - gtags
+  - global
+
+# pandoc is used by emacs markdown-preview-mode
+- name: "install: pandoc"
+  apt:
+    deb: "https://github.com/jgm/pandoc/releases/download/2.6/pandoc-2.6-1-amd64.deb"
+  tags: emacs
+
+- name: "truecolor terminal: create ~/xterm-24bit.terminfo file"
+  become: no
+  blockinfile:
+    path: "{{ '~/xterm-24bit.terminfo' | expanduser }}"
+    block: |
+      xterm-24bit|xterm with 24-bit direct color mode,
+         use=xterm-256color,
+         sitm=\E[3m,
+         ritm=\E[23m,
+         setb24=\E[48;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
+         setf24=\E[38;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
+    create: yes
+  tags: emacs
+
+# this allows us to 'export TERM=xterm-24bit' to make use of truecolor
+# terminal
+- name: "truecolor terminal: create ~/.terminfo"
+  become: no
+  shell: "tic -x -o ~/.terminfo ~/xterm-24bit.terminfo"
+  args:
+    creates: "{{ '~/.terminfo' | expanduser }}"
+  tags: emacs
