@@ -4,6 +4,7 @@
   become_method: sudo
   roles:
   - base
+  - fonts
   - emacs
   - firewall
   - desktop

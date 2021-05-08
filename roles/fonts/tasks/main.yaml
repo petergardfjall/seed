@@ -1,0 +1,28 @@
+- name: "fonts: install .ttf (truetype) fonts"
+  become: yes   # as root
+  copy:
+    src: "files/truetype/{{ item }}"
+    dest: /usr/share/fonts/truetype/
+  with_items:
+  - RobotoMono
+  - SourceCodePro
+  - FiraCode
+  tags:
+  - fonts
+
+# - name: "fonts: install .otf (opentype) fonts"
+#   become: yes   # as root
+#   copy:
+#     src: "files/opentype/{{ item }}"
+#     dest: /usr/share/fonts/opentype/
+#   with_items:
+#   # -
+#   tags:
+#   - fonts
+
+
+- name: "fonts: regenerate font cache"
+  become: yes
+  command: fc-cache -fv
+  tags:
+  - emacs
