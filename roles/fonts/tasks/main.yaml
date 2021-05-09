@@ -2,11 +2,11 @@
   become: yes   # as root
   copy:
     src: "files/truetype/{{ item }}"
-    dest: /usr/share/fonts/truetype/
+    dest: /usr/local/share/fonts/
   with_items:
   - RobotoMono
   - SourceCodePro
-  - FiraCode
+  - JetBrainsMono
   tags:
   - fonts
 
@@ -14,9 +14,9 @@
 #   become: yes   # as root
 #   copy:
 #     src: "files/opentype/{{ item }}"
-#     dest: /usr/share/fonts/opentype/
+#     dest: /usr/local/share/fonts/
 #   with_items:
-#   # -
+#   - CascadiaCode
 #   tags:
 #   - fonts
 
