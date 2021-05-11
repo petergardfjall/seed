@@ -7,8 +7,10 @@
   - RobotoMono
   - SourceCodePro
   - JetBrainsMono
+  - Cousine
   tags:
   - fonts
+  - truetype
 
 # - name: "fonts: install .otf (opentype) fonts"
 #   become: yes   # as root
