@@ -5,24 +5,13 @@
     dest: /usr/local/share/fonts/
   with_items:
   - RobotoMono
-  - SourceCodePro
   - JetBrainsMono
   - Hasklig
+  - SourceCodePro
   - Cousine
   tags:
   - fonts
   - truetype
-
-# - name: "fonts: install .otf (opentype) fonts"
-#   become: yes   # as root
-#   copy:
-#     src: "files/opentype/{{ item }}"
-#     dest: /usr/local/share/fonts/
-#   with_items:
-#   - CascadiaCode
-#   tags:
-#   - fonts
-
 
 - name: "fonts: regenerate font cache"
   become: yes
