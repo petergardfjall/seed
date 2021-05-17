@@ -2,7 +2,7 @@ ubuntu_release: "focal"
 
 # emacs version (tag or commit) to build from source.
 # for example, "emacs-27.1" or "86d8d76aa3"
-emacs_rev: "30d974bf5c02a1367291fbb6fa17a182bb7974b7"
+emacs_rev: "e761e12498ff108c3b82e9d27843baec6670447c"
 emacs_dir: "/opt/emacs-src"
 emacs_compile_flags: "--with-native-compilation"
 
