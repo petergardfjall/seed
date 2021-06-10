@@ -24,6 +24,7 @@
     - curl
     - dirmngr
     - snapd
+    - debtree
   tags:
   - apt
   - package-management
