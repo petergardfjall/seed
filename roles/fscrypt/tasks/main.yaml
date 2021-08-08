@@ -71,7 +71,7 @@
     dest:    "{{ fscrypt_repo_dir }}"
     version: "{{ fscrypt_version }}"
     clone: yes
-    update: no
+    update: yes
   tags:
   - fs-encryption
   - fscrypt
