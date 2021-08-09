@@ -103,3 +103,18 @@
   tags:
   - fs-encryption
   - fscrypt
+
+
+# Some Linux distros use restrictive settings in /etc/pam.d/other that prevent
+# programs from checking your login passphrase unless a per-program PAM
+# configuration file grants access. This prevents fscrypt from creating any
+# login passphrase-protected directories, even without auto-unlocking.
+- name: "fscrypt: allow fscrypt to check login passphrase"
+  become: yes
+  copy:
+    src:  files/etc_pam.d_fscrypt
+    dest: /etc/pam.d/fscrypt
+    mode: 0644
+  tags:
+  - fs-encryption
+  - fscrypt
