@@ -1211,6 +1211,7 @@
   changed_when: False  # read-only: won't change machine state
   register: helmfile_v
   tags:
+  - kubernetes
   - helmfile
 
 - name: "helmfile: download"
@@ -1220,6 +1221,7 @@
     mode: "0755"
   when: (helmfile_v is failed) or (not helmfile_version in helmfile_v.stdout)
   tags:
+  - kubernetes
   - helmfile
 
 #
