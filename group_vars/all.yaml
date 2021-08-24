@@ -2,14 +2,13 @@ ubuntu_release: "focal"
 
 # emacs version (tag or commit) to build from source.
 # for example, "emacs-27.1" or "86d8d76aa3"
-emacs_rev: "75de09b9de2c800d074e2b65a03483d0d44ce3de"
+emacs_rev: "0c640b82f0b3d9a06156a61af0aeec11a2f98ba0"
 emacs_dir: "/opt/emacs-src"
 emacs_compile_flags: "--with-native-compilation"
 # source code version of GNU Global to build
 gnu_global_version: "6.6.7"
 # commit, branch or tag to use for https://github.com/universal-ctags/ctags
 universal_ctags_version: "p5.9.20210815.0"
-
 
 #
 # Go
@@ -70,7 +69,6 @@ tf_version: "0.12.19"
 tf_install_dir: "/opt/tf-{{ tf_version }}"
 # language server version
 tf_ls_version: "v0.0.11-beta2"
-
 
 # Packer
 packer_version: "1.5.1"
