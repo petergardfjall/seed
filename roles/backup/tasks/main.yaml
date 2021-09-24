@@ -5,28 +5,27 @@
     install_recommends: yes
   vars:
     packages:
-    - librsync-dev
+      - librsync-dev
   tags:
-  - backup
-  - duplicity
+    - backup
+    - duplicity
 
 - name: "duplicity: root install ({{ duplicity_packages }})"
   become: yes # want to be able to backup privileged directories
   pip:
     name: "{{ duplicity_packages }}"
   tags:
-  - backup
-  - duplicity
+    - backup
+    - duplicity
 
 - name: "duplicity: user install ({{ duplicity_packages }})"
   become: no
   pip:
-    extra_args: --user  # install under ~/.local
+    extra_args: --user # install under ~/.local
     name: "{{ duplicity_packages }}"
   tags:
-  - backup
-  - duplicity
-
+    - backup
+    - duplicity
 
 - name: "rclone: install"
   apt:
@@ -34,5 +33,5 @@
     state: latest
     install_recommends: yes
   tags:
-  - backup
-  - rclone
+    - backup
+    - rclone

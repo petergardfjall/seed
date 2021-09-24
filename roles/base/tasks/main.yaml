@@ -17,17 +17,17 @@
     install_recommends: yes
   vars:
     packages:
-    - apt-transport-https
-    - software-properties-common
-    - aptitude
-    - debconf-utils
-    - curl
-    - dirmngr
-    - snapd
-    - debtree
+      - apt-transport-https
+      - software-properties-common
+      - aptitude
+      - debconf-utils
+      - curl
+      - dirmngr
+      - snapd
+      - debtree
   tags:
-  - apt
-  - package-management
+    - apt
+    - package-management
 
 - name: "apt repo: canonical partner"
   apt_repository:
@@ -35,7 +35,7 @@
     state: present
     update_cache: yes
   tags:
-  - apt-repos
+    - apt-repos
 
 - name: "apt repo: canonical partner src"
   apt_repository:
@@ -43,7 +43,7 @@
     state: present
     update_cache: yes
   tags:
-  - apt-repos
+    - apt-repos
 
 - name: "install basic tools: {{ packages }}"
   apt:
@@ -52,63 +52,63 @@
     install_recommends: yes
   vars:
     packages:
-    # shell
-    - bash-completion
-    - tmux
-    # shell utilities
-    - pwgen
-    - tree
-    - jq
-    - pass
-    - dos2unix
-    # desktop/X
-    - wmctrl
-    - xdotool
-    - xsel
-    # filesystem
-    - gparted
-    - sshfs
-    # files
-    - hexyl # similar to hexdump but with nice color coding
-    # monitoring
-    - htop
-    - iftop
-    - bmon
-    - iperf
-    - sysstat
-    - powertop
-    - httperf
-    # network
-    - nmap
-    - tinyproxy # light-weight HTTP/HTTPS proxy daemon
-    # graphics
-    - inkscape
-    - gimp
-    - gpick
-    - gnuplot
-    - libheif-examples  # heif-convert: .heif -> .jpg conversion
-    # communication
-    - openssh-server
-    - openssh-client
-    # version control
-    - git
-    - gitg
-    - tig
-    - subversion
-    - mercurial
-    - meld
-    # markdown rendering
-    - markdown
-    # gpg password entry in text-mode
-    - pinentry-tty
-    - pinentry-curses
-    # diagrams
-    - dia
-    - graphviz
-    # webcam
-    - cheese
+      # shell
+      - bash-completion
+      - tmux
+      # shell utilities
+      - pwgen
+      - tree
+      - jq
+      - pass
+      - dos2unix
+      # desktop/X
+      - wmctrl
+      - xdotool
+      - xsel
+      # filesystem
+      - gparted
+      - sshfs
+      # files
+      - hexyl # similar to hexdump but with nice color coding
+      # monitoring
+      - htop
+      - iftop
+      - bmon
+      - iperf
+      - sysstat
+      - powertop
+      - httperf
+      # network
+      - nmap
+      - tinyproxy # light-weight HTTP/HTTPS proxy daemon
+      # graphics
+      - inkscape
+      - gimp
+      - gpick
+      - gnuplot
+      - libheif-examples # heif-convert: .heif -> .jpg conversion
+      # communication
+      - openssh-server
+      - openssh-client
+      # version control
+      - git
+      - gitg
+      - tig
+      - subversion
+      - mercurial
+      - meld
+      # markdown rendering
+      - markdown
+      # gpg password entry in text-mode
+      - pinentry-tty
+      - pinentry-curses
+      # diagrams
+      - dia
+      - graphviz
+      # webcam
+      - cheese
   tags:
-  - basictools
+    - basictools
 
 - name: "build tools: {{ packages }}"
   apt:
@@ -118,16 +118,15 @@
   vars:
     # build tools that may be needed to build other base tools from source
     packages:
-    - make
-    - pkg-config
-    - autoconf
-    - automake
-    - build-essential
-    - gcc
-    - gettext
+      - make
+      - pkg-config
+      - autoconf
+      - automake
+      - build-essential
+      - gcc
+      - gettext
   tags:
-  - buildtools
-
+    - buildtools
 
 - name: "~/inputrc: emacs-like copy/paste in terminal"
   become: no
@@ -136,8 +135,7 @@
     dest: "{{ '~/.inputrc' | expanduser }}"
     mode: 0644
   tags:
-  - terminal
-
+    - terminal
 
 #
 # chrome
@@ -147,8 +145,8 @@
     url: "https://dl.google.com/linux/linux_signing_key.pub"
     state: present
   tags:
-  - apt-repos
-  - chrome
+    - apt-repos
+    - chrome
 
 - name: "apt repo: google chrome"
   apt_repository:
@@ -157,8 +155,8 @@
     state: present
     update_cache: yes
   tags:
-  - apt-repos
-  - chrome
+    - apt-repos
+    - chrome
 
 - name: "google chrome: install"
   apt:
@@ -166,7 +164,7 @@
     state: latest
     install_recommends: yes
   tags:
-  - chrome
+    - chrome
 
 #
 # locale
@@ -174,7 +172,7 @@
 
 - name: "generate swedish locale"
   shell: locale-gen sv_SE
-  changed_when: False  # don't appear changed
+  changed_when: False # don't appear changed
 
 - name: "apt: clean unneeded packages"
   apt:
@@ -185,55 +183,54 @@
 #
 
 - name: "git: checkout ~/dotfiles"
-  become: no   # not as root
+  become: no # not as root
   git:
-    repo: 'https://github.com/petergardfjall/dotfiles.git'
+    repo: "https://github.com/petergardfjall/dotfiles.git"
     recursive: yes
     dest: "{{ '~/dotfiles' | expanduser }}"
     clone: yes
     update: no
   tags:
-  - dotfiles
+    - dotfiles
 
 - name: "git: set ssh remote for ~/dotfiles"
   become: no
   git_config:
-    name:  remote.origin.url
+    name: remote.origin.url
     value: git@github.com:petergardfjall/dotfiles.git
     scope: local
-    repo:  "{{ '~/dotfiles' | expanduser }}"
+    repo: "{{ '~/dotfiles' | expanduser }}"
   tags:
-  - dotfiles
-
+    - dotfiles
 
 - name: "vscode: create config dir"
-  become: no   # not as root
+  become: no # not as root
   file:
     path: "{{ '~/.config/Code/User' | expanduser }}"
     state: directory
   tags:
-  - dotfiles
+    - dotfiles
 
 - name: "vscode: symlink for settings.json"
-  become: no   # not as root
+  become: no # not as root
   file:
     src: "{{ '~/dotfiles/vscode/settings.json' | expanduser }}"
     dest: "{{ '~/.config/Code/User/settings.json' | expanduser }}"
     state: link
   tags:
-  - dotfiles
+    - dotfiles
 
 - name: "vscode: symlink for keybindings.json"
-  become: no   # not as root
+  become: no # not as root
   file:
     src: "{{ '~/dotfiles/vscode/keybindings.json' | expanduser }}"
     dest: "{{ '~/.config/Code/User/keybindings.json' | expanduser }}"
     state: link
   tags:
-  - dotfiles
+    - dotfiles
 
 - name: ".bashrc: extra modules"
-  become: no   # not as root
+  become: no # not as root
   blockinfile:
     path: "{{ '~/.bashrc' | expanduser }}"
     block: |
@@ -242,10 +239,10 @@
       #
       source ~/dotfiles/bash.includes
   tags:
-  - dotfiles
+    - dotfiles
 
 - name: ".profile: extra modules"
-  become: no   # not as root
+  become: no # not as root
   blockinfile:
     path: "{{ '~/.profile' | expanduser }}"
     block: |
@@ -254,25 +251,25 @@
       #
       source ~/dotfiles/bash.includes
   tags:
-  - dotfiles
+    - dotfiles
 
 - name: "git: checkout ~/bin/scripts"
-  become: no   # not as root
+  become: no # not as root
   git:
-    repo: 'https://github.com/petergardfjall/scripts'
+    repo: "https://github.com/petergardfjall/scripts"
     recursive: yes
     dest: "{{ '~/bin/scripts' | expanduser }}"
     clone: yes
     update: no
   tags:
-  - dotfiles
+    - dotfiles
 
 - name: "git: set ssh remote for ~/bin/scripts"
   become: no
   git_config:
-    name:  remote.origin.url
+    name: remote.origin.url
     value: git@github.com:petergardfjall/scripts.git
     scope: local
-    repo:  "{{ '~/bin/scripts' | expanduser }}"
+    repo: "{{ '~/bin/scripts' | expanduser }}"
   tags:
-  - dotfiles
+    - dotfiles

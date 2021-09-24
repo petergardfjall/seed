@@ -1,20 +1,20 @@
 - name: "fonts: install .ttf (truetype) fonts"
-  become: yes   # as root
+  become: yes # as root
   copy:
     src: "files/truetype/{{ item }}"
     dest: /usr/local/share/fonts/
   with_items:
-  - RobotoMono
-  - JetBrainsMono
-  - Hasklig
-  - SourceCodePro
-  - Cousine
+    - RobotoMono
+    - JetBrainsMono
+    - Hasklig
+    - SourceCodePro
+    - Cousine
   tags:
-  - fonts
-  - truetype
+    - fonts
+    - truetype
 
 - name: "fonts: regenerate font cache"
   become: yes
   command: fc-cache -fv
   tags:
-  - emacs
+    - emacs

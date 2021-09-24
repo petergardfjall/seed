@@ -3,19 +3,19 @@
   become: yes
   become_method: sudo
   roles:
-  - base
-  - fonts
-  - emacs
-  - firewall
-  - desktop
-  - dev
-  - backup
-  - fscrypt
-  - mail
+    - base
+    - fonts
+    - emacs
+    - firewall
+    - desktop
+    - dev
+    - backup
+    - fscrypt
+    - mail
 
 - hosts: laptop
   gather_facts: no
   become: yes
   become_method: sudo
   roles:
-  - laptop
+    - laptop

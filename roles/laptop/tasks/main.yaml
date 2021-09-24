@@ -5,4 +5,4 @@
     install_recommends: yes
   vars:
     packages:
-    - laptop-mode-tools
+      - laptop-mode-tools

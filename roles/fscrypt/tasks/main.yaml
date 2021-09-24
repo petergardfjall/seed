@@ -5,12 +5,12 @@
     install_recommends: yes
   vars:
     packages:
-    # allow directory-level encryption
-    - gocryptfs
-    - libpam-mount # needed to support mounting of encrypted gocrypt filesystem on login
+      # allow directory-level encryption
+      - gocryptfs
+      - libpam-mount # needed to support mounting of encrypted gocrypt filesystem on login
   tags:
-  - fs-encryption
-  - gocryptfs
+    - fs-encryption
+    - gocryptfs
 
 # `gocryptfs` is a stacked file-system that allows mounting of encrypted
 # folders. Useful for encrypting designated user folders. Example use:
@@ -33,15 +33,14 @@
     install_recommends: yes
   vars:
     packages:
-    # allow directory-level encryption
-    - gocryptfs
-    # needed to support mounting of encrypted gocrypt filesystem on login
-    # see https://github.com/rfjakob/gocryptfs/wiki/Mounting-on-login-using-pam_mount
-    - libpam-mount
+      # allow directory-level encryption
+      - gocryptfs
+      # needed to support mounting of encrypted gocrypt filesystem on login
+      # see https://github.com/rfjakob/gocryptfs/wiki/Mounting-on-login-using-pam_mount
+      - libpam-mount
   tags:
-  - fs-encryption
-  - gocryptfs
-
+    - fs-encryption
+    - gocryptfs
 
 # fscrypt: a high-level tool for managing linux filesystem encryption (the
 # kernel part is sometimes also referred to as `fscrypt`)
@@ -59,22 +58,22 @@
     install_recommends: yes
   vars:
     packages:
-    - libpam0g-dev
+      - libpam0g-dev
   tags:
-  - fs-encryption
-  - fscrypt
+    - fs-encryption
+    - fscrypt
 
 - name: "fscrypt: git clone"
   become: yes
   git:
-    repo:    https://github.com/google/fscrypt.git
-    dest:    "{{ fscrypt_repo_dir }}"
+    repo: https://github.com/google/fscrypt.git
+    dest: "{{ fscrypt_repo_dir }}"
     version: "{{ fscrypt_version }}"
     clone: yes
     update: yes
   tags:
-  - fs-encryption
-  - fscrypt
+    - fs-encryption
+    - fscrypt
 
 # installs fscrypt into /usr/bin, pam_fscrypt.so into /usr/lib/security, and
 # pam_fscrypt/config into /usr/share/pam-configs
@@ -91,8 +90,8 @@
     # need go executable on PATH
     PATH: "/opt/bin:{{ lookup('env', 'PATH') }}"
   tags:
-  - fs-encryption
-  - fscrypt
+    - fs-encryption
+    - fscrypt
 
 # To support the login password protector, we need to apply the fscrypt pam
 # (Pluggable Authentication Modules) settings in /usr/share/pam-configs/fscrypt
@@ -101,9 +100,8 @@
   command:
     cmd: /usr/sbin/pam-auth-update --enable fscrypt
   tags:
-  - fs-encryption
-  - fscrypt
-
+    - fs-encryption
+    - fscrypt
 
 # Some Linux distros use restrictive settings in /etc/pam.d/other that prevent
 # programs from checking your login passphrase unless a per-program PAM
@@ -112,9 +110,9 @@
 - name: "fscrypt: allow fscrypt to check login passphrase"
   become: yes
   copy:
-    src:  files/etc_pam.d_fscrypt
+    src: files/etc_pam.d_fscrypt
     dest: /etc/pam.d/fscrypt
     mode: 0644
   tags:
-  - fs-encryption
-  - fscrypt
+    - fs-encryption
+    - fscrypt

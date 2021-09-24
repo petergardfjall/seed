@@ -8,11 +8,11 @@
     install_recommends: yes
   vars:
     packages:
-    - mysql-client
-    - postgresql-client
+      - mysql-client
+      - postgresql-client
   tags:
-  - database
-  - apt
+    - database
+    - apt
 
 #
 # docker
@@ -25,10 +25,10 @@
     install_recommends: yes
   vars:
     packages:
-    - docker.io
-    - docker-compose
+      - docker.io
+      - docker-compose
   tags:
-  - docker
+    - docker
 
 - name: "docker: adding user to docker group"
   user:
@@ -36,7 +36,7 @@
     groups: docker
     append: yes
   tags:
-  - docker
+    - docker
 
 - name: "docker: enable"
   systemd:
@@ -45,7 +45,7 @@
     state: started
     masked: no
   tags:
-  - docker
+    - docker
 
 #
 # VS Code
@@ -55,7 +55,7 @@
     url: "https://packages.microsoft.com/keys/microsoft.asc"
     state: present
   tags:
-  - apt-repos
+    - apt-repos
 
 - name: "apt repo: vscode"
   apt_repository:
@@ -64,7 +64,7 @@
     state: present
     update_cache: yes
   tags:
-  - apt-repos
+    - apt-repos
 
 - name: "vscode: install"
   apt:
@@ -73,12 +73,12 @@
     install_recommends: yes
   vars:
     packages:
-    - code
+      - code
 
 - name: "vscode: install extensions"
-  become: no   # not as root
+  become: no # not as root
   shell: "~/dotfiles/vscode/install-extensions.sh"
-  changed_when: False  # don't appear changed
+  changed_when: False # don't appear changed
 
 #
 # Virtualization
@@ -91,20 +91,20 @@
     install_recommends: yes
   vars:
     packages:
-    - virtualbox
-    - vagrant
+      - virtualbox
+      - vagrant
   tags:
-  - vm
-  - virtualbox
+    - vm
+    - virtualbox
 
 - name: "virtualbox: add {{ lookup('env', 'USER') }} to vboxusers group"
   user:
-    name:  "{{ lookup('env', 'USER') }}"
+    name: "{{ lookup('env', 'USER') }}"
     groups: vboxusers
     append: yes
   tags:
-  - vm
-  - virtualbox
+    - vm
+    - virtualbox
 
 - name: "kvm/libvirt: install {{ packages }}"
   apt:
@@ -113,26 +113,26 @@
     install_recommends: yes
   vars:
     packages:
-    - qemu-kvm
-    - libvirt-daemon-system
-    - libvirt-clients
-    - bridge-utils
-    - cpu-checker
-    - virt-manager
+      - qemu-kvm
+      - libvirt-daemon-system
+      - libvirt-clients
+      - bridge-utils
+      - cpu-checker
+      - virt-manager
   tags:
-  - vm
-  - kvm
-  - libvirt
+    - vm
+    - kvm
+    - libvirt
 
 - name: "kvm: add {{ lookup('env', 'USER') }} to kvm group"
   user:
-    name:  "{{ lookup('env', 'USER') }}"
+    name: "{{ lookup('env', 'USER') }}"
     groups: kvm
     append: yes
   tags:
-  - vm
-  - kvm
-  - libvirt
+    - vm
+    - kvm
+    - libvirt
 
 - name: "vagrant-libvirt: install dependencies {{ packages }}"
   apt:
@@ -141,51 +141,51 @@
     install_recommends: yes
   vars:
     packages:
-    - ruby-libvirt
-    - qemu
-    - ebtables
-    - dnsmasq
-    - libxslt-dev
-    - libxml2-dev
-    - libvirt-dev
-    - zlib1g-dev
-    - ruby-dev
+      - ruby-libvirt
+      - qemu
+      - ebtables
+      - dnsmasq
+      - libxslt-dev
+      - libxml2-dev
+      - libvirt-dev
+      - zlib1g-dev
+      - ruby-dev
   tags:
-  - vm
-  - kvm
-  - libvirt
+    - vm
+    - kvm
+    - libvirt
 
 - name: "libvirt: make sure regular users can create vms"
   replace:
     path: /etc/libvirt/libvirtd.conf
-    regexp:  'unix_sock_rw_perms = "0770"'
+    regexp: 'unix_sock_rw_perms = "0770"'
     replace: 'unix_sock_rw_perms = "0777"'
     backup: yes
   notify: "libvirtd: restart"
   tags:
-  - vm
-  - kvm
-  - libvirt
+    - vm
+    - kvm
+    - libvirt
 
 - name: "vagrant libvirt plugin: check if installed"
-  become: no   # not as root
+  become: no # not as root
   shell: vagrant plugin list | grep vagrant-libvirt
   ignore_errors: true
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: vagrant_libvirt_check
   tags:
-  - vm
-  - kvm
-  - libvirt
+    - vm
+    - kvm
+    - libvirt
 
 - name: "vagrant libvirt plugin: install"
-  become: no   # not as root
+  become: no # not as root
   shell: vagrant plugin install vagrant-libvirt
   when: vagrant_libvirt_check.rc != 0
   tags:
-  - vm
-  - kvm
-  - libvirt
+    - vm
+    - kvm
+    - libvirt
 
 - name: "packer: install"
   unarchive:
@@ -194,9 +194,8 @@
     remote_src: yes
     creates: /opt/bin/packer
   tags:
-  - packer
-  - vm
-
+    - packer
+    - vm
 
 #
 # Java
@@ -209,30 +208,30 @@
     install_recommends: yes
   vars:
     packages:
-    - openjdk-11-jdk
-    - openjdk-11-source
-    - visualvm
+      - openjdk-11-jdk
+      - openjdk-11-source
+      - visualvm
   tags:
-  - java
-  - openjdk
+    - java
+    - openjdk
 
 - name: "openjdk-11: /opt/java symlink"
   file:
-    src:  /usr/lib/jvm/java-11-openjdk-amd64
+    src: /usr/lib/jvm/java-11-openjdk-amd64
     dest: /opt/java
     state: link
   tags:
-  - java
-  - openjdk
+    - java
+    - openjdk
 
 - name: "openjdk-11: /opt/bin/java symlink"
   file:
-    src:  /usr/lib/jvm/java-11-openjdk-amd64/bin/java
+    src: /usr/lib/jvm/java-11-openjdk-amd64/bin/java
     dest: /opt/bin/java
     state: link
   tags:
-  - java
-  - openjdk
+    - java
+    - openjdk
 
 - name: "maven: install"
   apt:
@@ -241,18 +240,18 @@
     install_recommends: yes
   vars:
     packages:
-    - maven
+      - maven
   tags:
-  - java
-  - maven
+    - java
+    - maven
 
 - name: "eclipse: create {{ eclipse_install_dir }}"
   file:
     path: "{{ eclipse_install_dir }}"
     state: directory
   tags:
-  - java
-  - eclipse
+    - java
+    - eclipse
 
 - name: "eclipse: download {{ eclipse_version }}"
   unarchive:
@@ -261,30 +260,30 @@
     remote_src: yes
     creates: "{{ eclipse_install_dir }}/eclipse"
     extra_opts:
-    - --transform
-    - s/^eclipse\///
+      - --transform
+      - s/^eclipse\///
   tags:
-  - java
-  - eclipse
+    - java
+    - eclipse
 
 - name: "eclipse: /opt/bin/eclipse symlink"
   file:
-    src:  "{{ eclipse_install_dir }}/eclipse"
+    src: "{{ eclipse_install_dir }}/eclipse"
     dest: "/opt/bin/eclipse"
     state: link
   tags:
-  - java
-  - eclipse
+    - java
+    - eclipse
 
 - name: "intellij: install"
   snap:
     name:
-    - intellij-idea-community
+      - intellij-idea-community
     channel: "stable"
     classic: "yes"
   tags:
-  - java
-  - intellij
+    - java
+    - intellij
 
 #
 # Python
@@ -297,36 +296,34 @@
     install_recommends: yes
   vars:
     packages:
-    # needed for cryptography module
-    - libssl-dev
-    - libffi-dev
-    # needed for bz2 module
-    - libbz2-dev
-    - python3
-    - python3-dev
-    - python3-pip
-    - python3-venv
+      # needed for cryptography module
+      - libssl-dev
+      - libffi-dev
+      # needed for bz2 module
+      - libbz2-dev
+      - python3
+      - python3-dev
+      - python3-pip
+      - python3-venv
   tags:
-  - python
-  - python3
-
+    - python
+    - python3
 
 - name: "python3: install user pip modules"
-  become: no   # not as root
+  become: no # not as root
   pip:
     executable: pip3
-    extra_args: --user  # install under ~/.local
+    extra_args: --user # install under ~/.local
     name:
-    - ipython
-    # note: pipenv installs pip under ~/.local/bin. To avoid conflicts
-    # with system pip, place ~/.local/bin early on PATH.
-    - pipenv
-    # jq-like tool for yaml
-    - yq
-    # markdown preprocessor with support for `!INCLUDE <file>` macro
-    - MarkdownPP
+      - ipython
+      # note: pipenv installs pip under ~/.local/bin. To avoid conflicts
+      # with system pip, place ~/.local/bin early on PATH.
+      - pipenv
+      # jq-like tool for yaml
+      - yq
+      # markdown preprocessor with support for `!INCLUDE <file>` macro
+      - MarkdownPP
   tags: python
-
 
 - name: "python: update-alternatives for /usr/bin/python"
   alternatives:
@@ -335,8 +332,8 @@
     path: /usr/bin/python2
     priority: 20
   tags:
-  - python
-  - python2
+    - python
+    - python2
 
 - name: "python: update-alternatives for /usr/bin/python"
   alternatives:
@@ -345,8 +342,8 @@
     path: /usr/bin/python3
     priority: 30
   tags:
-  - python
-  - python3
+    - python
+    - python3
 
 # pyenv builds python from source, so it needs a few things to be installed.
 # see https://github.com/pyenv/pyenv/wiki/common-build-problems#prerequisites
@@ -357,26 +354,26 @@
     install_recommends: yes
   vars:
     packages:
-    - build-essential
-    - libssl-dev
-    - zlib1g-dev
-    - libbz2-dev
-    - libreadline-dev
-    - libsqlite3-dev
-    - llvm
-    - libncurses5-dev
-    - libncursesw5-dev
-    - xz-utils
-    - tk-dev
-    - libffi-dev
-    - liblzma-dev
-    - python-openssl
+      - build-essential
+      - libssl-dev
+      - zlib1g-dev
+      - libbz2-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - llvm
+      - libncurses5-dev
+      - libncursesw5-dev
+      - xz-utils
+      - tk-dev
+      - libffi-dev
+      - liblzma-dev
+      - python-openssl
   tags:
-  - python
-  - pyenv
+    - python
+    - pyenv
 
 - name: "pyenv: install"
-  become: no   # not as root
+  become: no # not as root
   git:
     repo: https://github.com/pyenv/pyenv.git
     dest: "{{ '~/.pyenv' | expanduser }}"
@@ -384,22 +381,22 @@
     clone: yes
     update: no
   tags:
-  - python
-  - pyenv
+    - python
+    - pyenv
 
 - name: "pyenv: install python versions {{ pyenv_py_versions }}"
-  become: no   # not as root
+  become: no # not as root
   shell: "{{ '~/.pyenv/bin/pyenv' | expanduser }} install {{ item }}"
   args:
     creates: "{{ '~/.pyenv' | expanduser }}/versions/{{ item }}"
   with_items:
-  - "{{ pyenv_py_versions }}"
+    - "{{ pyenv_py_versions }}"
   tags:
-  - python
-  - pyenv
+    - python
+    - pyenv
 
 - name: "pyenv-virtualenv: install"
-  become: no   # not as root
+  become: no # not as root
   git:
     repo: https://github.com/pyenv/pyenv-virtualenv.git
     dest: "{{ '~/.pyenv/plugins/pyenv-virtualenv' | expanduser }}"
@@ -407,15 +404,15 @@
     clone: yes
     update: no
   tags:
-  - python
-  - pyenv
+    - python
+    - pyenv
 
 - name: "pyenv: set global interpreters {{ pyenv_global_versions }}"
   become: no
   shell: "{{ '~/.pyenv/bin/pyenv' | expanduser }} global {{ pyenv_global_versions }}"
   tags:
-  - python
-  - pyenv
+    - python
+    - pyenv
 
 #
 # Go
@@ -424,7 +421,7 @@
 - name: "go: check current version"
   command: /opt/bin/go version
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: go_v
   tags: ["go"]
 
@@ -438,7 +435,7 @@
   unarchive:
     src: "https://dl.google.com/go/go{{ go_version }}.linux-amd64.tar.gz"
     dest: "{{ go_install_dir }}/"
-    extra_opts: ['--strip-components=1']
+    extra_opts: ["--strip-components=1"]
     remote_src: yes
   when: (go_v is failed) or (not go_version in go_v.stdout)
   tags: ["go"]
@@ -463,7 +460,7 @@
 - name: "go: create {{ go_path_dir }}"
   vars:
     go_path_dir: "{{ go_path | expanduser }}"
-  become: no   # not as root
+  become: no # not as root
   file:
     path: "{{ go_path_dir }}"
     state: directory
@@ -474,11 +471,11 @@
 #
 
 - name: "go: install packages"
-  become: no   # not as root
+  become: no # not as root
   environment:
     GOPATH: "{{ go_path | expanduser }}"
   command: "/opt/bin/go get {{ item }}"
-  changed_when: False   # don't view as changes in end result
+  changed_when: False # don't view as changes in end result
   loop:
     # godoc, guru, gorename, etc
     - "-u golang.org/x/tools/cmd/..."
@@ -495,11 +492,11 @@
   tags: ["go"]
 
 - name: "go: install modules"
-  become: no   # not as root
+  become: no # not as root
   environment:
     GO111MODULE: "on"
   command: "/opt/bin/go get {{ item }}"
-  changed_when: False   # don't view as changes in end result
+  changed_when: False # don't view as changes in end result
   loop:
     # delve (debugger)
     - "github.com/go-delve/delve/cmd/dlv@v{{ delve_version }}"
@@ -526,47 +523,47 @@
 - name: "protoc: check current version"
   shell: protoc --version | head -1
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: protoc_v
   tags: ["go", "grpc", "protoc"]
 
 - name: "protoc: download"
-  become: no  # not as root
+  become: no # not as root
   unarchive:
     src: "https://github.com/protocolbuffers/protobuf/releases/download/v{{ protoc_version }}/protoc-{{ protoc_version }}-linux-x86_64.zip"
     dest: "{{ '~/.local' | expanduser }}"
     remote_src: yes
   when: (protoc_v is failed) or (not protoc_version in protoc_v.stdout)
   tags:
-  - go
-  - grpc
-  - protoc
+    - go
+    - grpc
+    - protoc
 
 - name: "go: protoc modules"
-  become: no   # not as root
+  become: no # not as root
   environment:
     GO111MODULE: "on"
   command: "/opt/bin/go get {{ item }}"
-  changed_when: False   # don't view as changes in end result
+  changed_when: False # don't view as changes in end result
   loop:
     # grpc: protoc compiler plugins for Go
     - "google.golang.org/protobuf/cmd/protoc-gen-go@{{ protoc_gen_go_version }}"
     - "google.golang.org/grpc/cmd/protoc-gen-go-grpc@{{ protoc_grpc_gen_go_version }}"
   tags:
-  - go
-  - grpc
-  - protoc
+    - go
+    - grpc
+    - protoc
 
 - name: "dep: check current version"
   command: /opt/bin/dep version
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: dep_v
   tags: go
 
 - name: "dep: download"
   get_url:
-    url:  "https://github.com/golang/dep/releases/download/v{{ go_dep_version }}/dep-linux-amd64"
+    url: "https://github.com/golang/dep/releases/download/v{{ go_dep_version }}/dep-linux-amd64"
     dest: /opt/bin/dep
     mode: 0755
     force: yes
@@ -582,8 +579,8 @@
     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
     state: present
   tags:
-  - nodejs
-  - apt-repos
+    - nodejs
+    - apt-repos
 
 - name: "nodejs: apt repo"
   apt_repository:
@@ -592,16 +589,16 @@
     state: present
     update_cache: yes
   tags:
-  - nodejs
-  - apt-repos
+    - nodejs
+    - apt-repos
 
 - name: "nodejs yarn: apt key"
   apt_key:
     url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
     state: present
   tags:
-  - nodejs
-  - apt-repos
+    - nodejs
+    - apt-repos
 
 - name: "nodejs yarn: apt repo"
   apt_repository:
@@ -610,8 +607,8 @@
     state: present
     update_cache: yes
   tags:
-  - nodejs
-  - apt-repos
+    - nodejs
+    - apt-repos
 
 - name: "nodejs: apt repo src"
   apt_repository:
@@ -620,8 +617,8 @@
     state: present
     update_cache: yes
   tags:
-  - nodejs
-  - apt-repos
+    - nodejs
+    - apt-repos
 
 - name: "nodejs: install"
   apt:
@@ -629,10 +626,10 @@
     state: latest
   vars:
     packages:
-    - nodejs
-    - yarn
+      - nodejs
+      - yarn
   tags:
-  - nodejs
+    - nodejs
 
 - name: "nodejs: user-local installation of packages"
   copy:
@@ -640,7 +637,7 @@
     content: |
       prefix=${HOME}/.npm-packages
   tags:
-  - nodejs
+    - nodejs
 
 - name: "nodejs: install packages"
   become: no
@@ -649,26 +646,26 @@
     # npm install -g <pkg>
     global: yes
   loop:
-  - grunt-cli
-  # recommended js/typescript language protocol server (user by emacs' lsp-mode)
-  - typescript
-  - "typescript-language-server@{{ typescript_lsp_server_version }}"
-  # js/typescript language protocol server (user by emacs' lsp-mode)
-  - javascript-typescript-langserver
-  # html language protocol server (user by emacs' lsp-mode)
-  - vscode-html-languageserver-bin
-  # used by emacs' lsp-mode
-  - bash-language-server
-  # language server for Python
-  - "pyright@{{ pyright_ls_version }}"
-  # converter of markdown to pdf documents
-  - md-to-pdf
-  # an opinionated code-formatter (for JavaScript, JSX)
-  # https://prettier.io/. Used in Emacs.
-  - prettier
+    - grunt-cli
+    # recommended js/typescript language protocol server (user by emacs' lsp-mode)
+    - typescript
+    - "typescript-language-server@{{ typescript_lsp_server_version }}"
+    # js/typescript language protocol server (user by emacs' lsp-mode)
+    - javascript-typescript-langserver
+    # html language protocol server (user by emacs' lsp-mode)
+    - vscode-html-languageserver-bin
+    # used by emacs' lsp-mode
+    - bash-language-server
+    # language server for Python
+    - "pyright@{{ pyright_ls_version }}"
+    # converter of markdown to pdf documents
+    - md-to-pdf
+    # an opinionated code-formatter (for JavaScript, JSX)
+    # https://prettier.io/. Used in Emacs.
+    - prettier
   tags:
-  - nodejs
-  - npm
+    - nodejs
+    - npm
 
 #
 # Rust
@@ -678,10 +675,10 @@
   become: no
   shell: "~/.cargo/bin/rustup --version"
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: check
   tags:
-  - rust
+    - rust
 
 # installs rustup, rustc, cargo and friends under ~/.cargo/bin/.
 # be sure to add this directory to your PATH
@@ -690,13 +687,13 @@
   shell: "curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path"
   when: check.failed
   tags:
-  - rust
+    - rust
 
 - name: "rust: install rustup toolchains"
   become: no
   shell: "{{ item }}"
-  changed_when: False  # don't display as "changed"
-  ignore_errors: yes   # nightly sometimes fails when components are missing
+  changed_when: False # don't display as "changed"
+  ignore_errors: yes # nightly sometimes fails when components are missing
   loop:
     - "~/.cargo/bin/rustup update"
     # install toolchain
@@ -706,7 +703,7 @@
     - "~/.cargo/bin/rustup component add --toolchain=stable  rust-src rust-analysis rls rustfmt clippy"
     - "~/.cargo/bin/rustup component add --toolchain=nightly rust-src rust-analysis rls rustfmt clippy"
   tags:
-  - rust
+    - rust
 
 #
 # C++
@@ -715,20 +712,20 @@
 - name: "c++: install {{ packages }}"
   vars:
     packages:
-    - clang
-    - clang-format
-    - cmake
-    # man pages for c++ standard lib: man std::list, man std::unique_ptr
-    - libstdc++-8-doc
-    # /usr/share/cppreference/doc/html/en/index.html
-    - cppreference-doc-en-html
+      - clang
+      - clang-format
+      - cmake
+      # man pages for c++ standard lib: man std::list, man std::unique_ptr
+      - libstdc++-8-doc
+      # /usr/share/cppreference/doc/html/en/index.html
+      - cppreference-doc-en-html
   apt:
     name: "{{ packages }}"
     state: latest
     install_recommends: yes
   tags:
-  - c++
-  - ccls
+    - c++
+    - ccls
 
 # clangd C++ language server
 - name: "clangd: create /opt/clangd"
@@ -736,8 +733,8 @@
     path: "/opt/clangd"
     state: directory
   tags:
-  - c++
-  - clangd
+    - c++
+    - clangd
 
 - name: "clangd: download"
   unarchive:
@@ -746,29 +743,29 @@
     remote_src: yes
     creates: "/opt/clangd/clangd_{{ clangd_version }}/bin/clangd"
   tags:
-  - c++
-  - clangd
+    - c++
+    - clangd
 
 - name: "clangd: /opt/bin/clangd symlink"
   file:
-    src:  "/opt/clangd/clangd_{{ clangd_version }}/bin/clangd"
+    src: "/opt/clangd/clangd_{{ clangd_version }}/bin/clangd"
     dest: "/opt/bin/clangd"
     force: yes
     state: link
   tags:
-  - c++
-  - clangd
+    - c++
+    - clangd
 
 - name: "cmake: install cmake_language_server"
-  become: no   # not as root
+  become: no # not as root
   pip:
     executable: pip3
-    extra_args: --user  # install under ~/.local
+    extra_args: --user # install under ~/.local
     name:
-    - cmake-language-server
+      - cmake-language-server
   tags:
-  - c++
-  - cmake
+    - c++
+    - cmake
 
 #
 # dotnet core
@@ -777,30 +774,30 @@
   become: false
   shell: lsb_release -rs
   register: lsbrelease_rs
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   tags:
-  - dotnet
-  - apt-repos
+    - dotnet
+    - apt-repos
 
 - name: "dotnet: register MS key, product repo, install dependencies"
   apt:
     deb: "https://packages.microsoft.com/config/ubuntu/{{ lsbrelease_rs.stdout }}/packages-microsoft-prod.deb"
   tags:
-  - dotnet
-  - apt-repos
+    - dotnet
+    - apt-repos
 
 - name: "dotnet: install {{ packages }}"
   vars:
     packages:
-    - "dotnet-sdk-{{ dotnet_sdk_version }}"
+      - "dotnet-sdk-{{ dotnet_sdk_version }}"
   apt:
     name: "{{ packages }}"
     state: latest
     install_recommends: yes
     update_cache: yes
   tags:
-  - dotnet
-  - python
+    - dotnet
+    - python
 
 #
 # Python language server
@@ -814,8 +811,8 @@
     clone: yes
     update: no
   tags:
-  - mspyls
-  - python
+    - mspyls
+    - python
 
 - name: "ms-python-language-server: check if installed"
   # checks that the binary exists and that it has been built from
@@ -826,11 +823,11 @@
     git_tag=$(git branch | grep \* | cut -d ' ' -f2)
     [ "${git_tag}" = "{{ python_language_server_version }}" ]
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: check_mspyls
   tags:
-  - mspyls
-  - python
+    - mspyls
+    - python
 
 - name: "ms-python-language-server: build"
   shell: |
@@ -845,8 +842,8 @@
     chmod o+x /opt/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer
   when: check_mspyls.failed
   tags:
-  - mspyls
-  - python
+    - mspyls
+    - python
 
 - name: "ms-python-language-server: /opt/bin/ms-python-language-server symlink"
   file:
@@ -855,8 +852,8 @@
     force: yes
     state: link
   tags:
-  - mspyls
-  - python
+    - mspyls
+    - python
 
 #
 # Ruby
@@ -868,19 +865,19 @@
     install_recommends: yes
   vars:
     packages:
-    - ruby
-    - ruby-dev
+      - ruby
+      - ruby-dev
   tags:
-  - ruby
+    - ruby
 
 # install ruby language server
 - name: "ruby: install solargraph language server"
   gem:
     name: solargraph
     version: "{{ solargraph_version }}"
-    user_install: no   # global
+    user_install: no # global
   tags:
-  - ruby
+    - ruby
 
 #
 # Miscellaneous tools
@@ -891,10 +888,10 @@
 #
 
 - name: "openstackclient: install"
-  become: no   # not as root
+  become: no # not as root
   pip:
     executable: pip3
-    extra_args: --user  # install under ~/.local
+    extra_args: --user # install under ~/.local
     name: openstackclient
   tags: openstack
 
@@ -903,26 +900,26 @@
 #
 
 - name: "awscli: install"
-  become: no   # not as root
+  become: no # not as root
   pip:
     executable: pip3
-    extra_args: --user  # install under ~/.local
+    extra_args: --user # install under ~/.local
     name: awscli
   tags:
-  - aws
+    - aws
 
 #
 # Azure
 #
 
 - name: "az: install"
-  become: no   # not as root
+  become: no # not as root
   pip:
     executable: pip3
-    extra_args: --user  # install under ~/.local
+    extra_args: --user # install under ~/.local
     name: azure-cli
   tags:
-  - azure
+    - azure
 
 #
 # Google Cloud
@@ -934,8 +931,8 @@
     keyring: /usr/share/keyrings/cloud.google.gpg
     state: present
   tags:
-  - gcloud
-  - apt-repos
+    - gcloud
+    - apt-repos
 
 - name: "apt repo: gcloud"
   apt_repository:
@@ -944,8 +941,8 @@
     state: present
     update_cache: yes
   tags:
-  - gcloud
-  - apt-repos
+    - gcloud
+    - apt-repos
 
 - name: "gcloud: install"
   apt:
@@ -954,9 +951,9 @@
     install_recommends: yes
   vars:
     packages:
-    - google-cloud-sdk
+      - google-cloud-sdk
   tags:
-  - gcloud
+    - gcloud
 
 - name: "cloud_sql_proxy: install"
   get_url:
@@ -964,9 +961,8 @@
     dest: /opt/bin/cloud_sql_proxy
     mode: 0755
   tags:
-  - gcloud
-  - cloud_sql_proxy
-
+    - gcloud
+    - cloud_sql_proxy
 
 #
 # Terraform
@@ -975,7 +971,7 @@
 - name: "terraform: check current version"
   shell: /opt/bin/terraform version | head -1
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: tf_v
   tags: terraform
 
@@ -1009,7 +1005,7 @@
 - name: "kubectl: check current version"
   shell: "/opt/bin/kubectl version --client | grep v{{ kubectl_version }}"
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: kubectl_v
   tags: kubernetes
 
@@ -1037,33 +1033,33 @@
 - name: "helm2: check current version"
   shell: /opt/bin/helm2 version | head -1
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: helm2_v
   tags:
-  - helm
-  - helm2
-  - kubernetes
+    - helm
+    - helm2
+    - kubernetes
 
 - name: "helm2: create {{ helm2_install_dir }}"
   file:
     path: "{{ helm2_install_dir }}"
     state: directory
   tags:
-  - helm
-  - helm2
-  - kubernetes
+    - helm
+    - helm2
+    - kubernetes
 
 - name: "helm2: install"
   unarchive:
     src: "https://get.helm.sh/helm-v{{ helm2_version }}-linux-amd64.tar.gz"
     dest: "{{ helm2_install_dir }}/"
-    extra_opts: ['--strip-components=1']
+    extra_opts: ["--strip-components=1"]
     remote_src: yes
   when: (helm2_v is failed) or (not helm2_version in helm2_v.stdout)
   tags:
-  - helm
-  - helm2
-  - kubernetes
+    - helm
+    - helm2
+    - kubernetes
 
 - name: "helm2: /opt/bin/helm2 symlink"
   file:
@@ -1072,9 +1068,9 @@
     force: yes
     state: link
   tags:
-  - helm
-  - helm2
-  - kubernetes
+    - helm
+    - helm2
+    - kubernetes
 
 #
 # helm3
@@ -1083,33 +1079,33 @@
 - name: "helm3: check current version"
   shell: /opt/bin/helm3 version | head -1
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: helm3_v
   tags:
-  - helm
-  - helm3
-  - kubernetes
+    - helm
+    - helm3
+    - kubernetes
 
 - name: "helm3: create {{ helm3_install_dir }}"
   file:
     path: "{{ helm3_install_dir }}"
     state: directory
   tags:
-  - helm
-  - helm3
-  - kubernetes
+    - helm
+    - helm3
+    - kubernetes
 
 - name: "helm3: install"
   unarchive:
     src: "https://get.helm.sh/helm-v{{ helm3_version }}-linux-amd64.tar.gz"
     dest: "{{ helm3_install_dir }}/"
-    extra_opts: ['--strip-components=1']
+    extra_opts: ["--strip-components=1"]
     remote_src: yes
   when: (helm3_v is failed) or (not helm3_version in helm3_v.stdout)
   tags:
-  - helm
-  - helm3
-  - kubernetes
+    - helm
+    - helm3
+    - kubernetes
 
 - name: "helm3: /opt/bin/helm3 symlink"
   file:
@@ -1118,10 +1114,9 @@
     force: yes
     state: link
   tags:
-  - helm
-  - helm3
-  - kubernetes
-
+    - helm
+    - helm3
+    - kubernetes
 
 - name: "helm: /opt/bin/helm symlink"
   file:
@@ -1130,10 +1125,9 @@
     force: yes
     state: link
   tags:
-  - helm
-  - helm3
-  - kubernetes
-
+    - helm
+    - helm3
+    - kubernetes
 
 #
 # helm secrets plugin
@@ -1143,37 +1137,37 @@
   become: no
   shell: "/opt/bin/helm secrets --help"
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: secrets_installed
   tags:
-  - helm
-  - kubernetes
+    - helm
+    - kubernetes
 
 - name: "helm: install secrets plugin"
-  become: no  # not as root, stored under HELM_PLUGINS (see 'helm env')
+  become: no # not as root, stored under HELM_PLUGINS (see 'helm env')
   shell: "/opt/bin/helm plugin install https://github.com/zendesk/helm-secrets --version={{ helm_secrets_version }}"
   when: secrets_installed.rc != 0
   tags:
-  - helm
-  - kubernetes
+    - helm
+    - kubernetes
 
 - name: "helm: check if diff plugin is installed"
   become: no
   shell: "/opt/bin/helm diff --help"
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: diff_installed
   tags:
-  - helm
-  - kubernetes
+    - helm
+    - kubernetes
 
 - name: "helm: install diff plugin"
-  become: no  # not as root, stored under HELM_PLUGINS (see 'helm env')
+  become: no # not as root, stored under HELM_PLUGINS (see 'helm env')
   shell: "/opt/bin/helm plugin install https://github.com/databus23/helm-diff --version={{ helm_diff_version }}"
   when: diff_installed.rc != 0
   tags:
-  - helm
-  - kubernetes
+    - helm
+    - kubernetes
 
 #
 # minikube
@@ -1183,15 +1177,15 @@
   apt:
     deb: "https://github.com/kubernetes/minikube/releases/download/v{{ minikube_version }}/minikube_{{ minikube_version }}-0_amd64.deb"
   tags:
-  - minikube
-  - kubernetes
+    - minikube
+    - kubernetes
 
 - name: "kubernetes: install go-based modules"
-  become: no   # not as root
+  become: no # not as root
   environment:
     GO111MODULE: "on"
   command: "/opt/bin/go get {{ item }}"
-  changed_when: False   # don't view as changes in end result
+  changed_when: False # don't view as changes in end result
   loop:
     # kind: kubernetes-in-docker
     - "sigs.k8s.io/kind@v{{ kind_version }}"
@@ -1200,7 +1194,7 @@
     # kustomize
     - "sigs.k8s.io/kustomize/kustomize/v3@v{{ kustomize_version }}"
   tags:
-  - kubernetes
+    - kubernetes
 
 #
 # helmfile
@@ -1209,11 +1203,11 @@
 - name: "helmfile: check current version"
   shell: /opt/bin/helmfile --version
   ignore_errors: yes
-  changed_when: False  # read-only: won't change machine state
+  changed_when: False # read-only: won't change machine state
   register: helmfile_v
   tags:
-  - kubernetes
-  - helmfile
+    - kubernetes
+    - helmfile
 
 - name: "helmfile: download"
   get_url:
@@ -1222,8 +1216,8 @@
     mode: "0755"
   when: (helmfile_v is failed) or (not helmfile_version in helmfile_v.stdout)
   tags:
-  - kubernetes
-  - helmfile
+    - kubernetes
+    - helmfile
 
 #
 # Telepresence
@@ -1234,8 +1228,8 @@
     url: "https://packagecloud.io/datawireio/telepresence/gpgkey"
     state: present
   tags:
-  - kubernetes
-  - telepresence
+    - kubernetes
+    - telepresence
 
 - name: "apt repo: telepresence"
   apt_repository:
@@ -1264,24 +1258,23 @@
     state: latest
     install_recommends: yes
 
-
 #
 # tinyproxy
 #
 - name: "tinyproxy: clone git repo"
   git:
-    repo: 'https://github.com/tinyproxy/tinyproxy'
+    repo: "https://github.com/tinyproxy/tinyproxy"
     recursive: yes
     dest: "/opt/tinyproxy"
     clone: yes
     update: no
     version: "{{ tinyproxy_version }}"
   tags:
-  - tinyproxy
+    - tinyproxy
 
 - name: "tinyproxy: build and install under /usr/local/bin/tinyproxy"
   shell: "./autogen.sh && ./configure --prefix=/usr/local && make && make install"
   args:
     chdir: "/opt/tinyproxy"
   tags:
-  - tinyproxy
+    - tinyproxy

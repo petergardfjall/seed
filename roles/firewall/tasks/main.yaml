@@ -4,7 +4,7 @@
     direction: incoming
     policy: deny
   tags:
-  - firewall
+    - firewall
 
 - name: "ufw: allow ssh access (port 22)"
   ufw:
@@ -12,4 +12,4 @@
     direction: in
     port: 22
   tags:
-  - firewall
+    - firewall
