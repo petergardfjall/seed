@@ -514,10 +514,11 @@
     - "github.com/juliosueiras/terraform-lsp@{{ tf_ls_version }}"
     # `go mod graph` visualizer
     - "github.com/lucasepe/modgv@{{ modgv_version }}"
+    - "github.com/fullstorydev/grpcurl/cmd/grpcurl@{{ grpcurl_version }}"
   tags:
-  - go
-  - go-modules
-  - gopls
+    - go
+    - go-modules
+    - gopls
 
 #
 # protobuf compiler

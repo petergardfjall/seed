@@ -28,6 +28,7 @@ protoc_gen_go_version: "v1.26.0"
 protoc_grpc_gen_go_version: "v1.1.0"
 # go mod visualization
 modgv_version: "v0.2.1"
+grpcurl_version: "v1.8.2"
 
 #
 # JavaScript/NodeJS
