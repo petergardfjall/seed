@@ -11,7 +11,7 @@
     - dev
     - backup
     - fscrypt
-    - mail
+    - email
 
 - hosts: laptop
   gather_facts: no

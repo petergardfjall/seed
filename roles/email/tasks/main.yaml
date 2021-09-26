@@ -10,11 +10,11 @@
     state: latest
     install_recommends: yes
   tags:
-    - mail
+    - email
     - offlineimap
 
 #
-# mu mail indexer
+# mu email indexer
 #
 
 - name: "mu: prerequisites: {{ packages }}"
@@ -31,7 +31,7 @@
     state: latest
     install_recommends: yes
   tags:
-    - mail
+    - email
     - mu
     - mu4e
 
@@ -46,6 +46,6 @@
   args:
     creates: "/opt/mu-src/.BUILT_{{ mu_rev }}"
   tags:
-    - mail
+    - email
     - mu
     - mu4e
