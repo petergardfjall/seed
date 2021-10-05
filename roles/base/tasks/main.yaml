@@ -81,12 +81,14 @@
       # network
       - nmap
       - tinyproxy # light-weight HTTP/HTTPS proxy daemon
-      # graphics
+      # graphics/media
       - inkscape
       - gimp
       - gpick
       - gnuplot
       - libheif-examples # heif-convert: .heif -> .jpg conversion
+      - scrot # screenshot
+      - gifsicle # tool to create/edit/view info on GIF images/animations
       # communication
       - openssh-server
       - openssh-client
