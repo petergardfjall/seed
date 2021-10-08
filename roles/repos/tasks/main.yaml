@@ -1,0 +1,203 @@
+- name: "install package management tools: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - apt-transport-https
+      - software-properties-common
+      - aptitude
+      - debconf-utils
+      - curl
+      - dirmngr
+      - snapd
+      - debtree
+  tags:
+    - apt
+    - repos
+    - package-management
+
+- name: "apt repo: canonical partner"
+  apt_repository:
+    repo: "deb http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner"
+    state: present
+    update_cache: no
+  tags:
+    - repos
+
+- name: "apt repo: canonical partner src"
+  apt_repository:
+    filename: "canonical-partner"
+    repo: "deb-src http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner"
+    state: present
+    update_cache: no
+  tags:
+    - repos
+
+#
+# chrome
+#
+- name: "apt key: google chrome"
+  apt_key:
+    url: "https://dl.google.com/linux/linux_signing_key.pub"
+    state: present
+  tags:
+    - repos
+    - chrome
+
+- name: "apt repo: google chrome"
+  apt_repository:
+    filename: "google-chrome"
+    repo: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+    state: present
+    update_cache: no
+  tags:
+    - repos
+    - chrome
+
+#
+# vscode
+#
+
+- name: "apt key: vscode"
+  apt_key:
+    url: "https://packages.microsoft.com/keys/microsoft.asc"
+    state: present
+  tags:
+    - repos
+    - vscode
+
+- name: "apt repo: vscode"
+  apt_repository:
+    filename: "vscode"
+    repo: "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main"
+    state: present
+    update_cache: no
+  tags:
+    - repos
+    - vscode
+
+#
+# nodejs
+#
+
+- name: "nodejs: apt key"
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    state: present
+  tags:
+    - nodejs
+    - repos
+
+- name: "nodejs: apt repo"
+  apt_repository:
+    filename: "nodejs"
+    repo: "deb https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
+    state: present
+    update_cache: no
+  tags:
+    - nodejs
+    - repos
+
+- name: "nodejs yarn: apt key"
+  apt_key:
+    url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
+    state: present
+  tags:
+    - nodejs
+    - repos
+
+- name: "nodejs yarn: apt repo"
+  apt_repository:
+    filename: "nodejs-yarn"
+    repo: "deb https://dl.yarnpkg.com/debian/ stable main"
+    state: present
+    update_cache: no
+  tags:
+    - nodejs
+    - repos
+
+- name: "nodejs: apt repo src"
+  apt_repository:
+    filename: "nodejs"
+    repo: "deb-src https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
+    state: present
+    update_cache: no
+  tags:
+    - nodejs
+    - repos
+
+#
+# dotnet
+#
+
+- name: "get ubuntu release version"
+  become: false
+  shell: lsb_release -rs
+  register: lsbrelease_rs
+  changed_when: False # read-only: won't change machine state
+  tags:
+    - dotnet
+    - repos
+
+- name: "dotnet: register MS key, product repo, install dependencies"
+  apt:
+    deb: "https://packages.microsoft.com/config/ubuntu/{{ lsbrelease_rs.stdout }}/packages-microsoft-prod.deb"
+  tags:
+    - dotnet
+    - repos
+
+#
+# gcloud
+#
+
+- name: "apt key: gcloud"
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    keyring: /usr/share/keyrings/cloud.google.gpg
+    state: present
+  tags:
+    - gcloud
+    - repos
+
+- name: "apt repo: gcloud"
+  apt_repository:
+    filename: "gcloud"
+    repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main"
+    state: present
+    update_cache: no
+  tags:
+    - gcloud
+    - repos
+
+#
+# Telepresence
+#
+- name: "apt key: telepresence"
+  apt_key:
+    id: 4052245BD4284CDD
+    url: "https://packagecloud.io/datawireio/telepresence/gpgkey"
+    state: present
+  tags:
+    - repos
+    - kubernetes
+    - telepresence
+
+- name: "apt repo: telepresence"
+  apt_repository:
+    filename: "telepresence"
+    repo: "deb https://packagecloud.io/datawireio/telepresence/ubuntu/ {{ ubuntu_release }} main"
+    state: present
+    update_cache: no
+  tags:
+    - repos
+    - kubernetes
+    - telepresence
+
+- name: "apt: update cache"
+  apt:
+    update_cache: yes
+  tags:
+    - apt
+    - repos

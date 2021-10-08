@@ -10,41 +10,6 @@
     state: directory
     mode: 0777
 
-- name: "install package management tools: {{ packages }}"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
-  vars:
-    packages:
-      - apt-transport-https
-      - software-properties-common
-      - aptitude
-      - debconf-utils
-      - curl
-      - dirmngr
-      - snapd
-      - debtree
-  tags:
-    - apt
-    - package-management
-
-- name: "apt repo: canonical partner"
-  apt_repository:
-    repo: "deb http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner"
-    state: present
-    update_cache: yes
-  tags:
-    - apt-repos
-
-- name: "apt repo: canonical partner src"
-  apt_repository:
-    repo: "deb-src http://archive.canonical.com/ubuntu {{ ubuntu_release }} partner"
-    state: present
-    update_cache: yes
-  tags:
-    - apt-repos
-
 - name: "install basic tools: {{ packages }}"
   apt:
     name: "{{ packages }}"
@@ -140,25 +105,8 @@
     - terminal
 
 #
-# chrome
+# Google Chrome
 #
-- name: "apt key: google chrome"
-  apt_key:
-    url: "https://dl.google.com/linux/linux_signing_key.pub"
-    state: present
-  tags:
-    - apt-repos
-    - chrome
-
-- name: "apt repo: google chrome"
-  apt_repository:
-    filename: "google-chrome"
-    repo: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
-    state: present
-    update_cache: yes
-  tags:
-    - apt-repos
-    - chrome
 
 - name: "google chrome: install"
   apt:

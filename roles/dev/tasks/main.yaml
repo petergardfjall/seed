@@ -50,21 +50,6 @@
 #
 # VS Code
 #
-- name: "apt key: vscode"
-  apt_key:
-    url: "https://packages.microsoft.com/keys/microsoft.asc"
-    state: present
-  tags:
-    - apt-repos
-
-- name: "apt repo: vscode"
-  apt_repository:
-    filename: "vscode"
-    repo: "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main"
-    state: present
-    update_cache: yes
-  tags:
-    - apt-repos
 
 - name: "vscode: install"
   apt:
@@ -74,11 +59,15 @@
   vars:
     packages:
       - code
+  tags:
+    - code
 
 - name: "vscode: install extensions"
   become: no # not as root
   shell: "~/dotfiles/vscode/install-extensions.sh"
   changed_when: False # don't appear changed
+  tags:
+    - code
 
 #
 # Virtualization
@@ -574,52 +563,6 @@
 # NodeJS
 #
 
-- name: "nodejs: apt key"
-  apt_key:
-    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-    state: present
-  tags:
-    - nodejs
-    - apt-repos
-
-- name: "nodejs: apt repo"
-  apt_repository:
-    filename: "nodejs"
-    repo: "deb https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
-    state: present
-    update_cache: yes
-  tags:
-    - nodejs
-    - apt-repos
-
-- name: "nodejs yarn: apt key"
-  apt_key:
-    url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
-    state: present
-  tags:
-    - nodejs
-    - apt-repos
-
-- name: "nodejs yarn: apt repo"
-  apt_repository:
-    filename: "nodejs-yarn"
-    repo: "deb https://dl.yarnpkg.com/debian/ stable main"
-    state: present
-    update_cache: yes
-  tags:
-    - nodejs
-    - apt-repos
-
-- name: "nodejs: apt repo src"
-  apt_repository:
-    filename: "nodejs"
-    repo: "deb-src https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
-    state: present
-    update_cache: yes
-  tags:
-    - nodejs
-    - apt-repos
-
 - name: "nodejs: install"
   apt:
     name: "{{ packages }}"
@@ -768,23 +711,8 @@
     - cmake
 
 #
-# dotnet core
+# dotnet
 #
-- name: "get ubuntu release version"
-  become: false
-  shell: lsb_release -rs
-  register: lsbrelease_rs
-  changed_when: False # read-only: won't change machine state
-  tags:
-    - dotnet
-    - apt-repos
-
-- name: "dotnet: register MS key, product repo, install dependencies"
-  apt:
-    deb: "https://packages.microsoft.com/config/ubuntu/{{ lsbrelease_rs.stdout }}/packages-microsoft-prod.deb"
-  tags:
-    - dotnet
-    - apt-repos
 
 - name: "dotnet: install {{ packages }}"
   vars:
@@ -922,27 +850,8 @@
     - azure
 
 #
-# Google Cloud
+# gcloud
 #
-
-- name: "apt key: gcloud"
-  apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    keyring: /usr/share/keyrings/cloud.google.gpg
-    state: present
-  tags:
-    - gcloud
-    - apt-repos
-
-- name: "apt repo: gcloud"
-  apt_repository:
-    filename: "gcloud"
-    repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main"
-    state: present
-    update_cache: yes
-  tags:
-    - gcloud
-    - apt-repos
 
 - name: "gcloud: install"
   apt:
@@ -1222,33 +1131,6 @@
 #
 # Telepresence
 #
-- name: "apt key: telepresence"
-  apt_key:
-    id: 4052245BD4284CDD
-    url: "https://packagecloud.io/datawireio/telepresence/gpgkey"
-    state: present
-  tags:
-    - kubernetes
-    - telepresence
-
-- name: "apt repo: telepresence"
-  apt_repository:
-    filename: "telepresence"
-    repo: "deb https://packagecloud.io/datawireio/telepresence/ubuntu/ {{ ubuntu_release }} main"
-    state: present
-    update_cache: yes
-  tags:
-  - kubernetes
-  - telepresence
-
-- name: "telepresence: install"
-  apt:
-    name: "telepresence"
-    state: latest
-    install_recommends: no
-  tags:
-  - kubernetes
-  - telepresence
 
 
 # TODO: get as module?
