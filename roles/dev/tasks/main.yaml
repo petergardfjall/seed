@@ -379,7 +379,7 @@
     dest: "{{ '~/.pyenv' | expanduser }}"
     version: "{{ pyenv_version }}"
     clone: yes
-    update: no
+    update: yes
   tags:
     - python
     - pyenv
