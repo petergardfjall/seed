@@ -23,7 +23,7 @@ go_dep_version: "0.5.0"
 gopls_version: "v0.7.2"
 golangci_lint_version: "v1.32.2"
 # gRPC
-protoc_version: "3.15.8"
+protoc_version: "3.17.3"
 protoc_gen_go_version: "v1.26.0"
 protoc_grpc_gen_go_version: "v1.1.0"
 # go mod visualization
