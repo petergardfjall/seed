@@ -176,7 +176,7 @@
 #
 - name: "apt key: telepresence"
   apt_key:
-    id: 4052245BD4284CDD
+    id: 81FB6585AF36C8E8
     url: "https://packagecloud.io/datawireio/telepresence/gpgkey"
     state: present
   tags:
