@@ -410,9 +410,12 @@
     extra_args: --user # install under ~/.local
     name:
       - "ptvsd=={{ ptvsd_version }}"
+      # either ptvsd or emacs dap-mode appears to require pytest
+      - "pytest=={{ pytest_version }}"
   tags:
     - python
     - ptvsd
+    - dap
 
 #
 # Go

@@ -58,6 +58,7 @@ pyenv_global_versions: "3.9.2 2.7.18"
 pyenv_virtualenv_version: "v1.1.5"
 # debug adapter protocol (DAP) server for python
 ptvsd_version: "4.3.2"
+pytest_version: "6.2.5"
 
 #
 # Ruby
