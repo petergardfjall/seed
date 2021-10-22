@@ -403,6 +403,17 @@
     - python
     - pyenv
 
+- name: "ptvsd: install python DAP server"
+  become: no # not as root
+  pip:
+    executable: pip3
+    extra_args: --user # install under ~/.local
+    name:
+      - "ptvsd=={{ ptvsd_version }}"
+  tags:
+    - python
+    - ptvsd
+
 #
 # Go
 #
@@ -593,9 +604,9 @@
     # recommended js/typescript language protocol server (user by emacs' lsp-mode)
     - typescript
     - "typescript-language-server@{{ typescript_lsp_server_version }}"
-    # js/typescript language protocol server (user by emacs' lsp-mode)
+    # js/typescript language protocol server (used by emacs' lsp-mode)
     - javascript-typescript-langserver
-    # html language protocol server (user by emacs' lsp-mode)
+    # html language protocol server (used by emacs' lsp-mode)
     - vscode-html-languageserver-bin
     # used by emacs' lsp-mode
     - bash-language-server
