@@ -798,6 +798,48 @@
     - python
 
 #
+# machine learning
+#
+- name: "miniconda: check if installed"
+  stat:
+    path: "{{ '~/miniconda3' | expanduser }}"
+  register: miniconda
+  tags:
+    - miniconda
+    - machine-learning
+    - python
+
+- name: "miniconda: download installer"
+  become: "no" # not as root
+  get_url:
+    url: "https://repo.anaconda.com/miniconda/Miniconda3-{{ miniconda_py_version }}_{{ miniconda_version }}-Linux-x86_64.sh"
+    checksum: "{{ miniconda_checksum }}"
+    dest: "/tmp/Miniconda.sh"
+  when: not miniconda.stat.exists
+  tags:
+    - miniconda
+    - machine-learning
+    - python
+
+# installs conda under under `~/miniconda3`.
+#
+# To complete the installation, add an alias:
+#   alias conda-activate='source <(~/miniconda3/bin/conda shell.bash hook)'
+#
+#   conda env list
+#   conda create --name my-env python=3.8 -y
+#   conda activate my-env
+#
+- name: "miniconda: install"
+  become: "no" # not as root
+  shell: "/bin/bash /tmp/Miniconda.sh -b"
+  when: not miniconda.stat.exists
+  tags:
+    - miniconda
+    - machine-learning
+    - python
+
+#
 # Ruby
 #
 - name: "ruby: install {{ packages }}"
