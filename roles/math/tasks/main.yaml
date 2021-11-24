@@ -1,0 +1,11 @@
+- name: "install math tools: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - octave
+  tags:
+    - math
+    - octave

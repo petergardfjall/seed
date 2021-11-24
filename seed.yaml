@@ -13,6 +13,7 @@
     - backup
     - fscrypt
     - email
+    - math
 
 - hosts: laptop
   gather_facts: no
