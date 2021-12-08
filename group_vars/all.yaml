@@ -1,5 +1,15 @@
 ubuntu_release: "focal"
 
+#
+# System tools
+#
+# go disk usage
+gdu_version: "v5.12.0"
+
+#
+# Emacs
+#
+
 # emacs version (tag or commit) to build from source.
 # for example, "emacs-27.1" or "86d8d76aa3"
 emacs_rev: "abf06a46b490be49f12f5509817cbb400c78bc6e"

@@ -515,6 +515,8 @@
     # `go mod graph` visualizer
     - "github.com/lucasepe/modgv@{{ modgv_version }}"
     - "github.com/fullstorydev/grpcurl/cmd/grpcurl@{{ grpcurl_version }}"
+    # go diskusage: gdu
+    - "github.com/dundee/gdu/v5/cmd/gdu@{{ gdu_version }}"
   tags:
     - go
     - go-modules
