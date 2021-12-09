@@ -112,6 +112,7 @@ kind_version: "v0.11.1"
 clusterawsadm_version: "0.4.2"
 kustomize_version: "3.3.0"
 helmfile_version: "0.140.0"
+k9s_version: "v0.25.8"
 
 # tinyproxy tag/commit to build
 tinyproxy_version: "17e19a67cfd2af4d05d50981d3a09a46bec684ac"
