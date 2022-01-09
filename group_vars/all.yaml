@@ -12,7 +12,7 @@ gdu_version: "v5.12.0"
 
 # emacs version (tag or commit) to build from source.
 # for example, "emacs-27.1" or "86d8d76aa3"
-emacs_rev: "abf06a46b490be49f12f5509817cbb400c78bc6e"
+emacs_rev: "4b6efda54ef2af7e745b760707c34ed81c821d3c"
 emacs_dir: "/opt/emacs-src"
 emacs_compile_flags: "--with-native-compilation"
 # source code version of GNU Global to build
