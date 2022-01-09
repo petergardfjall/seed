@@ -54,6 +54,7 @@
       - libheif-examples # heif-convert: .heif -> .jpg conversion
       - scrot # screenshot
       - gifsicle # tool to create/edit/view info on GIF images/animations
+      - jhead # command-line tool to extract JPEG metadata
       # communication
       - openssh-server
       - openssh-client
