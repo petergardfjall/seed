@@ -60,6 +60,7 @@
       - openssh-client
       # version control
       - git
+      - git-lfs
       - gitg
       - tig
       - subversion
