@@ -83,6 +83,11 @@ miniconda_checksum: "sha256:1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f
 solargraph_version: "0.39.15"
 
 #
+# Rust
+#
+ripgrep_version: "13.0.0"
+
+#
 # Terraform
 #
 tf_version: "0.12.19"

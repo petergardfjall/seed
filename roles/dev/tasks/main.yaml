@@ -664,6 +664,17 @@
   tags:
     - rust
 
+- name: "rust: install crates.io binaries"
+  become: no
+  shell: "{{ item }}"
+  changed_when: False # don't display as "changed"
+  ignore_errors: yes # nightly sometimes fails when components are missing
+  loop:
+    - "cargo install ripgrep --version {{ ripgrep_version }}"
+  tags:
+    - rust
+    - ripgrep
+
 #
 # C++
 #
