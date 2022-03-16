@@ -470,50 +470,31 @@
   tags: ["go"]
 
 #
-# Go packages
+# Go tools
 #
-
-- name: "go: install packages"
-  become: no # not as root
-  environment:
-    GOPATH: "{{ go_path | expanduser }}"
-  command: "/opt/bin/go get {{ item }}"
-  changed_when: False # don't view as changes in end result
-  loop:
-    # godoc, guru, gorename, etc
-    - "-u golang.org/x/tools/cmd/..."
-    # Auto-completion daemon for go, which _can_ be used by emacs go-mode
-    # (although the lsp-mode should make this redundant). This particular
-    # gocode fork supports Go modules. May want to exchange for
-    # github.com/nsf/gocode or github.com/mdempsky/gocode when modules are
-    # supported.
-    - "-u github.com/stamblerre/gocode"
-    # locates symbol definitions in go code (needed by emacs go-mode)
-    - "-u github.com/rogpeppe/godef"
-    # linter for Go
-    - "-u golang.org/x/lint/golint"
-  tags: ["go"]
 
 - name: "go: install modules"
   become: no # not as root
-  environment:
-    GO111MODULE: "on"
-  command: "/opt/bin/go get {{ item }}"
+  command: "/opt/bin/go install {{ item }}"
   changed_when: False # don't view as changes in end result
   loop:
+    # godoc, guru, gorename, etc
+    - "golang.org/x/tools/...@latest"
+    # locates symbol definitions in go code (needed by emacs go-mode)
+    - "github.com/rogpeppe/godef@latest"
+    # linter for Go
+    - "golang.org/x/lint/golint@latest"
     # delve (debugger)
     - "github.com/go-delve/delve/cmd/dlv@{{ delve_version }}"
     # gopls language server
     - "golang.org/x/tools/gopls@{{ gopls_version }}"
     - "github.com/golangci/golangci-lint/cmd/golangci-lint@{{ golangci_lint_version }}"
-    - "github.com/oklog/ulid/cmd/ulid"
+    - "github.com/oklog/ulid/cmd/ulid@latest"
     # bundle static assets in Go binaries
-    - "github.com/gobuffalo/packr/v2/packr2"
-    - "github.com/go-swagger/go-swagger/cmd/swagger"
+    - "github.com/gobuffalo/packr/v2/packr2@latest"
+    - "github.com/go-swagger/go-swagger/cmd/swagger@{{ go_swagger_version }}"
     # terraform language server (use by emacs' lsp-mode)
-    - "github.com/juliosueiras/terraform-lsp@{{ tf_ls_version }}"
-    # `go mod graph` visualizer
-    - "github.com/lucasepe/modgv@{{ modgv_version }}"
+    - "github.com/hashicorp/terraform-ls@{{ tf_ls_version }}"
     - "github.com/fullstorydev/grpcurl/cmd/grpcurl@{{ grpcurl_version }}"
     # go diskusage: gdu
     - "github.com/dundee/gdu/v5/cmd/gdu@{{ gdu_version }}"
@@ -546,9 +527,7 @@
 
 - name: "go: protoc modules"
   become: no # not as root
-  environment:
-    GO111MODULE: "on"
-  command: "/opt/bin/go get {{ item }}"
+  command: "/opt/bin/go install {{ item }}"
   changed_when: False # don't view as changes in end result
   loop:
     # grpc: protoc compiler plugins for Go
@@ -1216,7 +1195,6 @@
 #
 # Telepresence
 #
-
 
 # TODO: get as module?
 - name: "cfssl: install"

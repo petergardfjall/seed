@@ -23,7 +23,7 @@ universal_ctags_version: "p5.9.20220130.0"
 #
 # Go
 #
-go_version: "1.16.7"
+go_version: "1.18"
 go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
 delve_version: "v1.7.2"
@@ -39,6 +39,8 @@ protoc_grpc_gen_go_version: "v1.1.0"
 # go mod visualization
 modgv_version: "v0.2.1"
 grpcurl_version: "v1.8.2"
+# Swagger/OpenAPI
+go_swagger_version: "v0.29.0"
 
 #
 # JavaScript/NodeJS
@@ -93,7 +95,7 @@ ripgrep_version: "13.0.0"
 tf_version: "0.12.19"
 tf_install_dir: "/opt/tf-{{ tf_version }}"
 # language server version
-tf_ls_version: "v0.0.11-beta2"
+tf_ls_version: "v0.25.2"
 
 # Packer
 packer_version: "1.5.1"
