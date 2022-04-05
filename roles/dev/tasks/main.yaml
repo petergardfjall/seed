@@ -1194,6 +1194,25 @@
 # Telepresence
 #
 
+- name: "telepresence: check current version"
+  shell: /opt/bin/telepresence version
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: telepresence_v
+  tags:
+    - kubernetes
+    - telepresence
+
+- name: "telepresence: download"
+  get_url:
+    url: "https://app.getambassador.io/download/tel2/linux/amd64/{{ telepresence_version }}/telepresence"
+    dest: "/opt/bin/telepresence"
+    mode: "0755"
+  when: (telepresence_v is failed) or (not telepresence_version in telepresence_v.stdout)
+  tags:
+    - kubernetes
+    - telepresence
+
 # TODO: get as module?
 - name: "cfssl: install"
   apt:
