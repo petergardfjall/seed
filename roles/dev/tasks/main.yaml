@@ -964,7 +964,9 @@
   ignore_errors: yes
   changed_when: False # read-only: won't change machine state
   register: kubectl_v
-  tags: kubernetes
+  tags:
+    - kubernetes
+    - kubectl
 
 - name: "kubectl: install"
   get_url:
@@ -973,7 +975,9 @@
     mode: 0755
     force: yes
   when: (kubectl_v is failed) or (kubectl_version not in kubectl_v.stdout)
-  tags: kubernetes
+  tags:
+    - kubernetes
+    - kubectl
 
 - name: "create ~/.kube directory"
   become: no
@@ -981,7 +985,9 @@
     path: "{{ '~/.kube' | expanduser }}"
     state: directory
     mode: 0755
-  tags: kubernetes
+  tags:
+    - kubernetes
+    - kubectl
 
 #
 # helm2
@@ -1182,7 +1188,7 @@
   become: no # not as root
   environment:
     GO111MODULE: "on"
-  command: "/opt/bin/go get {{ item }}"
+  command: "/opt/bin/go install {{ item }}"
   changed_when: False # don't view as changes in end result
   loop:
     - "github.com/derailed/k9s@{{ k9s_version }}"
