@@ -1200,8 +1200,8 @@
 # Telepresence
 #
 
-- name: "telepresence: check current version"
-  shell: /opt/bin/telepresence version
+- name: "telepresence v2: check current version"
+  shell: "/opt/bin/{{ telepresence_v2_bin }} version | grep 'Client:'"
   ignore_errors: yes
   changed_when: False # read-only: won't change machine state
   register: telepresence_v
@@ -1209,12 +1209,13 @@
     - kubernetes
     - telepresence
 
-- name: "telepresence: download"
+- name: "telepresence v2: download"
   get_url:
-    url: "https://app.getambassador.io/download/tel2/linux/amd64/{{ telepresence_version }}/telepresence"
-    dest: "/opt/bin/telepresence"
+    url: "https://app.getambassador.io/download/tel2/linux/amd64/{{ telepresence_v2_version }}/telepresence"
+    dest: "/opt/bin/{{ telepresence_v2_bin }}"
     mode: "0755"
-  when: (telepresence_v is failed) or (not telepresence_version in telepresence_v.stdout)
+    force: yes
+  when: (telepresence_v is failed) or (not telepresence_v2_version in telepresence_v.stdout)
   tags:
     - kubernetes
     - telepresence
