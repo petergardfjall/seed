@@ -147,3 +147,6 @@ fscrypt_repo_dir: "/opt/fscrypt"
 # commit/tag of mu to build
 mu_dir: "/opt/mu-src"
 mu_rev: "v1.4.15"
+
+# minio client
+minio_client_version: "RELEASE.2022-04-07T21-43-27Z"

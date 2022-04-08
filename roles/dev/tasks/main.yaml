@@ -12,6 +12,8 @@
       - postgresql-client
   tags:
     - database
+    - mysql
+    - postgres
     - apt
 
 #
@@ -1247,3 +1249,13 @@
     chdir: "/opt/tinyproxy"
   tags:
     - tinyproxy
+
+#
+# minio client (mc)
+#
+- name: "minio: install mc"
+  become: no # not as root
+  command: "/opt/bin/go install github.com/minio/mc@{{ minio_client_version }}"
+  changed_when: False
+  tags:
+    - minio
