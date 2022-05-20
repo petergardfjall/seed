@@ -603,6 +603,9 @@
     # an opinionated code-formatter (for JavaScript, JSX)
     # https://prettier.io/. Used in Emacs.
     - prettier
+    # Generate data types and converters from JSON, JSON Schema to a multitude
+    # of languages: Go, Python, Java, etc.
+    - quicktype
   tags:
     - nodejs
     - npm
