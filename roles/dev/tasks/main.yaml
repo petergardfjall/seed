@@ -266,16 +266,6 @@
     - java
     - eclipse
 
-- name: "intellij: install"
-  snap:
-    name:
-      - intellij-idea-community
-    channel: "stable"
-    classic: "yes"
-  tags:
-    - java
-    - intellij
-
 #
 # Python
 #
