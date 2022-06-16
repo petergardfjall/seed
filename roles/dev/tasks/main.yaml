@@ -1,3 +1,11 @@
+- name: "git: update ~/.gitconfig"
+  become: no # not as root
+  shell: "~/dotfiles/setup-git-config.sh"
+  changed_when: False # don't appear changed
+  tags:
+    - git
+    - gitconfig
+
 #
 # Database clients
 #
