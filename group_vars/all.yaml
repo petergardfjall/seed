@@ -88,6 +88,8 @@ solargraph_version: "0.39.15"
 # Rust
 #
 ripgrep_version: "13.0.0"
+# refined highlighting of changes in git diffs
+diffr_version: "0.1.4"
 
 #
 # Terraform

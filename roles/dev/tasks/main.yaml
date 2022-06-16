@@ -638,7 +638,7 @@
   tags:
     - rust
 
-- name: "rust: install crates.io binaries"
+- name: "rust: install ripgrep"
   become: no
   shell: "{{ item }}"
   changed_when: False # don't display as "changed"
@@ -648,6 +648,18 @@
   tags:
     - rust
     - ripgrep
+
+# diffr: refined highlighting of changes in git diffs
+- name: "rust: install diffr"
+  become: no
+  shell: "{{ item }}"
+  changed_when: False # don't display as "changed"
+  ignore_errors: yes # nightly sometimes fails when components are missing
+  loop:
+    - "cargo install diffr --version {{ diffr_version }}"
+  tags:
+    - rust
+    - diffr
 
 #
 # C++
