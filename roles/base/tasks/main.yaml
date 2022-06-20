@@ -225,3 +225,13 @@
     repo: "{{ '~/bin/scripts' | expanduser }}"
   tags:
     - dotfiles
+
+- name: "prettier: symlink for .prettierrc.yaml"
+  become: no # not as root
+  file:
+    src: "{{ '~/dotfiles/.prettierrc.yaml' | expanduser }}"
+    dest: "{{ '~/.prettierrc.yaml' | expanduser }}"
+    state: link
+  tags:
+    - dotfiles
+    - prettier
