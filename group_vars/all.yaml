@@ -4,7 +4,7 @@ ubuntu_release: "focal"
 # System tools
 #
 # go disk usage
-gdu_version: "v5.12.0"
+gdu_version: "v5.15.0"
 
 #
 # Emacs
