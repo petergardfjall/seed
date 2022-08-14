@@ -502,6 +502,7 @@
     - go
     - go-modules
     - gopls
+    - gdu
 
 #
 # protobuf compiler
