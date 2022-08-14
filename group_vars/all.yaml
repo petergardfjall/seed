@@ -120,7 +120,8 @@ minikube_version: "1.13.0"
 kind_version: "v0.12.0"
 kustomize_version: "3.3.0"
 helmfile_version: "0.144.0"
-k9s_version: "v0.25.8"
+k9s_version: "v0.26.3"
+k9s_install_dir: "/opt/bin"
 telepresence_v2_version: "2.5.4"
 # use a different name for binary until it's possible to swap from v1 (installed
 # via apt) to v2. See #1646 and #1608.
