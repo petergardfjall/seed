@@ -26,7 +26,7 @@ universal_ctags_version: "p5.9.20220130.0"
 go_version: "1.18.5"
 go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
-delve_version: "v1.7.2"
+delve_version: "v1.9.0"
 go_dep_version: "0.5.0"
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
