@@ -45,8 +45,8 @@ go_swagger_version: "v0.29.0"
 #
 # JavaScript/NodeJS
 #
-nodejs_repo_version: "node_12.x"
-typescript_lsp_server_version: "0.5.1"
+nodejs_repo_version: "node_16.x"
+typescript_lsp_server_version: "1.0.0"
 
 #
 # C/C++
