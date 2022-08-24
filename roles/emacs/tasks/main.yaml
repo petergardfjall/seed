@@ -81,6 +81,8 @@
       # extends global/gtags with support for F#, Haskell, ..
       # NOTE: set GTAGSLABEL=pygments-parser to make use of this backend.
       - python3-pygments
+      # pandoc is used by emacs markdown-preview-mode
+      - pandoc
   tags:
     - emacs
     - global
@@ -181,26 +183,6 @@
     - ctags
     - gtags
     - global
-
-# pandoc is used by emacs markdown-preview-mode
-- name: "install: pandoc"
-  apt:
-    deb: "https://github.com/jgm/pandoc/releases/download/2.6/pandoc-2.6-1-amd64.deb"
-  tags: emacs
-
-- name: "truecolor terminal: create ~/xterm-24bit.terminfo file"
-  become: no
-  blockinfile:
-    path: "{{ '~/xterm-24bit.terminfo' | expanduser }}"
-    block: |
-      xterm-24bit|xterm with 24-bit direct color mode,
-         use=xterm-256color,
-         sitm=\E[3m,
-         ritm=\E[23m,
-         setb24=\E[48;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
-         setf24=\E[38;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
-    create: yes
-  tags: emacs
 
 # this allows us to 'export TERM=xterm-24bit' to make use of truecolor
 # terminal
