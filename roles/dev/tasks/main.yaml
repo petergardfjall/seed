@@ -1230,7 +1230,7 @@
     - kubernetes
 
 #
-# Telepresence
+# Telepresence v2
 #
 
 - name: "telepresence v2: check current version"

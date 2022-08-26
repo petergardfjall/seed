@@ -171,30 +171,6 @@
     - gcloud
     - repos
 
-#
-# Telepresence
-#
-- name: "apt key: telepresence"
-  apt_key:
-    id: 81FB6585AF36C8E8
-    url: "https://packagecloud.io/datawireio/telepresence/gpgkey"
-    state: present
-  tags:
-    - repos
-    - kubernetes
-    - telepresence
-
-- name: "apt repo: telepresence"
-  apt_repository:
-    filename: "telepresence"
-    repo: "deb https://packagecloud.io/datawireio/telepresence/ubuntu/ {{ ubuntu_release }} main"
-    state: present
-    update_cache: no
-  tags:
-    - repos
-    - kubernetes
-    - telepresence
-
 - name: "apt: update cache"
   apt:
     update_cache: yes
