@@ -1,4 +1,5 @@
-ubuntu_release: "focal"
+# distro codename: `lsb_release -cs`
+ubuntu_release: "jammy"
 
 #
 # System tools
