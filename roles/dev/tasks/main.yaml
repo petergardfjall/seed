@@ -682,7 +682,7 @@
       - clang-format
       - cmake
       # man pages for c++ standard lib: man std::list, man std::unique_ptr
-      - libstdc++-8-doc
+      - libstdc++-10-doc
       # /usr/share/cppreference/doc/html/en/index.html
       - cppreference-doc-en-html
   apt:
@@ -691,33 +691,17 @@
     install_recommends: yes
   tags:
     - c++
-    - ccls
 
 # clangd C++ language server
-- name: "clangd: create /opt/clangd"
-  file:
-    path: "/opt/clangd"
-    state: directory
-  tags:
-    - c++
-    - clangd
-
-- name: "clangd: download"
-  unarchive:
-    src: "https://github.com/clangd/clangd/releases/download/{{ clangd_version }}/clangd-linux-{{ clangd_version }}.zip"
-    dest: "/opt/clangd"
-    remote_src: yes
-    creates: "/opt/clangd/clangd_{{ clangd_version }}/bin/clangd"
-  tags:
-    - c++
-    - clangd
-
-- name: "clangd: /opt/bin/clangd symlink"
-  file:
-    src: "/opt/clangd/clangd_{{ clangd_version }}/bin/clangd"
-    dest: "/opt/bin/clangd"
-    force: yes
-    state: link
+- name: "clangd: install"
+  vars:
+    packages:
+      - "clangd"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+    update_cache: yes
   tags:
     - c++
     - clangd

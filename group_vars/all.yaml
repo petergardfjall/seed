@@ -50,12 +50,6 @@ nodejs_repo_version: "node_16.x"
 typescript_lsp_server_version: "1.0.0"
 
 #
-# C/C++
-#
-clangd_version: "10.0.0"
-ccls_version: "0.20190823.5"
-
-#
 # Python
 #
 dotnet_sdk_version: "3.1"
