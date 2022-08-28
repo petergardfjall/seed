@@ -52,7 +52,7 @@ typescript_lsp_server_version: "1.0.0"
 #
 # Python
 #
-dotnet_sdk_version: "3.1"
+dotnet_sdk_version: "6.0"
 # python language server
 pyright_ls_version: "1.1.180"
 # alternative python language server
