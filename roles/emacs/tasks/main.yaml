@@ -139,9 +139,10 @@
     - global
 
 - name: "universal-ctags: build and install under /usr/local/bin/ctags"
-  shell: "./autogen.sh && ./configure --prefix=/usr/local && make && make install"
+  shell: "./autogen.sh && ./configure --prefix=/usr/local && make && make install && touch /opt/universal-ctags/.BUILT_{{ universal_ctags_version }}"
   args:
     chdir: "/opt/universal-ctags"
+    creates: "/opt/universal-ctags/.BUILT_{{ universal_ctags_version }}"
   tags:
     - emacs
     - ctags
