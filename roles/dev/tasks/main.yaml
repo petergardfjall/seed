@@ -597,7 +597,7 @@
 - name: "cmake: install cmake_language_server"
   become: no # not as root
   pip:
-    executable: pip3
+    executable: pip
     extra_args: --user # install under ~/.local
     name:
       - cmake-language-server
