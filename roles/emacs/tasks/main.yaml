@@ -165,9 +165,10 @@
 # Build Global with `universal-ctags` as a plugin.
 # See: https://www.gnu.org/software/global/manual/global.html#Plug_002din
 - name: "global: build and install under /usr/local/bin/global"
-  shell: "./configure --prefix=/usr/local --with-universal-ctags=/usr/local/bin/ctags && make && make install"
+  shell: "./configure --prefix=/usr/local --with-universal-ctags=/usr/local/bin/ctags && make && make install && touch /opt/global-{{ gnu_global_version }}/.BUILT_{{ gnu_global_version }}"
   args:
     chdir: "/opt/global-{{ gnu_global_version }}"
+    creates: "/opt/global-{{ gnu_global_version }}/.BUILT_{{ gnu_global_version }}"
   tags:
     - emacs
     - gtags
