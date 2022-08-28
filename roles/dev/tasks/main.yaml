@@ -223,26 +223,6 @@
       - MarkdownPP
   tags: python
 
-- name: "python: update-alternatives for /usr/bin/python"
-  alternatives:
-    name: python
-    link: /usr/bin/python
-    path: /usr/bin/python2
-    priority: 20
-  tags:
-    - python
-    - python2
-
-- name: "python: update-alternatives for /usr/bin/python"
-  alternatives:
-    name: python
-    link: /usr/bin/python
-    path: /usr/bin/python3
-    priority: 30
-  tags:
-    - python
-    - python3
-
 # pyenv builds python from source, so it needs a few things to be installed.
 # see https://github.com/pyenv/pyenv/wiki/common-build-problems#prerequisites
 - name: "pyenv: prerequisites"
