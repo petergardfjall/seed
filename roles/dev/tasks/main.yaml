@@ -1102,6 +1102,57 @@
     - kubernetes
 
 #
+# Telepresence v1
+#
+# (Cannot completely switch to telepresence v2 yet due to issues with
+# applications with queue semantics. See
+# https://github.com/telepresenceio/telepresence/issues/1608)
+#
+
+- name: "telepresence v1: clone git repo"
+  git:
+    repo: "https://github.com/telepresenceio/telepresence"
+    recursive: yes
+    dest: "/opt/telepresence"
+    clone: yes
+    update: no
+    version: "{{ telepresence_v1_tag }}"
+  tags:
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
+- name: "telepresence v1: build {{ telepresence_v1_tag }}"
+  shell: "git checkout -fB {{ telepresence_v1_tag }} tags/{{ telepresence_v1_tag }} && PREFIX=/opt/telepresence ./install.sh && touch .BUILT_{{ telepresence_v1_tag }}"
+  args:
+    chdir: "/opt/telepresence"
+    creates: "/opt/telepresence/.BUILT_{{ telepresence_v1_tag }}"
+  tags:
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
+- name: "telepresence v1: /usr/local/bin/telepresence symlink"
+  file:
+    src: "/opt/telepresence/bin/telepresence"
+    dest: "/usr/local/bin/telepresence"
+    state: link
+  tags:
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
+- name: "telepresence v1: /usr/local/libexec/sshuttle-telepresence symlink"
+  file:
+    src: "/opt/telepresence/libexec/sshuttle-telepresence"
+    dest: "/usr/local/libexec/sshuttle-telepresence"
+    state: link
+  tags:
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
+#
 # Telepresence v2
 #
 
@@ -1113,6 +1164,7 @@
   tags:
     - kubernetes
     - telepresence
+    - telepresence_v2
 
 - name: "telepresence v2: download"
   get_url:
@@ -1124,6 +1176,7 @@
   tags:
     - kubernetes
     - telepresence
+    - telepresence_v2
 
 # TODO: get as module?
 - name: "cfssl: install"

@@ -117,6 +117,9 @@ kustomize_version: "3.3.0"
 helmfile_version: "0.144.0"
 k9s_version: "v0.26.3"
 k9s_install_dir: "/opt/bin"
+
+# telepresence: develop with laptop "inside" kubernetes cluster
+telepresence_v1_tag: "0.109"
 telepresence_v2_version: "2.5.4"
 # use a different name for binary until it's possible to swap from v1 (installed
 # via apt) to v2. See #1646 and #1608.
