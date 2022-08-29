@@ -1109,6 +1109,19 @@
 # https://github.com/telepresenceio/telepresence/issues/1608)
 #
 
+- name: "telepresence v1: prerequisites {{ pkgs }}"
+  apt:
+    name: "{{ pkgs }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    pkgs:
+      - conntrack
+  tags:
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
 - name: "telepresence v1: clone git repo"
   git:
     repo: "https://github.com/telepresenceio/telepresence"
