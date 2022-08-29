@@ -7,6 +7,8 @@ ubuntu_release: "jammy"
 # go disk usage
 gdu_version: "v5.15.0"
 
+cfssl_version: "v1.6.2"
+
 #
 # Emacs
 #
