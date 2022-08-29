@@ -652,9 +652,8 @@
   become: no
   shell: "{{ item }}"
   changed_when: False # don't display as "changed"
-  ignore_errors: yes # nightly sometimes fails when components are missing
   loop:
-    - "cargo install ripgrep --version {{ ripgrep_version }}"
+    - "~/.cargo/bin/cargo install ripgrep --version {{ ripgrep_version }}"
   tags:
     - rust
     - ripgrep
@@ -664,9 +663,8 @@
   become: no
   shell: "{{ item }}"
   changed_when: False # don't display as "changed"
-  ignore_errors: yes # nightly sometimes fails when components are missing
   loop:
-    - "cargo install diffr --version {{ diffr_version }}"
+    - "~/.cargo/bin/cargo install diffr --version {{ diffr_version }}"
   tags:
     - rust
     - diffr
