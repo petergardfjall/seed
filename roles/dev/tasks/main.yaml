@@ -1061,10 +1061,10 @@
     - helmfile
 
 - name: "helmfile: download"
-  get_url:
-    url: "https://github.com/roboll/helmfile/releases/download/v{{ helmfile_version }}/helmfile_linux_amd64"
-    dest: "/opt/bin/helmfile"
-    mode: "0755"
+  unarchive:
+    src: "https://github.com/helmfile/helmfile/releases/download/v{{ helmfile_version }}/helmfile_{{ helmfile_version }}_linux_amd64.tar.gz"
+    dest: "/opt/bin"
+    remote_src: yes
   when: (helmfile_v is failed) or (not helmfile_version in helmfile_v.stdout)
   tags:
     - kubernetes
