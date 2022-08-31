@@ -1005,18 +1005,18 @@
 
 - name: "helm: check if diff plugin is installed"
   become: no
-  shell: "/opt/bin/helm diff --help"
+  shell: "/opt/bin/helm diff version"
   ignore_errors: yes
   changed_when: False # read-only: won't change machine state
-  register: diff_installed
+  register: diff_v
   tags:
     - helm
     - kubernetes
 
 - name: "helm: install diff plugin"
   become: no # not as root, stored under HELM_PLUGINS (see 'helm env')
-  shell: "/opt/bin/helm plugin install https://github.com/databus23/helm-diff --version={{ helm_diff_version }}"
-  when: diff_installed.rc != 0
+  shell: "/opt/bin/helm plugin uninstall diff ; /opt/bin/helm plugin install https://github.com/databus23/helm-diff --version=v{{ helm_diff_version }}"
+  when: (diff_v is failed) or (not helm_diff_version in diff_v.stdout)
   tags:
     - helm
     - kubernetes
