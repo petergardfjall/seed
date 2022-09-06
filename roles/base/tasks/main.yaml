@@ -46,6 +46,7 @@
       # network
       - nmap
       - tinyproxy # light-weight HTTP/HTTPS proxy daemon
+      - net-tools # ifconfig, netstat, route
       # graphics/media
       - inkscape
       - gimp
