@@ -138,6 +138,25 @@
     - gtags
     - global
 
+- name: "universal-ctags: check if /usr/local/bin/ctags needs rebuilding"
+  shell: |
+    # If the ctags binary is newer than the build marker, we must rebuild.
+    # This is a sign that emacs has been rebuilt and overwritten
+    # universal-ctags with its own ctags binary.
+    binary_time="$(stat --format %Z /usr/local/bin/ctags)"
+    build_time="$(stat --format %Z .BUILT_{{ universal_ctags_version }})"
+    if [ "${binary_time}" -gt "${build_time}" ]; then
+       rm -f .BUILT_{{ universal_ctags_version }}
+    fi
+  args:
+    chdir: "/opt/universal-ctags"
+  ignore_errors: yes
+  tags:
+    - emacs
+    - ctags
+    - gtags
+    - global
+
 - name: "universal-ctags: build and install under /usr/local/bin/ctags"
   shell: "./autogen.sh && ./configure --prefix=/usr/local && make && make install && touch /opt/universal-ctags/.BUILT_{{ universal_ctags_version }}"
   args:
