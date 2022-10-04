@@ -1021,6 +1021,17 @@
     - helm
     - kubernetes
 
+# sops is an editor of encrypted files that supports YAML, JSON, ENV, INI and
+# BINARY formats and encrypts with AWS KMS, GCP KMS, Azure Key Vault, age, and
+# PGP. sops can be used by the helm secrets plugin.
+- name: "sops: install"
+  become: no
+  command: "/opt/bin/go install go.mozilla.org/sops/v3/cmd/sops@{{ sops_version }}"
+  tags:
+    - helm
+    - kubernetes
+    - sops
+
 #
 # minikube
 #
