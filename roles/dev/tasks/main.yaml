@@ -522,6 +522,11 @@
   tags:
     - rust
 
+# Installs the rust toolchain.
+#
+# Note that the LSP server (rust-analyzer) is not installed directly under
+# ~/.cargo/bin but needs to be run via "rustup run stable rust-analyzer".
+#
 - name: "rust: install rustup toolchains"
   become: no
   shell: "{{ item }}"
@@ -533,10 +538,12 @@
     - "~/.cargo/bin/rustup install stable"
     # install toolchain
     - "~/.cargo/bin/rustup install nightly"
-    - "~/.cargo/bin/rustup component add --toolchain=stable  rust-src rust-analysis rls rustfmt clippy"
-    - "~/.cargo/bin/rustup component add --toolchain=nightly rust-src rust-analysis rls rustfmt clippy"
+    - "~/.cargo/bin/rustup component add --toolchain=stable  rust-src rust-analysis rustfmt clippy rust-analyzer"
+    - "~/.cargo/bin/rustup component add --toolchain=nightly rust-src rust-analysis rustfmt clippy rust-analyzer"
   tags:
     - rust
+    - rust-analyzer # lsp-server for Rust.
+    - lsp
 
 - name: "rust: install ripgrep"
   become: no
