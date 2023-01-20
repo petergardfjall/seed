@@ -26,7 +26,7 @@ universal_ctags_version: "p5.9.20220814.0"
 #
 # Go
 #
-go_version: "1.18.5"
+go_version: "1.19.5"
 go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
 delve_version: "v1.9.0"
