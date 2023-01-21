@@ -72,6 +72,8 @@
       # gpg password entry in text-mode
       - pinentry-tty
       - pinentry-curses
+      # htpasswd
+      - apache2-utils
       # diagrams
       - dia
       - graphviz
