@@ -45,6 +45,9 @@
       - gcc-10
       - libgccjit0
       - libgccjit-10-dev
+      # needed for tree-sitter integration (emacs 29+):
+      # an incremental parsing system for programming tools.
+      - libtree-sitter-dev
   apt:
     name: "{{ packages }}"
     state: latest
