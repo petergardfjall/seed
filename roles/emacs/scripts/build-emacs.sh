@@ -3,6 +3,7 @@
 set -e
 
 build_dir=${build_dir:-/opt/emacs-src}
+build_log=${build_dir}/build.log
 compile_flags=${compile_flags:-}
 
 script="$(basename ${0})"
@@ -13,7 +14,7 @@ function die {
 }
 
 function log {
-    echo -e "\e[32m[${script}] ${1}\e[39m"
+    echo -e "\e[32m[${script}] ${1}\e[39m" | tee -a ${build_log} 2>&1
 }
 
 build_marker_prefix=".BUILT"
@@ -23,6 +24,7 @@ build_marker_prefix=".BUILT"
 revision=${1}
 build_marker="${build_marker_prefix}_${revision}"
 
+rm -f ${build_log}
 log "ensuring emacs built from revision (tag/commit) ${revision} ..."
 
 # clone and/or fetch
@@ -31,6 +33,7 @@ if ! [ -d "${build_dir}" ]; then
 fi
 
 pushd ${build_dir} > /dev/null
+log "git fetch ..."
 git fetch
 
 # remove any prior build-markers (e.g. don't want a downgrade to appear to
@@ -50,12 +53,11 @@ fi
 log "commit to build: ${rev_commit}"
 
 # check out and build commit
-build_log=${build_dir}/build.log
 git checkout -B ${revision}-branch ${rev_commit}
 log "building on branch ${revision}-branch (see ${build_log}) ..."
 
 export CC="gcc-10"
-git clean -dxf                > ${build_log}  2>&1
+git clean -dxf               >> ${build_log} 2>&1
 ./autogen.sh                 >> ${build_log} 2>&1
 ./configure ${compile_flags} >> ${build_log} 2>&1
 make bootstrap               >> ${build_log} 2>&1
