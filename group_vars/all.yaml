@@ -157,3 +157,8 @@ minio_client_version: "RELEASE.2022-04-07T21-43-27Z"
 
 # github client (gh)
 gh_version: "2.12.1"
+
+#
+# Database tools.
+#
+schemacrawler_version: "16.19.7"
