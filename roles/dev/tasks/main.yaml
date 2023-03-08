@@ -528,6 +528,9 @@
     # Generate data types and converters from JSON, JSON Schema to a multitude
     # of languages: Go, Python, Java, etc.
     - quicktype
+    # Command-line interface for mermaid.js diagrams:
+    #   mmdc -i input.mmd -o output.svg
+    - "@mermaid-js/mermaid-cli@{{ mermaid_cli_version }}"
   tags:
     - nodejs
     - npm
