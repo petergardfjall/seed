@@ -34,7 +34,7 @@ go_dep_version: "0.5.0"
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
 gopls_version: "v0.11.0"
-golangci_lint_version: "v1.48.0"
+golangci_lint_version: "v1.52.1"
 # gRPC
 protoc_version: "3.17.3"
 protoc_gen_go_version: "v1.26.0"
