@@ -19,7 +19,7 @@ emacs_rev: "46392c1623bc3f9764b8c7df293a89fcd47ab0ad"
 emacs_dir: "/opt/emacs-src"
 emacs_compile_flags: "--with-native-compilation"
 # source code version of GNU Global to build
-gnu_global_version: "6.6.8"
+gnu_global_version: "6.6.9"
 # commit, branch or tag to use for https://github.com/universal-ctags/ctags
 universal_ctags_version: "p5.9.20220814.0"
 
