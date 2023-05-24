@@ -462,22 +462,6 @@
     - grpc
     - protoc
 
-- name: "dep: check current version"
-  command: /opt/bin/dep version
-  ignore_errors: yes
-  changed_when: False # read-only: won't change machine state
-  register: dep_v
-  tags: go
-
-- name: "dep: download"
-  get_url:
-    url: "https://github.com/golang/dep/releases/download/v{{ go_dep_version }}/dep-linux-amd64"
-    dest: /opt/bin/dep
-    mode: 0755
-    force: yes
-  when: (dep_v is failed) or (not go_dep_version in dep_v.stdout)
-  tags: go
-
 #
 # NodeJS
 #
