@@ -55,9 +55,9 @@ mermaid_cli_version: "v10.1.0"
 #
 # Python
 #
-dotnet_sdk_version: "6.0"
+dotnet_sdk_version: "7.0"
 # python language server
-pyright_ls_version: "1.1.180"
+pyright_ls_version: "1.1.310"
 # alternative python language server
 python_language_server_version: "0.2"
 pyenv_version: "v2.1.0"
