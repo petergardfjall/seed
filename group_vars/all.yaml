@@ -118,8 +118,8 @@ minikube_version: "1.13.0"
 # kind: kubernetes-in-docker
 kind_version: "v0.17.0"
 kustomize_version: "3.3.0"
-helmfile_version: "0.145.4"
-k9s_version: "v0.26.7"
+helmfile_version: "0.154.0"
+k9s_version: "v0.27.4"
 k9s_install_dir: "/opt/bin"
 
 # telepresence: develop with laptop "inside" kubernetes cluster

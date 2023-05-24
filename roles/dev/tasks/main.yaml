@@ -1128,7 +1128,7 @@
 
 - name: "k9s: download"
   unarchive:
-    src: "https://github.com/derailed/k9s/releases/download/{{ k9s_version }}/k9s_Linux_x86_64.tar.gz"
+    src: "https://github.com/derailed/k9s/releases/download/{{ k9s_version }}/k9s_Linux_amd64.tar.gz"
     dest: "{{ k9s_install_dir }}/"
     #extra_opts: ["--strip-components=1"]
     remote_src: yes
