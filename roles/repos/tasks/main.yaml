@@ -49,7 +49,7 @@
 - name: "apt repo: google chrome"
   apt_repository:
     filename: "google-chrome"
-    repo: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
+    repo: "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main"
     state: present
     update_cache: no
   tags:
