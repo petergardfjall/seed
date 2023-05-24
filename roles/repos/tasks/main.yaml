@@ -79,56 +79,6 @@
     - vscode
 
 #
-# nodejs
-#
-
-- name: "nodejs: apt key"
-  apt_key:
-    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-    state: present
-  tags:
-    - nodejs
-    - repos
-
-- name: "nodejs: apt repo"
-  apt_repository:
-    filename: "nodejs"
-    repo: "deb https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
-    state: present
-    update_cache: no
-  tags:
-    - nodejs
-    - repos
-
-- name: "nodejs yarn: apt key"
-  apt_key:
-    url: "https://dl.yarnpkg.com/debian/pubkey.gpg"
-    state: present
-  tags:
-    - nodejs
-    - repos
-
-- name: "nodejs yarn: apt repo"
-  apt_repository:
-    filename: "nodejs-yarn"
-    repo: "deb https://dl.yarnpkg.com/debian/ stable main"
-    state: present
-    update_cache: no
-  tags:
-    - nodejs
-    - repos
-
-- name: "nodejs: apt repo src"
-  apt_repository:
-    filename: "nodejs"
-    repo: "deb-src https://deb.nodesource.com/{{ nodejs_repo_version }} {{ ubuntu_release }} main"
-    state: present
-    update_cache: no
-  tags:
-    - nodejs
-    - repos
-
-#
 # dotnet
 #
 

@@ -48,9 +48,9 @@ go_swagger_version: "v0.30.3"
 #
 # JavaScript/NodeJS
 #
-nodejs_repo_version: "node_16.x"
+nodejs_snap_channel: "16" # NodeJS major version
 typescript_lsp_server_version: "3.3.0"
-mermaid_cli_version: "v10.0.0"
+mermaid_cli_version: "v10.1.0"
 
 #
 # Python

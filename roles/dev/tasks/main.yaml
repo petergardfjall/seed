@@ -483,13 +483,10 @@
 #
 
 - name: "nodejs: install"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-  vars:
-    packages:
-      - nodejs
-      - yarn
+  snap:
+    name: "node"
+    classic: true
+    channel: "{{ nodejs_snap_channel }}"
   tags:
     - nodejs
 
@@ -508,6 +505,7 @@
     # npm install -g <pkg>
     global: yes
   loop:
+    - yarn # dependency manager
     - grunt-cli
     # recommended js/typescript language protocol server (user by emacs' lsp-mode)
     - typescript
@@ -533,6 +531,7 @@
     - "@mermaid-js/mermaid-cli@{{ mermaid_cli_version }}"
   tags:
     - nodejs
+    - yarn
     - npm
 
 #
