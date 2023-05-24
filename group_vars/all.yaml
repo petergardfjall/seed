@@ -29,18 +29,18 @@ universal_ctags_version: "p5.9.20220814.0"
 go_version: "1.20.4"
 go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
-delve_version: "v1.9.0"
-go_dep_version: "0.5.0"
+# Debugger for Go
+delve_version: "v1.20.2"
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
 gopls_version: "v0.12.0-pre.2"
-golangci_lint_version: "v1.52.1"
+golangci_lint_version: "v1.52.2"
 # gRPC
 protoc_version: "21.12"
 protoc_gen_go_version: "v1.28.1"
 protoc_grpc_gen_go_version: "v1.2.0"
 # go mod visualization
-modgv_version: "v0.2.1"
+modgv_version: "v0.2.4"
 grpcurl_version: "v1.8.2"
 # Swagger/OpenAPI
 go_swagger_version: "v0.30.3"
