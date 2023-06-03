@@ -252,7 +252,7 @@
       # jq-like tool for yaml
       - yq
       # markdown preprocessor with support for `!INCLUDE <file>` macro
-      - MarkdownPP
+      - "MarkdownPP=={{ markdown_pp_version }}"
   tags: python
 
 # pyenv builds python from source, so it needs a few things to be installed.

@@ -75,6 +75,7 @@ pytest_version: "6.2.5"
 miniconda_py_version: "py39"
 miniconda_version: "4.10.3"
 miniconda_checksum: "sha256:1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f29fff6f8d52f"
+markdown_pp_version: "1.5.1"
 
 #
 # Ruby
