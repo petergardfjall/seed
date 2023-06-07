@@ -823,6 +823,7 @@
   vars:
     packages:
       - google-cloud-sdk
+      - google-cloud-sdk-gke-gcloud-auth-plugin
   tags:
     - gcloud
 
