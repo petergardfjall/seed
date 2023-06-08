@@ -503,7 +503,7 @@
     # language server for Python
     - "pyright@{{ pyright_ls_version }}"
     # converter of markdown to pdf documents
-    - md-to-pdf
+    - "md-to-pdf@{{ md_to_pdf_version }}"
     # an opinionated code-formatter (for JavaScript, JSX)
     # https://prettier.io/. Used in Emacs.
     - prettier
