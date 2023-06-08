@@ -482,6 +482,8 @@
   tags:
     - nodejs
 
+# Installs (with npm -g) under ~/.npm-packages/bin
+# Use `npm list -g` to see which packages are installed.
 - name: "nodejs: install packages"
   become: no
   npm:
