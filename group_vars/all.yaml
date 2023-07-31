@@ -120,7 +120,7 @@ minikube_version: "1.13.0"
 # kind: kubernetes-in-docker
 kind_version: "v0.17.0"
 kustomize_version: "3.3.0"
-helmfile_version: "0.154.0"
+helmfile_version: "0.155.1"
 k9s_version: "v0.27.4"
 k9s_install_dir: "/opt/bin"
 
