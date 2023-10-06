@@ -26,7 +26,7 @@ universal_ctags_version: "p6.0.20230521.0"
 #
 # Go
 #
-go_version: "1.21.1"
+go_version: "1.21.2"
 go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
 # Debugger for Go
