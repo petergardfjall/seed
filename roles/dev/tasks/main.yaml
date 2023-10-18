@@ -66,9 +66,13 @@
     state: latest
     install_recommends: yes
   vars:
+    # See https://docs.docker.com/engine/install/ubuntu/
     packages:
-      - docker.io
-      - docker-compose
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
   tags:
     - docker
 

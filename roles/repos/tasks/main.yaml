@@ -57,6 +57,28 @@
     - chrome
 
 #
+# Docker
+#
+- name: "apt key: docker"
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+    keyring: "/etc/apt/trusted.gpg.d/docker.gpg"
+    state: present
+  tags:
+    - repos
+    - docker
+
+- name: "apt repo: docker"
+  apt_repository:
+    filename: "docker"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.gpg] https://download.docker.com/linux/ubuntu jammy stable"
+    state: present
+    update_cache: no
+  tags:
+    - repos
+    - docker
+
+#
 # vscode
 #
 
