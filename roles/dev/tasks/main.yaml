@@ -410,6 +410,7 @@
     # gopls language server
     - "golang.org/x/tools/gopls@{{ gopls_version }}"
     - "github.com/golangci/golangci-lint/cmd/golangci-lint@{{ golangci_lint_version }}"
+    - "github.com/oklog/ulid/cmd/ulid@v2.1.0"
     - "github.com/go-swagger/go-swagger/cmd/swagger@{{ go_swagger_version }}"
     # terraform language server (use by emacs' lsp-mode)
     - "github.com/hashicorp/terraform-ls@{{ tf_ls_version }}"
