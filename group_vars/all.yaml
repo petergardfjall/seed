@@ -15,7 +15,7 @@ cfssl_version: "v1.6.2"
 
 # emacs version (tag or commit) to build from source.
 # for example, "emacs-27.1" or "86d8d76aa3"
-emacs_rev: "3e232387356a9dbfd6f51cb33aa48c9dfc57c872"
+emacs_rev: "309823ff7796416414cee8c6f4d2650615c19f64"
 emacs_dir: "/opt/emacs-src"
 emacs_compile_flags: "--with-native-compilation"
 # source code version of GNU Global to build
