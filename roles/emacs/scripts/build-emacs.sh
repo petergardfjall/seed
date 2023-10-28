@@ -17,6 +17,7 @@ function log {
     echo -e "\e[32m[${script}] ${1}\e[39m" | tee -a ${build_log} 2>&1
 }
 
+mkdir -p ${build_dir}
 build_marker_prefix=".BUILT"
 
 [ -z "${1}" ] && die "no emacs revision (tag or commit) given"
@@ -25,7 +26,7 @@ revision=${1}
 build_marker="${build_marker_prefix}_${revision}"
 
 rm -f ${build_log}
-log "ensuring emacs built from revision (tag/commit) ${revision} ..."
+echo "ensuring emacs built from revision (tag/commit) ${revision} ..."
 
 # clone and/or fetch
 if ! [ -d "${build_dir}" ]; then
