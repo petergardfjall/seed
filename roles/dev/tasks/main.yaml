@@ -828,52 +828,6 @@
     - kubectl
 
 #
-# helm2
-#
-
-- name: "helm2: check current version"
-  shell: /opt/bin/helm2 version | head -1
-  ignore_errors: yes
-  changed_when: False # read-only: won't change machine state
-  register: helm2_v
-  tags:
-    - helm
-    - helm2
-    - kubernetes
-
-- name: "helm2: create {{ helm2_install_dir }}"
-  file:
-    path: "{{ helm2_install_dir }}"
-    state: directory
-  tags:
-    - helm
-    - helm2
-    - kubernetes
-
-- name: "helm2: install"
-  unarchive:
-    src: "https://get.helm.sh/helm-v{{ helm2_version }}-linux-amd64.tar.gz"
-    dest: "{{ helm2_install_dir }}/"
-    extra_opts: ["--strip-components=1"]
-    remote_src: yes
-  when: (helm2_v is failed) or (not helm2_version in helm2_v.stdout)
-  tags:
-    - helm
-    - helm2
-    - kubernetes
-
-- name: "helm2: /opt/bin/helm2 symlink"
-  file:
-    src: "{{ helm2_install_dir }}/helm"
-    dest: "/opt/bin/helm2"
-    force: yes
-    state: link
-  tags:
-    - helm
-    - helm2
-    - kubernetes
-
-#
 # helm3
 #
 
