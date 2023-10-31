@@ -189,36 +189,6 @@
     - java
     - maven
 
-- name: "eclipse: create {{ eclipse_install_dir }}"
-  file:
-    path: "{{ eclipse_install_dir }}"
-    state: directory
-  tags:
-    - java
-    - eclipse
-
-- name: "eclipse: download {{ eclipse_version }}"
-  unarchive:
-    src: "https://ftp.acc.umu.se/mirror/eclipse.org/technology/epp/downloads/release/{{ eclipse_version }}/R/eclipse-java-{{ eclipse_version }}-R-linux-gtk-x86_64.tar.gz"
-    dest: "{{ eclipse_install_dir }}/"
-    remote_src: yes
-    creates: "{{ eclipse_install_dir }}/eclipse"
-    extra_opts:
-      - --transform
-      - s/^eclipse\///
-  tags:
-    - java
-    - eclipse
-
-- name: "eclipse: /opt/bin/eclipse symlink"
-  file:
-    src: "{{ eclipse_install_dir }}/eclipse"
-    dest: "/opt/bin/eclipse"
-    state: link
-  tags:
-    - java
-    - eclipse
-
 #
 # Python
 #
@@ -1274,3 +1244,11 @@
     - github-cli
     - github
     - gh
+- name: "eclipse: install"
+  snap:
+    name: "eclipse"
+    classic: true
+  tags:
+    - java
+    - eclipse
+

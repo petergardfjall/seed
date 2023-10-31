@@ -102,9 +102,6 @@ tf_ls_version: "v0.25.2"
 # Packer
 packer_version: "1.5.1"
 
-eclipse_version: "2022-06"
-eclipse_install_dir: "/opt/eclipse-{{ eclipse_version }}"
-
 #
 # Kubernetes
 #
