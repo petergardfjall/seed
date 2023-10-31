@@ -101,26 +101,6 @@
     - vscode
 
 #
-# dotnet
-#
-
-- name: "get ubuntu release version"
-  become: false
-  shell: lsb_release -rs
-  register: lsbrelease_rs
-  changed_when: False # read-only: won't change machine state
-  tags:
-    - dotnet
-    - repos
-
-- name: "dotnet: register MS key, product repo, install dependencies"
-  apt:
-    deb: "https://packages.microsoft.com/config/ubuntu/{{ lsbrelease_rs.stdout }}/packages-microsoft-prod.deb"
-  tags:
-    - dotnet
-    - repos
-
-#
 # gcloud
 #
 

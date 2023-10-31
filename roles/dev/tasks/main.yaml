@@ -549,23 +549,6 @@
     - diffr
 
 #
-# dotnet
-#
-
-- name: "dotnet: install {{ packages }}"
-  vars:
-    packages:
-      - "dotnet-sdk-{{ dotnet_sdk_version }}"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
-    update_cache: yes
-  tags:
-    - dotnet
-    - python
-
-#
 # Python language server
 #
 
