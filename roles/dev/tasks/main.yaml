@@ -57,7 +57,7 @@
     - database
 
 #
-# docker
+# Docker
 #
 
 - name: "docker: install"
