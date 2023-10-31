@@ -86,7 +86,7 @@ solargraph_version: "0.39.15"
 #
 ripgrep_version: "13.0.0"
 # refined highlighting of changes in git diffs
-diffr_version: "0.1.4"
+diffr_version: "0.1.5"
 
 #
 # Terraform
@@ -156,4 +156,4 @@ gh_version: "2.12.1"
 #
 # Database tools.
 #
-schemacrawler_version: "16.19.7"
+schemacrawler_version: "16.20.4"
