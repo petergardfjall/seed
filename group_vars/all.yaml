@@ -56,11 +56,8 @@ md_to_pdf_version: "5.2.4"
 #
 # Python
 #
-dotnet_sdk_version: "7.0"
 # python language server
-pyright_ls_version: "1.1.310"
-# alternative python language server
-python_language_server_version: "0.2"
+pyright_ls_version: "1.1.333"
 pyenv_version: "v2.1.0"
 # python versions to install in pyenv
 pyenv_py_versions: ["2.7.18", "3.9.2"]

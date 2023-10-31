@@ -94,52 +94,53 @@
     - docker
 
 #
-# VS Code
+# C++
+#
+# Note: C++ is used when building some Go modules that use cgo, so clangd needs
+# to be installed before go modules.
 #
 
-- name: "vscode: install"
+- name: "c++: install {{ packages }}"
+  vars:
+    packages:
+      - clang
+      - clang-format
+      - cmake
+      # man pages for c++ standard lib: man std::list, man std::unique_ptr
+      - libstdc++-10-doc
+      # /usr/share/cppreference/doc/html/en/index.html
+      - cppreference-doc-en-html
   apt:
     name: "{{ packages }}"
     state: latest
     install_recommends: yes
+  tags:
+    - c++
+
+# clangd C++ language server
+- name: "clangd: install"
   vars:
     packages:
-      - code
+      - "clangd"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+    update_cache: yes
   tags:
-    - code
+    - c++
+    - clangd
 
-- name: "vscode: install extensions"
+- name: "cmake: install cmake_language_server"
   become: no # not as root
-  shell: "~/dotfiles/vscode/install-extensions.sh"
-  changed_when: False # don't appear changed
+  pip:
+    executable: pip
+    extra_args: --user # install under ~/.local
+    name:
+      - cmake-language-server
   tags:
-    - code
-
-#
-# Virtualization
-#
-
-- name: "virtualbox: install {{ packages }}"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
-  vars:
-    packages:
-      - virtualbox
-      - vagrant
-  tags:
-    - vm
-    - virtualbox
-
-- name: "virtualbox: add {{ lookup('env', 'USER') }} to vboxusers group"
-  user:
-    name: "{{ lookup('env', 'USER') }}"
-    groups: vboxusers
-    append: yes
-  tags:
-    - vm
-    - virtualbox
+    - c++
+    - cmake
 
 #
 # Java
@@ -551,52 +552,6 @@
   tags:
     - rust
     - diffr
-
-#
-# C++
-#
-
-- name: "c++: install {{ packages }}"
-  vars:
-    packages:
-      - clang
-      - clang-format
-      - cmake
-      # man pages for c++ standard lib: man std::list, man std::unique_ptr
-      - libstdc++-10-doc
-      # /usr/share/cppreference/doc/html/en/index.html
-      - cppreference-doc-en-html
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
-  tags:
-    - c++
-
-# clangd C++ language server
-- name: "clangd: install"
-  vars:
-    packages:
-      - "clangd"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
-    update_cache: yes
-  tags:
-    - c++
-    - clangd
-
-- name: "cmake: install cmake_language_server"
-  become: no # not as root
-  pip:
-    executable: pip
-    extra_args: --user # install under ~/.local
-    name:
-      - cmake-language-server
-  tags:
-    - c++
-    - cmake
 
 #
 # dotnet
@@ -1244,6 +1199,29 @@
     - github-cli
     - github
     - gh
+
+#
+# VS Code
+#
+
+- name: "vscode: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - code
+  tags:
+    - code
+
+- name: "vscode: install extensions"
+  become: no # not as root
+  shell: "~/dotfiles/vscode/install-extensions.sh"
+  changed_when: False # don't appear changed
+  tags:
+    - code
+
 - name: "eclipse: install"
   snap:
     name: "eclipse"
@@ -1252,3 +1230,28 @@
     - java
     - eclipse
 
+#
+# Virtualization
+#
+
+- name: "virtualbox: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - virtualbox
+      - vagrant
+  tags:
+    - vm
+    - virtualbox
+
+- name: "virtualbox: add {{ lookup('env', 'USER') }} to vboxusers group"
+  user:
+    name: "{{ lookup('env', 'USER') }}"
+    groups: vboxusers
+    append: yes
+  tags:
+    - vm
+    - virtualbox
