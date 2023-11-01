@@ -1,0 +1,57 @@
+#
+# Java
+#
+
+- name: "openjdk: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - openjdk-19-jdk
+      - openjdk-19-source
+  tags:
+    - Dev
+    - java
+    - openjdk
+
+- name: "openjdk: /opt/java symlink"
+  file:
+    src: /usr/lib/jvm/java-19-openjdk-amd64
+    dest: /opt/java
+    state: link
+  tags:
+    - Dev
+    - java
+    - openjdk
+
+- name: "openjdk: /opt/bin/java symlink"
+  file:
+    src: /usr/lib/jvm/java-19-openjdk-amd64/bin/java
+    dest: /opt/bin/java
+    state: link
+  tags:
+    - Dev
+    - java
+    - openjdk
+
+- name: "visualvm: install"
+  apt:
+    name: visualvm
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - java
+    - visualvm
+
+- name: "maven: install"
+  apt:
+    name: maven
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - java
+    - maven

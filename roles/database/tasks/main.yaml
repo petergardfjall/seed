@@ -1,0 +1,71 @@
+#
+# Database clients
+#
+
+- name: "postgresql-client: install"
+  apt:
+    name: postgresql-client
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - database
+    - postgresql-client
+
+- name: "mysql-client: install"
+  apt:
+    name: mysql-client
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - database
+    - mysql-client
+
+# Can crawl a database and produce nice diagrams via invocaions like:
+# schemacrawler.sh --command=schema --output-format=png --output-file=tables.png --portable-names --info-level=standard --server=postgresql --user=postgres --password=password --database=my-db
+- name: "schemacrawler: download"
+  unarchive:
+    src: "https://github.com/schemacrawler/SchemaCrawler/releases/download/v{{ schemacrawler_version }}/schemacrawler-{{ schemacrawler_version }}-bin.zip"
+    dest: "/opt/"
+    remote_src: yes
+    creates: "/opt/schemacrawler-{{ schemacrawler_version }}-bin/bin/schemacrawler.sh"
+  tags:
+    - Dev
+    - database
+    - schemacrawler
+
+- name: "schemacrawler: chmod"
+  file:
+    path: "/opt/schemacrawler-{{ schemacrawler_version }}-bin/bin/schemacrawler.sh"
+    mode: "0755"
+  tags:
+    - Dev
+    - database
+    - schemacrawler
+
+- name: "schemacrawler: /opt/bin/schemacrawler.sh"
+  copy:
+    dest: "/opt/bin/schemacrawler.sh"
+    content: |
+      #!/bin/bash
+      set -e
+      /opt/schemacrawler-{{ schemacrawler_version }}-bin/bin/schemacrawler.sh $@
+    mode: "0755"
+  tags:
+    - Dev
+    - database
+    - schemacrawler
+
+#
+# minio client (mc)
+#
+
+- name: "minio: install mc"
+  become: no # not as root
+  command: "/opt/bin/go install github.com/minio/mc@{{ minio_client_version }}"
+  changed_when: False
+  tags:
+    - Dev
+    - database
+    - minio

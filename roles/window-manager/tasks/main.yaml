@@ -1,0 +1,98 @@
+- name: "xfce: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - xfce4
+      - xfce4-goodies
+      - fonts-dejavu
+      - fonts-noto
+      - libnotify-bin
+      - greybird-gtk-theme
+      - xfce4-pulseaudio-plugin
+  tags:
+    - Desktop
+    - window-manager
+    - xfce
+
+- name: "xfce: check session save-on-exit property"
+  become: no # not as root
+  shell: xfconf-query -c xfce4-session -p /general/SaveOnExit
+  register: save_on_exit
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  tags:
+    - Desktop
+    - window-manager
+    - xfce
+
+- name: "xfce: disable session save-on-exit when not set"
+  become: no # not as root
+  shell: xfconf-query -c xfce4-session -p /general/SaveOnExit -n -t bool -s false
+  changed_when: False # don't appear changed
+  when: save_on_exit.stdout == ""
+  tags:
+    - Desktop
+    - window-manager
+    - xfce
+
+- name: "xfce: disable session save-on-exit when true"
+  become: no # not as root
+  shell: xfconf-query -c xfce4-session -p /general/SaveOnExit -t bool -s false
+  when: save_on_exit.stdout == "true"
+  tags:
+    - Desktop
+    - window-manager
+    - xfce
+
+- name: "xfce: clear any existing sessions"
+  file:
+    # note: trailing slash => remove contents, not directory itself
+    path: "{{ '~/.cache/sessions/' | expanduser }}"
+    state: absent
+  changed_when: False # don't appear changed
+  tags:
+    - Desktop
+    - window-manager
+    - xfce
+
+- name: "xfce: prevent from saving sessions"
+  become: no # not as root
+  file:
+    path: "{{ '~/.cache/sessions' | expanduser }}"
+    state: directory
+    mode: 0500
+  changed_when: False # don't appear changed
+  tags:
+    - Desktop
+    - window-manager
+    - xfce
+
+- name: "xfce: setup-xfce4.sh"
+  become: no # not as root
+  shell: "~/dotfiles/setup-xfce4.sh"
+  changed_when: False # don't appear changed
+  tags:
+    - Desktop
+    - window-manager
+    - xfce
+
+# Should only be needed if we're running on a Ubuntu distribution.
+- name: "remove ubuntu-desktop (if installed)"
+  apt:
+    name: ubuntu-desktop
+    state: absent
+    purge: yes
+    autoremove: yes
+  tags:
+    - Desktop
+    - window-manager
+    - remove-ubuntu-desktop
+
+- name: "apt: clean unneeded packages"
+  apt:
+    autoremove: true
+  tags:
+    - Desktop
+    - window-manager
+    - apt-autoremove

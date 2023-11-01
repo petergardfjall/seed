@@ -1,0 +1,39 @@
+#
+# Docker
+#
+
+- name: "docker: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    # See https://docs.docker.com/engine/install/ubuntu/
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+  tags:
+    - Containers
+    - docker
+
+- name: "docker: adding user to docker group"
+  user:
+    name: "{{ lookup('env', 'USER') }}"
+    groups: docker
+    append: yes
+  tags:
+    - Containers
+    - docker
+
+- name: "docker: enable"
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+    masked: no
+  tags:
+    - Containers
+    - docker

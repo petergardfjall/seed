@@ -1,0 +1,102 @@
+- name: "inkscape: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - inkscape
+  tags:
+    - Desktop
+    - media
+    - inkscape
+
+- name: "gimp: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - gimp
+  tags:
+    - Desktop
+    - media
+    - gimp
+
+- name: "gpick: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - gpick
+  tags:
+    - Desktop
+    - media
+    - gpick
+
+- name: "gnuplot: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - gnuplot
+  tags:
+    - Desktop
+    - media
+    - gnuplot
+
+- name: "dia: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - dia
+  tags:
+    - Desktop
+    - media
+    - dia
+
+# Take pictures and videos from webcam.
+- name: "cheese: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - cheese
+  tags:
+    - Desktop
+    - media
+    - cheese
+
+- name: "vlc: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - vlc
+  tags:
+    - Desktop
+    - media
+    - vlc
+
+- name: "spotify: install"
+  snap:
+    name:
+      - spotify
+    channel: "stable"
+    classic: "yes"
+  tags:
+    - Desktop
+    - media
+    - spotify

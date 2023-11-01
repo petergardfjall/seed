@@ -1,0 +1,129 @@
+#
+# Python
+#
+
+# TODO: -> lang-python
+- name: "python3: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      # needed for cryptography module
+      - libssl-dev
+      - libffi-dev
+      # needed for bz2 module
+      - libbz2-dev
+      - python3
+      - python3-dev
+      - python3-pip
+      - python3-venv
+  tags:
+    - Dev
+    - python
+    - python3
+
+- name: "ipython: install"
+  become: no # not as root
+  pip:
+    executable: pip3
+    extra_args: --user # install under ~/.local
+    name:
+      - ipython
+  tags:
+    - Dev
+    - python
+    - ipython
+
+# pyenv builds python from source, so it needs a few things to be installed.
+# see https://github.com/pyenv/pyenv/wiki/common-build-problems#prerequisites
+- name: "pyenv: prerequisites"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - build-essential
+      - libssl-dev
+      - zlib1g-dev
+      - libbz2-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - llvm
+      - libncurses5-dev
+      - libncursesw5-dev
+      - xz-utils
+      - tk-dev
+      - libxml2-dev
+      - libxmlsec1-dev
+      - libffi-dev
+      - liblzma-dev
+  tags:
+    - Dev
+    - python
+    - pyenv
+
+- name: "pyenv: install"
+  become: no # not as root
+  git:
+    repo: https://github.com/pyenv/pyenv.git
+    dest: "{{ '~/.pyenv' | expanduser }}"
+    version: "{{ pyenv_version }}"
+    clone: yes
+    force: yes
+    update: yes
+  tags:
+    - Dev
+    - python
+    - pyenv
+
+- name: "pyenv: install python versions {{ pyenv_py_versions }}"
+  become: no # not as root
+  shell: "{{ '~/.pyenv/bin/pyenv' | expanduser }} install {{ item }}"
+  args:
+    creates: "{{ '~/.pyenv' | expanduser }}/versions/{{ item }}"
+  with_items:
+    - "{{ pyenv_py_versions }}"
+  tags:
+    - Dev
+    - python
+    - pyenv
+
+- name: "pyenv-virtualenv: install"
+  become: no # not as root
+  git:
+    repo: https://github.com/pyenv/pyenv-virtualenv.git
+    dest: "{{ '~/.pyenv/plugins/pyenv-virtualenv' | expanduser }}"
+    version: "{{ pyenv_virtualenv_version }}"
+    clone: yes
+    update: no
+  tags:
+    - Dev
+    - python
+    - pyenv
+    - pyenv-virtualenv
+
+- name: "pyenv: set global interpreters {{ pyenv_global_versions }}"
+  become: no
+  shell: "{{ '~/.pyenv/bin/pyenv' | expanduser }} global {{ pyenv_global_versions }}"
+  tags:
+    - Dev
+    - python
+    - pyenv
+
+- name: "ptvsd: install python DAP server"
+  become: no # not as root
+  pip:
+    executable: pip3
+    extra_args: --user # install under ~/.local
+    name:
+      - "ptvsd=={{ ptvsd_version }}"
+      # either ptvsd or emacs dap-mode appears to require pytest
+      - "pytest=={{ pytest_version }}"
+  tags:
+    - Dev
+    - python
+    - ptvsd
+    - dap

@@ -10,11 +10,16 @@
     - SourceCodePro
     - Cousine
   tags:
+    - Desktop
     - fonts
-    - truetype
+    - install-fonts
+    - emacs
 
 - name: "fonts: regenerate font cache"
   become: yes
   command: fc-cache -fv
   tags:
+    - Desktop
+    - fonts
+    - regenerate-font-cache
     - emacs

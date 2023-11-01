@@ -3,21 +3,46 @@
   become: yes
   become_method: sudo
   roles:
-    - repos
-    - base
-    - fonts
-    - emacs
+    # Category: Base
+    - apt
+    - base-dirs
+    - base-tools
+    - dotfiles
+    # Category: Security
     - firewall
-    - desktop
-    - dev
     - backup
-    - fscrypt
+    - fs-encryption
+    # Category: Desktop
+    - window-manager
+    - fonts
+    - internet
+    - media
     - email
-    - math
+    # Dev
+    - emacs
+    - lang-c++
+    - lang-go
+    - lang-python
+    - lang-java
+    - lang-js
+    - lang-rust
+    - lang-ruby
+    - dev-tools # Note: may rely on lang-* toolchains.
+    - machine-learning
+    - ide
+    - database
+    # Containers
+    - docker
+    - kubernetes
+    # VM
+    - vm
+    # Cloud
+    - cloud
 
 - hosts: laptop
   gather_facts: no
   become: yes
   become_method: sudo
   roles:
+    # Laptop
     - laptop

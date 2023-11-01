@@ -1,0 +1,45 @@
+- name: "rust: check if rustup installed"
+  become: no
+  shell: "~/.cargo/bin/rustup --version"
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: check
+  tags:
+    - Dev
+    - rust
+    - rustup
+
+# installs rustup, rustc, cargo and friends under ~/.cargo/bin/.
+# be sure to add this directory to your PATH
+- name: "rust: install rustup under ~/.cargo/bin/"
+  become: no
+  shell: "curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path"
+  when: check.failed
+  tags:
+    - Dev
+    - rust
+    - rustup
+
+# Installs the rust toolchain.
+#
+# Note that the LSP server (rust-analyzer) is not installed directly under
+# ~/.cargo/bin but needs to be run via "rustup run stable rust-analyzer".
+#
+- name: "rust: install rustup toolchains"
+  become: no
+  shell: "{{ item }}"
+  changed_when: False # don't display as "changed"
+  ignore_errors: yes # nightly sometimes fails when components are missing
+  loop:
+    - "~/.cargo/bin/rustup update"
+    # install toolchain
+    - "~/.cargo/bin/rustup install stable"
+    # install toolchain
+    - "~/.cargo/bin/rustup install nightly"
+    - "~/.cargo/bin/rustup component add --toolchain=stable  rust-src rust-analysis rustfmt clippy rust-analyzer"
+    - "~/.cargo/bin/rustup component add --toolchain=nightly rust-src rust-analysis rustfmt clippy rust-analyzer"
+  tags:
+    - Dev
+    - rust
+    - rustup
+    - rust-analyzer # lsp-server for Rust.

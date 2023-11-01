@@ -1,0 +1,73 @@
+#
+# C++
+#
+# Note: C++ is used when building some Go modules that use cgo, so clangd needs
+# to be installed before go modules.
+#
+
+- name: "clang: install {{ packages }}"
+  vars:
+    packages:
+      - clang
+      - clang-format
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - c++
+    - clang
+
+- name: "cmake: install"
+  apt:
+    name: cmake
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - c++
+    - cmake
+
+- name: "c++ documentation: install {{ packages }}"
+  vars:
+    packages:
+      # man pages for c++ standard lib: man std::list, man std::unique_ptr
+      - libstdc++-12-doc
+      # /usr/share/cppreference/doc/html/en/index.html
+      - cppreference-doc-en-html
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - c++
+    - c++-docs
+
+# clangd C++ language server
+- name: "clangd: install"
+  vars:
+    packages:
+      - "clangd"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+    update_cache: yes
+  tags:
+    - Dev
+    - c++
+    - clangd
+
+- name: "cmake-language-server: install"
+  become: no # not as root
+  pip:
+    executable: pip
+    extra_args: --user # install under ~/.local
+    name:
+      - cmake-language-server
+  tags:
+    - Dev
+    - c++
+    - cmake-language-server

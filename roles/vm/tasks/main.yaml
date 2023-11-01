@@ -1,0 +1,39 @@
+#
+# Virtualization
+#
+
+- name: "virtualbox: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - virtualbox
+  tags:
+    - VM
+    - vm
+    - virtualbox
+
+- name: "virtualbox: add {{ lookup('env', 'USER') }} to vboxusers group"
+  user:
+    name: "{{ lookup('env', 'USER') }}"
+    groups: vboxusers
+    append: yes
+  tags:
+    - VM
+    - vm
+    - virtualbox
+
+- name: "vagrant: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - vagrant
+  tags:
+    - VM
+    - vm
+    - vagrant

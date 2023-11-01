@@ -1,0 +1,349 @@
+#
+# Kubernetes
+#
+
+- name: "kubectl: check current version"
+  shell: "/opt/bin/kubectl version --client | grep v{{ kubectl_version }}"
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: kubectl_v
+  tags:
+    - Containers
+    - kubernetes
+    - kubectl
+
+- name: "kubectl: install"
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/v{{ kubectl_version }}/bin/linux/amd64/kubectl
+    dest: /opt/bin/kubectl
+    mode: 0755
+    force: yes
+  when: (kubectl_v is failed) or (kubectl_version not in kubectl_v.stdout)
+  tags:
+    - Containers
+    - kubernetes
+    - kubectl
+
+- name: "create ~/.kube directory"
+  become: no
+  file:
+    path: "{{ '~/.kube' | expanduser }}"
+    state: directory
+    mode: 0755
+  tags:
+    - Containers
+    - kubernetes
+    - kubectl
+
+#
+# helm
+#
+
+- name: "helm: check current version"
+  shell: /opt/bin/helm version | head -1
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: helm_v
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+
+- name: "helm: create {{ helm_install_dir }}"
+  file:
+    path: "{{ helm_install_dir }}"
+    state: directory
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+
+- name: "helm: install"
+  unarchive:
+    src: "https://get.helm.sh/helm-v{{ helm_version }}-linux-amd64.tar.gz"
+    dest: "{{ helm_install_dir }}/"
+    extra_opts: ["--strip-components=1"]
+    remote_src: yes
+  when: (helm_v is failed) or (not helm_version in helm_v.stdout)
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+
+- name: "helm: /opt/bin/helm symlink"
+  file:
+    src: "{{ helm_install_dir }}/helm"
+    dest: "/opt/bin/helm"
+    force: yes
+    state: link
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+
+- name: "helm: /opt/bin/helm symlink"
+  file:
+    src: "{{ helm_install_dir }}/helm"
+    dest: "/opt/bin/helm"
+    force: yes
+    state: link
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+
+#
+# helm secrets plugin
+#
+
+- name: "helm: check if secrets plugin is installed"
+  become: no
+  shell: "/opt/bin/helm secrets --help"
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: secrets_installed
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+    - helm-secrets
+
+- name: "helm: install secrets plugin"
+  become: no # not as root, stored under HELM_PLUGINS (see 'helm env')
+  shell: "/opt/bin/helm plugin install https://github.com/jkroepke/helm-secrets --version={{ helm_secrets_version }}"
+  when: secrets_installed.rc != 0
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+    - helm-secrets
+
+- name: "helm: check if diff plugin is installed"
+  become: no
+  shell: "/opt/bin/helm diff version"
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: diff_v
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+    - helm-diff
+
+- name: "helm: install diff plugin"
+  become: no # not as root, stored under HELM_PLUGINS (see 'helm env')
+  shell: "/opt/bin/helm plugin uninstall diff ; /opt/bin/helm plugin install https://github.com/databus23/helm-diff --version=v{{ helm_diff_version }}"
+  when: (diff_v is failed) or (not helm_diff_version in diff_v.stdout)
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+    - helm-diff
+
+# sops is an editor of encrypted files that supports YAML, JSON, ENV, INI and
+# BINARY formats and encrypts with AWS KMS, GCP KMS, Azure Key Vault, age, and
+# PGP. sops can be used by the helm secrets plugin.
+- name: "sops: install"
+  become: no
+  command: "/opt/bin/go install go.mozilla.org/sops/v3/cmd/sops@{{ sops_version }}"
+  tags:
+    - Containers
+    - kubernetes
+    - helm
+    - sops
+
+#
+# minikube
+#
+
+- name: "minikube: install"
+  apt:
+    deb: "https://github.com/kubernetes/minikube/releases/download/v{{ minikube_version }}/minikube_{{ minikube_version }}-0_amd64.deb"
+  tags:
+    - Containers
+    - kubernetes
+    - minikube
+
+# kind: Kubernetes in docker
+- name: "kind: install"
+  become: no # not as root
+  environment:
+    GO111MODULE: "on"
+  command: "/opt/bin/go install {{ item }}"
+  changed_when: False # don't view as changes in end result
+  loop:
+    - "sigs.k8s.io/kind@{{ kind_version }}"
+  tags:
+    - Containers
+    - kubernetes
+    - kind
+
+# Kubernetes-native configuration management
+- name: "kustomize: install"
+  become: no # not as root
+  environment:
+    GO111MODULE: "on"
+  command: "/opt/bin/go install {{ item }}"
+  changed_when: False # don't view as changes in end result
+  loop:
+    - "sigs.k8s.io/kustomize/kustomize/v3@v{{ kustomize_version }}"
+  tags:
+    - Containers
+    - kubernetes
+    - kustomize
+
+#
+# helmfile
+#
+
+- name: "helmfile: check current version"
+  shell: /opt/bin/helmfile --version
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: helmfile_v
+  tags:
+    - Containers
+    - kubernetes
+    - helmfile
+
+- name: "helmfile: download"
+  unarchive:
+    src: "https://github.com/helmfile/helmfile/releases/download/v{{ helmfile_version }}/helmfile_{{ helmfile_version }}_linux_amd64.tar.gz"
+    dest: "/opt/bin"
+    remote_src: yes
+  when: (helmfile_v is failed) or (not helmfile_version in helmfile_v.stdout)
+  tags:
+    - Containers
+    - kubernetes
+    - helmfile
+
+#
+# k9s
+#
+- name: "k9s: check current version"
+  command: "{{ k9s_install_dir }}/k9s version"
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: k9s_v
+  tags:
+    - Containers
+    - kubernetes
+    - k9s
+
+- name: "k9s: create {{ k9s_install_dir }}"
+  file:
+    path: "{{ k9s_install_dir }}"
+    state: directory
+  tags:
+    - Containers
+    - kubernetes
+    - k9s
+
+- name: "k9s: download"
+  unarchive:
+    src: "https://github.com/derailed/k9s/releases/download/{{ k9s_version }}/k9s_Linux_amd64.tar.gz"
+    dest: "{{ k9s_install_dir }}/"
+    #extra_opts: ["--strip-components=1"]
+    remote_src: yes
+  when: (k9s_v is failed) or (not k9s_version in k9s_v.stdout)
+  tags:
+    - Containers
+    - kubernetes
+    - k9s
+
+#
+# Telepresence v1
+#
+# (Cannot completely switch to telepresence v2 yet due to issues with
+# applications with queue semantics. See
+# https://github.com/telepresenceio/telepresence/issues/1608)
+#
+
+- name: "telepresence v1: prerequisites {{ pkgs }}"
+  apt:
+    name: "{{ pkgs }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    pkgs:
+      - conntrack
+  tags:
+    - Containers
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
+- name: "telepresence v1: clone git repo"
+  git:
+    repo: "https://github.com/telepresenceio/telepresence"
+    recursive: yes
+    dest: "/opt/telepresence"
+    clone: yes
+    update: no
+    version: "{{ telepresence_v1_tag }}"
+  tags:
+    - Containers
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
+- name: "telepresence v1: build {{ telepresence_v1_tag }}"
+  shell: "git checkout -fB {{ telepresence_v1_tag }} tags/{{ telepresence_v1_tag }} && PREFIX=/opt/telepresence ./install.sh && touch .BUILT_{{ telepresence_v1_tag }}"
+  args:
+    chdir: "/opt/telepresence"
+    creates: "/opt/telepresence/.BUILT_{{ telepresence_v1_tag }}"
+  tags:
+    - Containers
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
+- name: "telepresence v1: /usr/local/bin/telepresence symlink"
+  file:
+    src: "/opt/telepresence/bin/telepresence"
+    dest: "/usr/local/bin/telepresence"
+    state: link
+  tags:
+    - Containers
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
+- name: "telepresence v1: /usr/local/libexec/sshuttle-telepresence symlink"
+  file:
+    src: "/opt/telepresence/libexec/sshuttle-telepresence"
+    dest: "/usr/local/libexec/sshuttle-telepresence"
+    state: link
+  tags:
+    - Containers
+    - kubernetes
+    - telepresence
+    - telepresence_v1
+
+#
+# Telepresence v2
+#
+
+- name: "telepresence v2: check current version"
+  shell: "/opt/bin/{{ telepresence_v2_bin }} version | grep 'Client:'"
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: telepresence_v
+  tags:
+    - Containers
+    - kubernetes
+    - telepresence
+    - telepresence_v2
+
+- name: "telepresence v2: download"
+  get_url:
+    url: "https://app.getambassador.io/download/tel2/linux/amd64/{{ telepresence_v2_version }}/telepresence"
+    dest: "/opt/bin/{{ telepresence_v2_bin }}"
+    mode: "0755"
+    force: yes
+  when: (telepresence_v is failed) or (not telepresence_v2_version in telepresence_v.stdout)
+  tags:
+    - Containers
+    - kubernetes
+    - telepresence
+    - telepresence_v2

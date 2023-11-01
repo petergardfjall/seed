@@ -1,0 +1,34 @@
+#
+# VS Code
+#
+
+- name: "vscode: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - code
+  tags:
+    - ide
+    - vscode
+
+- name: "vscode: install extensions"
+  become: no # not as root
+  shell: "~/dotfiles/vscode/install-extensions.sh"
+  changed_when: False # don't appear changed
+  tags:
+    - ide
+    - vscode
+
+#
+# Eclipse
+#
+- name: "eclipse: install"
+  snap:
+    name: "eclipse"
+    classic: true
+  tags:
+    - ide
+    - eclipse

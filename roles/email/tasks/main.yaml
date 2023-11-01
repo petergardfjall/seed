@@ -10,6 +10,7 @@
     state: latest
     install_recommends: yes
   tags:
+    - Desktop
     - email
     - offlineimap
 
@@ -31,6 +32,7 @@
     state: latest
     install_recommends: yes
   tags:
+    - Desktop
     - email
     - mu
     - mu4e
@@ -46,6 +48,7 @@
   args:
     creates: "/opt/mu-src/.BUILT_{{ mu_rev }}"
   tags:
+    - Desktop
     - email
     - mu
     - mu4e

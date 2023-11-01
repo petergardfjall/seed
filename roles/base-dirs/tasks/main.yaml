@@ -1,0 +1,19 @@
+- name: "create /opt/bin"
+  file:
+    path: /opt/bin
+    state: directory
+    mode: 0755
+  tags:
+    - Base
+    - base-dirs
+    - opt-bin
+
+- name: "create /scratch"
+  file:
+    path: /scratch
+    state: directory
+    mode: 0777
+  tags:
+    - Base
+    - base-dirs
+    - scratch

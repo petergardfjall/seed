@@ -6,3 +6,7 @@
   vars:
     packages:
       - laptop-mode-tools
+  tags:
+    - Laptop
+    - laptop
+    - laptop-mode-tools

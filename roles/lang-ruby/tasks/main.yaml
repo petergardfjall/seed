@@ -1,0 +1,27 @@
+#
+# Ruby
+#
+
+- name: "ruby: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - ruby
+      - ruby-dev
+  tags:
+    - Dev
+    - ruby
+
+# install ruby language server
+- name: "ruby: install solargraph language server"
+  gem:
+    name: solargraph
+    version: "{{ solargraph_version }}"
+    user_install: no # global
+  tags:
+    - Dev
+    - ruby
+    - solargraph

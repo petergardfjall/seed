@@ -1,0 +1,65 @@
+- name: "nodejs: install"
+  snap:
+    name: "node"
+    classic: true
+    channel: "{{ nodejs_snap_channel }}"
+  tags:
+    - Dev
+    - js
+    - nodejs
+
+- name: "nodejs: user-local installation of packages"
+  copy:
+    dest: "{{ '~/.npmrc' | expanduser }}"
+    content: |
+      prefix=${HOME}/.npm-packages
+  tags:
+    - Dev
+    - js
+    - nodejs
+
+# Installs (with npm -g) under ~/.npm-packages/bin
+# Use `npm list -g` to see which packages are installed.
+- name: "yarn: install"
+  become: no
+  npm:
+    name: "{{ item }}"
+    # npm install -g <pkg>
+    global: yes
+  loop:
+    - yarn # dependency manager
+  tags:
+    - Dev
+    - js
+    - nodejs
+    - yarn
+
+# TypeScript: JavaScript with syntax for types
+- name: "typescript: install"
+  become: no
+  npm:
+    name: "{{ item }}"
+    # npm install -g <pkg>
+    global: yes
+  loop:
+    - yarn # dependency manager
+  tags:
+    - Dev
+    - js
+    - nodejs
+    - typescript
+
+# TypeScript language server
+- name: "typescript-language-server: install"
+  become: no
+  npm:
+    name: "{{ item }}"
+    # npm install -g <pkg>
+    global: yes
+  loop:
+    - "typescript-language-server@{{ typescript_lsp_server_version }}"
+  tags:
+    - Dev
+    - js
+    - nodejs
+    - typescript-language-server

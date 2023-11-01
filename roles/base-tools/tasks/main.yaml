@@ -1,0 +1,132 @@
+- name: "install base cli-tools: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      # shell
+      - bash-completion
+      - tmux
+      # shell utilities
+      - pwgen
+      - tree
+      - jq
+      - pass
+      - dos2unix
+      # desktop/X
+      - wmctrl
+      - xdotool
+      - xsel
+      # filesystem
+      - gparted
+      - sshfs
+      # files
+      - hexyl # similar to hexdump but with nice color coding
+      - gdu # Disk usage analyzer with console.
+      # monitoring
+      - htop
+      - iftop
+      - bmon
+      - iperf
+      - sysstat
+      - powertop
+      - httperf
+      # network
+      - nmap
+      - net-tools # ifconfig, netstat, route
+      # graphics/media
+      - libheif-examples # heif-convert: .heif -> .jpg conversion
+      - scrot # screenshot
+      - gifsicle # tool to create/edit/view info on GIF images/animations
+      - jhead # command-line tool to extract JPEG metadata
+      - xdot # graphical frontend to view .dot graphs
+      # communication
+      - openssh-server
+      - openssh-client
+      # version control
+      - git
+      - git-lfs
+      - gitg
+      - tig
+      - subversion
+      - mercurial
+      - meld
+      # markdown rendering
+      - markdown
+      # gpg password entry in text-mode
+      - pinentry-tty
+      - pinentry-curses
+      # htpasswd
+      - apache2-utils
+      # diagrams
+      - graphviz
+  tags:
+    - Base
+    - base-tools
+    - cli-tools
+
+- name: "install build tools: {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    # build tools that may be needed to build other base tools from source
+    packages:
+      - make
+      - pkg-config
+      - autoconf
+      - automake
+      - build-essential
+      - gcc
+      - gettext
+  tags:
+    - Base
+    - base-tools
+    - build
+
+- name: "git: checkout ~/bin/scripts"
+  become: no # not as root
+  git:
+    repo: "https://github.com/petergardfjall/scripts"
+    recursive: yes
+    dest: "{{ '~/bin/scripts' | expanduser }}"
+    clone: yes
+    update: no
+  tags:
+    - Base
+    - base-tools
+    - bin-scripts
+
+- name: "git: set ssh remote for ~/bin/scripts"
+  become: no
+  git_config:
+    name: remote.origin.url
+    value: git@github.com:petergardfjall/scripts.git
+    scope: local
+    repo: "{{ '~/bin/scripts' | expanduser }}"
+  tags:
+    - Base
+    - base-tools
+    - bin-scripts
+
+#
+# Swedish locale
+#
+
+- name: "generate swedish locale"
+  shell: locale-gen sv_SE
+  changed_when: False # don't appear changed
+  tags:
+    - Base
+    - base-tools
+    - locale-se
+
+- name: "apt: autoremove"
+  apt:
+    autoremove: true
+  tags:
+    - Base
+    - base-tools
+    - apt-autoremove

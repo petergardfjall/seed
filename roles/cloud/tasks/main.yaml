@@ -1,0 +1,115 @@
+#
+# Openstack
+#
+
+- name: "openstackclient: install"
+  become: no # not as root
+  pip:
+    executable: pip3
+    extra_args: --user # install under ~/.local
+    name: openstackclient
+  tags:
+    - Cloud
+    - cloud
+    - openstackclient
+
+#
+# AWS
+#
+- name: "awscli: install"
+  become: no # not as root
+  pip:
+    executable: pip3
+    extra_args: --user # install under ~/.local
+    name: awscli
+  tags:
+    - Cloud
+    - cloud
+    - awscli
+
+#
+# Azure
+#
+- name: "az: install"
+  become: no # not as root
+  pip:
+    executable: pip3
+    extra_args: --user # install under ~/.local
+    name: azure-cli
+  tags:
+    - Cloud
+    - cloud
+    - az
+
+#
+# gcloud
+#
+- name: "gcloud: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - google-cloud-sdk
+      - google-cloud-sdk-gke-gcloud-auth-plugin
+  tags:
+    - Cloud
+    - cloud
+    - gcloud
+
+- name: "cloud_sql_proxy: install"
+  get_url:
+    url: https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64
+    dest: /opt/bin/cloud_sql_proxy
+    mode: 0755
+  tags:
+    - Cloud
+    - cloud
+    - cloud_sql_proxy
+
+#
+# Terraform
+#
+
+- name: "terraform: check current version"
+  shell: /opt/bin/terraform version | head -1
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
+  register: tf_v
+  tags:
+    - Cloud
+    - cloud
+    - terraform
+
+- name: "terraform: create {{ tf_install_dir }}"
+  file:
+    path: "{{ tf_install_dir }}"
+    state: directory
+  tags:
+    - Cloud
+    - cloud
+    - terraform
+
+- name: "terraform: download"
+  unarchive:
+    src: "https://releases.hashicorp.com/terraform/{{ tf_version }}/terraform_{{ tf_version }}_linux_amd64.zip"
+    dest: "{{ tf_install_dir }}/"
+    remote_src: yes
+  when: (tf_v is failed) or (not tf_version in tf_v.stdout)
+  tags:
+    - Cloud
+    - cloud
+    - terraform
+
+- name: "terraform: /opt/bin/terraform symlink"
+  file:
+    src: "{{ tf_install_dir }}/terraform"
+    dest: "/opt/bin/terraform"
+    force: yes
+    state: link
+  when: (tf_v is failed) or (not tf_version in tf_v.stdout)
+  tags:
+    - Cloud
+    - cloud
+    - terraform

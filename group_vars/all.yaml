@@ -91,18 +91,13 @@ diffr_version: "0.1.5"
 #
 tf_version: "0.12.19"
 tf_install_dir: "/opt/tf-{{ tf_version }}"
-# language server version
-tf_ls_version: "v0.25.2"
-
-# Packer
-packer_version: "1.5.1"
 
 #
 # Kubernetes
 #
 kubectl_version: "1.21.2"
-helm3_version: "3.12.2"
-helm3_install_dir: "/opt/helm3-{{ helm3_version }}"
+helm_version: "3.12.2"
+helm_install_dir: "/opt/helm-{{ helm_version }}"
 helm_secrets_version: "v3.15.0"
 helm_diff_version: "3.5.0"
 sops_version: "v3.7.3"
@@ -123,12 +118,6 @@ telepresence_v2_bin: "telepresence2"
 
 # tinyproxy tag/commit to build
 tinyproxy_version: "17e19a67cfd2af4d05d50981d3a09a46bec684ac"
-
-#
-# backup
-#
-# pip packages needed to install duplicity
-duplicity_packages: "duplicity>0.8,PyDrive>1.3,boto3>1.12,future"
 
 #
 # folder encryption

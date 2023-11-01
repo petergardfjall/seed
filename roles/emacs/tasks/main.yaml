@@ -7,8 +7,9 @@
     clone: yes
     update: no
   tags:
-    - dotfiles
+    - Dev
     - emacs
+    - .emacs.d
 
 - name: "git: set ssh remote for ~/.emacs.d"
   become: no
@@ -18,8 +19,9 @@
     scope: local
     repo: "{{ '~/.emacs.d' | expanduser }}"
   tags:
-    - dotfiles
+    - Dev
     - emacs
+    - .emacs.d
 
 - name: "emacs: prerequisites: {{ packages }}"
   vars:
@@ -53,7 +55,9 @@
     state: latest
     install_recommends: yes
   tags:
+    - Dev
     - emacs
+    - emacs-prerequisites
 
 - name: "emacs: build tag/commit: {{ emacs_rev }}"
   shell: |
@@ -61,7 +65,9 @@
   args:
     creates: "/opt/emacs-src/.BUILT_{{ emacs_rev }}"
   tags:
+    - Dev
     - emacs
+    - emacs-build
 
 - name: "emacs: /usr/local/bin/emacs symlink"
   file:
@@ -70,6 +76,7 @@
     force: yes
     state: link
   tags:
+    - Dev
     - emacs
 
 - name: "install: {{ packages }}"
@@ -87,8 +94,29 @@
       # pandoc is used by emacs markdown-preview-mode
       - pandoc
   tags:
+    - Dev
     - emacs
     - global
+
+- name: "emacs vterm: install {{ packages }}"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - libtool-bin
+      - libvterm-dev
+  tags:
+    - Dev
+    - emacs
+    - vterm
+
+#
+# universal-ctags: tagging/indexing and searching of language objects in source
+# code. Can be used as a plugin of GNU Global to supply support for more
+# languages.
+#
 
 - name: "universal-ctags: install prerequisites: {{ packages }}"
   apt:
@@ -103,27 +131,10 @@
       - libyaml-dev
       - libxml2-dev
   tags:
+    - Dev
     - emacs
     - global
-
-- name: "emacs vterm: install {{ packages }}"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
-  vars:
-    packages:
-      - libtool-bin
-      - libvterm-dev
-  tags:
-    - emacs
-    - vterm
-
-#
-# universal-ctags: tagging/indexing and searching of language objects in source
-# code. Can be used as a plugin of GNU Global to supply support for more
-# languages.
-#
+    - universal-ctags
 
 # universal-ctags extends language support for global/gtags
 # NOTE: set GTAGSLABEL=new-ctags to make use of this backend.
@@ -136,10 +147,10 @@
     update: yes
     version: "{{ universal_ctags_version }}"
   tags:
+    - Dev
     - emacs
-    - ctags
-    - gtags
     - global
+    - universal-ctags
 
 - name: "universal-ctags: check if /usr/local/bin/ctags needs rebuilding"
   shell: |
@@ -155,10 +166,10 @@
     chdir: "/opt/universal-ctags"
   ignore_errors: yes
   tags:
+    - Dev
     - emacs
-    - ctags
-    - gtags
     - global
+    - universal-ctags
 
 - name: "universal-ctags: build and install under /usr/local/bin/ctags"
   shell: "./autogen.sh && ./configure --prefix=/usr/local && make && make install && touch /opt/universal-ctags/.BUILT_{{ universal_ctags_version }}"
@@ -166,10 +177,10 @@
     chdir: "/opt/universal-ctags"
     creates: "/opt/universal-ctags/.BUILT_{{ universal_ctags_version }}"
   tags:
+    - Dev
     - emacs
-    - ctags
-    - gtags
     - global
+    - universal-ctags
 
 #
 # GNU global source code tagging (gtags) and querying (global)
@@ -180,8 +191,8 @@
     dest: "/opt"
     remote_src: yes
   tags:
+    - Dev
     - emacs
-    - gtags
     - global
 
 # Build Global with `universal-ctags` as a plugin.
@@ -192,8 +203,8 @@
     chdir: "/opt/global-{{ gnu_global_version }}"
     creates: "/opt/global-{{ gnu_global_version }}/.BUILT_{{ gnu_global_version }}"
   tags:
+    - Dev
     - emacs
-    - gtags
     - global
 
 - name: "global: place config under ~/.globalrc "
@@ -203,7 +214,6 @@
     dest: "{{ '~/.globalrc' | expanduser }}"
     mode: 0644
   tags:
+    - Dev
     - emacs
-    - ctags
-    - gtags
     - global
