@@ -8,10 +8,6 @@
     - base-dirs
     - base-tools
     - dotfiles
-    # Category: Security
-    - firewall
-    - backup
-    - fs-encryption
     # Category: Desktop
     - window-manager
     - fonts
@@ -31,6 +27,10 @@
     - machine-learning
     - ide
     - database
+    # Category: Security
+    - firewall
+    - backup
+    - fs-encryption
     # Containers
     - docker
     - kubernetes
