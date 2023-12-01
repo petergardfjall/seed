@@ -2,6 +2,14 @@
 # Virtualization
 #
 
+# Note: you may need to run these commands to complete the installation.
+#
+#   sudo dpkg-reconfigure virtualbox-dkms
+#   sudo dpkg-reconfigure virtualbox
+#
+# If Ubuntu Secure Boot is enabled these commands may require you to enter a
+# password to enroll a Machine-Owner Key (MOK). The process needs to be
+# completed on reboot, where the password will need to be entered again.
 - name: "virtualbox: install {{ packages }}"
   apt:
     name: "{{ packages }}"
@@ -10,6 +18,8 @@
   vars:
     packages:
       - virtualbox
+      - virtualbox-dkms
+      - linux-headers-generic
   tags:
     - VM
     - vm
@@ -25,6 +35,18 @@
     - vm
     - virtualbox
 
+#
+# Command-line tool to run and interact with virtual machines using VirtualBox
+# (default provider).
+#
+# To get started run
+#     # Create Vagrantfile (for boxes, see https://app.vagrantup.com/generic)
+#     vagrant init generic/ubuntu2204
+#     vagrant up
+#     # Note: project folder gets mounted at /vagrant.
+#     vagrant ssh
+#     vagrant destroy -f
+#
 - name: "vagrant: install {{ packages }}"
   apt:
     name: "{{ packages }}"
