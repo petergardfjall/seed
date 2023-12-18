@@ -148,19 +148,20 @@
     - bash-language-server
     - bash
 
-# Python language server.
-- name: "pyright: install"
-  become: no
-  npm:
-    name: "{{ item }}"
-    # npm install -g <pkg>
-    global: yes
-  loop:
-    - "pyright@{{ pyright_ls_version }}"
+# Python language server: pylsp.
+# See https://github.com/python-lsp/python-lsp-server
+- name: "python-lsp-server: install"
+  become: no # not as root
+  pip:
+    executable: pip3
+    extra_args: --user # install under ~/.local
+    name:
+      # Install with all optional providers.
+      - python-lsp-server[all]
   tags:
     - Dev
     - dev-tools
-    - pyright
+    - python-lsp-server
     - python
 
 # Generate data types and converters from JSON, JSON Schema to a multitude of
