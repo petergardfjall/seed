@@ -58,9 +58,9 @@ typescript_lsp_server_version: "3.3.0"
 pylsp_version: "v1.9.0"
 pyenv_version: "v2.3.35"
 # python versions to install in pyenv
-pyenv_py_versions: ["2.7.18", "3.9.2"]
+pyenv_py_versions: ["2.7.18", "3.12.1"]
 # interpreters to set as default, globally
-pyenv_global_versions: "3.9.2 2.7.18"
+pyenv_global_versions: "3.12.1 2.7.18"
 pyenv_virtualenv_version: "v1.1.5"
 # debug adapter protocol (DAP) server for python
 ptvsd_version: "4.3.2"
