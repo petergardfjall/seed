@@ -15,6 +15,23 @@
     - install-fonts
     - emacs
 
+- name: "fonts: install .otf (opentype) fonts"
+  become: yes # as root
+  copy:
+    src: "files/opentype/{{ item }}"
+    dest: /usr/local/share/fonts/
+  with_items:
+    - MonaspaceArgon
+    - MonaspaceKrypton
+    - MonaspaceNeon
+    - MonaspaceRadon
+    - MonaspaceXenon
+  tags:
+    - Desktop
+    - fonts
+    - install-fonts
+    - emacs
+
 - name: "fonts: regenerate font cache"
   become: yes
   command: fc-cache -fv
