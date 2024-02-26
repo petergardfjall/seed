@@ -63,3 +63,19 @@
     - js
     - nodejs
     - typescript-language-server
+
+# OpenAPI 3.0.x linter
+- name: "speccy: install"
+  become: no
+  npm:
+    name: "{{ item }}"
+    # npm install -g <pkg>
+    global: yes
+  loop:
+    - "speccy@{{ speccy_version }}"
+  tags:
+    - Dev
+    - js
+    - nodejs
+    - speccy
+    - openapi
