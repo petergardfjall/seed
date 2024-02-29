@@ -33,7 +33,7 @@ go_path: "~/dev/go"
 delve_version: "v1.21.0"
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
-gopls_version: "v0.15.0"
+gopls_version: "v0.15.1"
 golangci_lint_version: "v1.53.3"
 # gRPC
 protoc_version: "21.12"
