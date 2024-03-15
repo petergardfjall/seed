@@ -108,7 +108,7 @@ minikube_version: "1.13.0"
 kind_version: "v0.17.0"
 kustomize_version: "3.3.0"
 helmfile_version: "0.162.0"
-k9s_version: "v0.31.9"
+k9s_version: "v0.32.3"
 k9s_install_dir: "/opt/bin"
 
 # telepresence: develop with laptop "inside" kubernetes cluster
