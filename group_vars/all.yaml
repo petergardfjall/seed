@@ -91,7 +91,7 @@ diffr_version: "0.1.5"
 #
 # Terraform
 #
-tf_version: "0.12.19"
+tf_version: "1.7.5"
 tf_install_dir: "/opt/tf-{{ tf_version }}"
 
 #
