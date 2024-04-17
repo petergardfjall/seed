@@ -44,7 +44,7 @@ modgv_version: "v0.2.4"
 grpcurl_version: "v1.8.2"
 # Swagger/OpenAPI
 go_swagger_version: "v0.30.5"
-ogen_version: "v0.81.0"
+ogen_version: "v1.0.0"
 speccy_version: "v0.11.0"
 
 #
