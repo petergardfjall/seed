@@ -31,7 +31,7 @@ delve_version: "v1.21.0"
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
 gopls_version: "v0.15.3"
-golangci_lint_version: "v1.53.3"
+golangci_lint_version: "v1.57.2"
 # gRPC
 protoc_version: "21.12"
 protoc_gen_go_version: "v1.32.0"
