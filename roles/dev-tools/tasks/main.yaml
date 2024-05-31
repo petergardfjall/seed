@@ -13,7 +13,7 @@
     - dev-tools
     - prettier
 
-- name: "rust: install ripgrep"
+- name: "ripgrep: install"
   become: no
   shell: "{{ item }}"
   changed_when: False # don't display as "changed"
@@ -25,7 +25,7 @@
     - ripgrep
 
 # diffr: refined highlighting of changes in git diffs
-- name: "rust: install diffr"
+- name: "diffr: install"
   become: no
   shell: "{{ item }}"
   changed_when: False # don't display as "changed"
