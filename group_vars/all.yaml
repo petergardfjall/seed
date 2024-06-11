@@ -43,6 +43,8 @@ grpcurl_version: "v1.8.2"
 go_swagger_version: "v0.30.5"
 ogen_version: "v1.0.0"
 speccy_version: "v0.11.0"
+# Go REPL.
+gomacro_version: "2ff796e"
 
 #
 # JavaScript/NodeJS
