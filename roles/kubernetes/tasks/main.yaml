@@ -96,12 +96,12 @@
 # helm secrets plugin
 #
 
-- name: "helm: check if secrets plugin is installed"
+- name: "helm-secrets: check installed version"
   become: no
-  shell: "/opt/bin/helm secrets --help"
+  shell: "/opt/bin/helm secrets --version"
   ignore_errors: yes
   changed_when: False # read-only: won't change machine state
-  register: secrets_installed
+  register: helm_secrets_v
   tags:
     - Containers
     - kubernetes
@@ -110,8 +110,8 @@
 
 - name: "helm: install secrets plugin"
   become: no # not as root, stored under HELM_PLUGINS (see 'helm env')
-  shell: "/opt/bin/helm plugin install https://github.com/jkroepke/helm-secrets --version={{ helm_secrets_version }}"
-  when: secrets_installed.rc != 0
+  shell: "/opt/bin/helm plugin uninstall secrets ; /opt/bin/helm plugin install https://github.com/jkroepke/helm-secrets --version={{ helm_secrets_version }}"
+  when: (helm_secrets_v is failed) or (not helm_secrets_version in helm_secrets_v.stdout)
   tags:
     - Containers
     - kubernetes
