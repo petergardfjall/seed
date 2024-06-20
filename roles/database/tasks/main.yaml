@@ -22,6 +22,16 @@
     - database
     - mysql-client
 
+- name: "sqlite3: install"
+  apt:
+    name: sqlite3
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - database
+    - sqlite
+
 # Can crawl a database and produce nice diagrams via invocaions like:
 # schemacrawler.sh --command=schema --output-format=png --output-file=tables.png --portable-names --info-level=standard --server=postgresql --user=postgres --password=password --database=my-db
 - name: "schemacrawler: download"
