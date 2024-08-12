@@ -51,8 +51,8 @@
     install_recommends: yes
   vars:
     packages:
-      - google-cloud-sdk
-      - google-cloud-sdk-gke-gcloud-auth-plugin
+      - google-cloud-cli
+      - google-cloud-cli-gke-gcloud-auth-plugin
   tags:
     - Cloud
     - cloud
