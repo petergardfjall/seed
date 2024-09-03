@@ -337,7 +337,7 @@
 
 - name: "telepresence v2: download"
   get_url:
-    url: "https://app.getambassador.io/download/tel2/linux/amd64/{{ telepresence_v2_version }}/telepresence"
+    url: "https://github.com/telepresenceio/telepresence/releases/download/v{{ telepresence_v2_version }}/telepresence-linux-amd64"
     dest: "/opt/bin/{{ telepresence_v2_bin }}"
     mode: "0755"
     force: yes
