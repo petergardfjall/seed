@@ -33,7 +33,7 @@ delve_version: "v1.21.0"
 # Note: if a version fails to install try cleaning up the Go cache:
 # go clean -cache ; go clean -modcache
 gopls_version: "v0.16.2"
-golangci_lint_version: "v1.59.1"
+golangci_lint_version: "v1.60.3"
 # gRPC
 protoc_version: "26.1"
 protoc_gen_go_version: "v1.34.0"
