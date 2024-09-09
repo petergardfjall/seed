@@ -43,7 +43,7 @@ modgv_version: "v0.2.4"
 grpcurl_version: "v1.8.2"
 # Swagger/OpenAPI
 go_swagger_version: "v0.31.0"
-ogen_version: "v1.2.2"
+ogen_version: "v1.3.0"
 speccy_version: "v0.11.0"
 # Go REPL.
 gomacro_version: "2ff796e"
