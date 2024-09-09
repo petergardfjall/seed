@@ -32,7 +32,7 @@ delve_version: "v1.21.0"
 # name, a tag name, or a commit hash).
 # Note: if a version fails to install try cleaning up the Go cache:
 # go clean -cache ; go clean -modcache
-gopls_version: "v0.16.1"
+gopls_version: "v0.16.2"
 golangci_lint_version: "v1.59.1"
 # gRPC
 protoc_version: "26.1"
