@@ -35,6 +35,32 @@
     - kubernetes
     - kubectl
 
+# A plugin that extends kubectl with a "kubectl resource capacity" command.
+# See https://github.com/robscott/kube-capacity.
+- name: "kube-capacity: install"
+  become: no
+  command: "/opt/bin/go install github.com/robscott/kube-capacity@{{ kube_capacity_version }}"
+  tags:
+    - Containers
+    - kubernetes
+    - kubectl
+    - kube-capacity
+
+# Note that any executable on PATH prefixed by "kubectl-" is considered a
+# kubectl plugin.
+# See https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/
+- name: "kube-capacity: /opt/bin/kubectl-resource-capacity symlink"
+  file:
+    src: "/home/peterg/go/bin/kube-capacity"
+    dest: "/opt/bin/kubectl-resource-capacity"
+    force: yes
+    state: link
+  tags:
+    - Containers
+    - kubernetes
+    - kubectl
+    - kube-capacity
+
 #
 # helm
 #
