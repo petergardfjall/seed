@@ -14,7 +14,7 @@ cfssl_version: "v1.6.2"
 # for example, "emacs-27.1" or "86d8d76aa3"
 emacs_rev: "emacs-30.0.91"
 emacs_dir: "/opt/emacs-src"
-emacs_compile_flags: "--with-native-compilation"
+emacs_compile_flags: "--with-native-compilation --with-tree-sitter"
 # source code version of GNU Global to build
 gnu_global_version: "6.6.10"
 # commit, branch or tag to use for https://github.com/universal-ctags/ctags

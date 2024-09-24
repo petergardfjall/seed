@@ -40,7 +40,6 @@
       - libotf-dev
       - libgnutls28-dev
       - libncurses5-dev
-      - libjansson-dev
       - libharfbuzz-dev
       - libharfbuzz-bin
       # needed for native compilation (emacs 28+)
