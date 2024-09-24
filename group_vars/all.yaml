@@ -47,6 +47,8 @@ ogen_version: "v1.3.0"
 speccy_version: "v0.11.0"
 # Go REPL.
 gomacro_version: "2ff796e"
+godoc_version: "latest"
+pkgsite_version: "latest"
 
 #
 # JavaScript/NodeJS

@@ -174,3 +174,37 @@
     - Dev
     - go
     - gomacro
+
+# A server for showing Go source code documentation.
+# NOTE: old (deprecated), prefer pkgsite.
+#
+#   godoc -http=:8080
+#   # Enable playground
+#   godoc -http=:8080 -play
+#
+- name: "godoc: install"
+  become: no # not as root
+  command: "/opt/bin/go install {{ item }}"
+  changed_when: False # don't view as changes in end result
+  loop:
+    - "golang.org/x/tools/cmd/godoc@{{ godoc_version }}"
+  tags:
+    - Dev
+    - go
+    - godoc
+
+# A server for showing Go source code documentation:
+#
+#   cd <code-root>
+#   pkgsite -http=:8080
+#
+- name: "pkgsite: install"
+  become: no # not as root
+  command: "/opt/bin/go install {{ item }}"
+  changed_when: False # don't view as changes in end result
+  loop:
+    - "golang.org/x/pkgsite/cmd/pkgsite@{{ pkgsite_version }}"
+  tags:
+    - Dev
+    - go
+    - pkgsite
