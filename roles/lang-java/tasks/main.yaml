@@ -9,8 +9,8 @@
     install_recommends: yes
   vars:
     packages:
-      - openjdk-19-jdk
-      - openjdk-19-source
+      - openjdk-21-jdk
+      - openjdk-21-source
   tags:
     - Dev
     - java
@@ -18,7 +18,7 @@
 
 - name: "openjdk: /opt/java symlink"
   file:
-    src: /usr/lib/jvm/java-19-openjdk-amd64
+    src: /usr/lib/jvm/java-21-openjdk-amd64
     dest: /opt/java
     state: link
   tags:
@@ -28,7 +28,7 @@
 
 - name: "openjdk: /opt/bin/java symlink"
   file:
-    src: /usr/lib/jvm/java-19-openjdk-amd64/bin/java
+    src: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
     dest: /opt/bin/java
     state: link
   tags:
