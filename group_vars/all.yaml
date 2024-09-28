@@ -1,5 +1,5 @@
 # distro codename: `lsb_release -cs`
-ubuntu_release: "jammy"
+ubuntu_release: "noble"
 
 #
 # System tools
