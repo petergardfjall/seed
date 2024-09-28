@@ -73,15 +73,6 @@
     - dev-tools
     - grpcurl
 
-# Command-line tool for interacting with GitHub.
-- name: "github cli (gh): install"
-  apt:
-    deb: "https://github.com/cli/cli/releases/download/v{{ gh_version }}/gh_{{ gh_version }}_linux_amd64.deb"
-  tags:
-    - Dev
-    - dev-tools
-    - github-cli
-
 #
 # tinyproxy
 #
