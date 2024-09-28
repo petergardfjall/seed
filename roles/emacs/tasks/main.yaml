@@ -60,7 +60,7 @@
 
 - name: "emacs: build tag/commit: {{ emacs_rev }}"
   shell: |
-    build_dir={{ emacs_dir }} compile_flags={{ emacs_compile_flags }} {{ role_path }}/scripts/build-emacs.sh {{ emacs_rev | quote }}
+    build_dir="{{ emacs_dir }}" compile_flags="{{ emacs_compile_flags }}" {{ role_path }}/scripts/build-emacs.sh {{ emacs_rev | quote }}
   args:
     creates: "/opt/emacs-src/.BUILT_{{ emacs_rev }}"
   tags:
