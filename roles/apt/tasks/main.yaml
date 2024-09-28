@@ -123,6 +123,34 @@
     - repos
     - gcloud
 
+#
+# Hashicorp (contains vagrant, for instance).
+#
+- name: "apt key: hashicorp"
+  apt_key:
+    url: "https://apt.releases.hashicorp.com/gpg"
+    keyring: "/etc/apt/trusted.gpg.d/hashicorp.gpg"
+    state: present
+  tags:
+    - Base
+    - apt
+    - repos
+    - hashicorp
+    - vagrant
+
+- name: "apt repo: hashicorp"
+  apt_repository:
+    filename: "hashicorp"
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/hashicorp.gpg] https://apt.releases.hashicorp.com {{ ubuntu_release }} main"
+    state: present
+    update_cache: no
+  tags:
+    - Base
+    - apt
+    - repos
+    - hashicorp
+    - vagrant
+
 - name: "apt: update cache"
   apt:
     update_cache: yes
