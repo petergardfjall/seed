@@ -278,80 +278,11 @@
     - k9s
 
 #
-# Telepresence v1
-#
-# (Cannot completely switch to telepresence v2 yet due to issues with
-# applications with queue semantics. See
-# https://github.com/telepresenceio/telepresence/issues/1608)
-#
-
-- name: "telepresence v1: prerequisites {{ pkgs }}"
-  apt:
-    name: "{{ pkgs }}"
-    state: latest
-    install_recommends: yes
-  vars:
-    pkgs:
-      - conntrack
-  tags:
-    - Containers
-    - kubernetes
-    - telepresence
-    - telepresence_v1
-
-- name: "telepresence v1: clone git repo"
-  git:
-    repo: "https://github.com/telepresenceio/telepresence"
-    recursive: yes
-    dest: "/opt/telepresence"
-    clone: yes
-    update: no
-    version: "{{ telepresence_v1_tag }}"
-  tags:
-    - Containers
-    - kubernetes
-    - telepresence
-    - telepresence_v1
-
-- name: "telepresence v1: build {{ telepresence_v1_tag }}"
-  shell: "git checkout -fB {{ telepresence_v1_tag }} tags/{{ telepresence_v1_tag }} && PREFIX=/opt/telepresence ./install.sh && touch .BUILT_{{ telepresence_v1_tag }}"
-  args:
-    chdir: "/opt/telepresence"
-    creates: "/opt/telepresence/.BUILT_{{ telepresence_v1_tag }}"
-  tags:
-    - Containers
-    - kubernetes
-    - telepresence
-    - telepresence_v1
-
-- name: "telepresence v1: /usr/local/bin/telepresence symlink"
-  file:
-    src: "/opt/telepresence/bin/telepresence"
-    dest: "/usr/local/bin/telepresence"
-    state: link
-  tags:
-    - Containers
-    - kubernetes
-    - telepresence
-    - telepresence_v1
-
-- name: "telepresence v1: /usr/local/libexec/sshuttle-telepresence symlink"
-  file:
-    src: "/opt/telepresence/libexec/sshuttle-telepresence"
-    dest: "/usr/local/libexec/sshuttle-telepresence"
-    state: link
-  tags:
-    - Containers
-    - kubernetes
-    - telepresence
-    - telepresence_v1
-
-#
 # Telepresence v2
 #
 
 - name: "telepresence v2: check current version"
-  shell: "/opt/bin/{{ telepresence_v2_bin }} version | grep 'Client:'"
+  shell: "/opt/bin/telepresence version | grep 'Client:'"
   ignore_errors: yes
   changed_when: False # read-only: won't change machine state
   register: telepresence_v
@@ -363,8 +294,8 @@
 
 - name: "telepresence v2: download"
   get_url:
-    url: "https://github.com/telepresenceio/telepresence/releases/download/v{{ telepresence_v2_version }}/telepresence-linux-amd64"
-    dest: "/opt/bin/{{ telepresence_v2_bin }}"
+    url: "https://github.com/telepresenceio/telepresence/releases/download/v{{ telepresence_version }}/telepresence-linux-amd64"
+    dest: "/opt/bin/telepresence"
     mode: "0755"
     force: yes
   when: (telepresence_v is failed) or (not telepresence_v2_version in telepresence_v.stdout)

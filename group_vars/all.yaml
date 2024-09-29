@@ -116,11 +116,7 @@ k9s_version: "v0.32.3"
 k9s_install_dir: "/opt/bin"
 
 # telepresence: develop with laptop "inside" kubernetes cluster
-telepresence_v1_tag: "0.109"
-telepresence_v2_version: "2.19.1"
-# use a different name for binary until it's possible to swap from v1 (installed
-# via apt) to v2. See #1646 and #1608.
-telepresence_v2_bin: "telepresence2"
+telepresence_version: "2.19.1"
 
 # tinyproxy tag/commit to build
 tinyproxy_version: "17e19a67cfd2af4d05d50981d3a09a46bec684ac"
