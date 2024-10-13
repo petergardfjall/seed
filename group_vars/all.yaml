@@ -73,9 +73,9 @@ pytest_version: "6.2.5"
 # miniconda is a minimal installer for conda: a package manager and environment
 # management system originally developed for python data scientists.
 # See: https://repo.anaconda.com/miniconda/.
-miniconda_py_version: "py39"
-miniconda_version: "4.10.3"
-miniconda_checksum: "sha256:1ea2f885b4dbc3098662845560bc64271eb17085387a70c2ba3f29fff6f8d52f"
+miniconda_py_version: "py311"
+miniconda_version: "24.7.1"
+miniconda_checksum: "sha256:a098a5b1581d8fd078c430b82e27106602223e335efef708a124e723814d120c"
 markdown_pp_version: "1.5.1"
 
 #

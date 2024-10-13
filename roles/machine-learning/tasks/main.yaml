@@ -1,7 +1,9 @@
-- name: "miniconda: check if installed"
-  stat:
-    path: "{{ '~/miniconda3' | expanduser }}"
-  register: miniconda
+- name: "miniconda: check current version"
+  become: no
+  shell: ~/miniconda3/bin/conda --version
+  register: miniconda_v
+  ignore_errors: yes
+  changed_when: False # read-only: won't change machine state
   tags:
     - Dev
     - machine-learning
@@ -10,10 +12,10 @@
 - name: "miniconda: download installer"
   become: "no" # not as root
   get_url:
-    url: "https://repo.anaconda.com/miniconda/Miniconda3-{{ miniconda_py_version }}_{{ miniconda_version }}-Linux-x86_64.sh"
+    url: "https://repo.anaconda.com/miniconda/Miniconda3-{{ miniconda_py_version }}_{{ miniconda_version }}-0-Linux-x86_64.sh"
     checksum: "{{ miniconda_checksum }}"
     dest: "/tmp/Miniconda.sh"
-  when: not miniconda.stat.exists
+  when: (miniconda_v is failed) or (not miniconda_version in miniconda_v.stdout)
   tags:
     - Dev
     - machine-learning
@@ -30,8 +32,8 @@
 #
 - name: "miniconda: install"
   become: "no" # not as root
-  shell: "/bin/bash /tmp/Miniconda.sh -b"
-  when: not miniconda.stat.exists
+  shell: "/bin/bash /tmp/Miniconda.sh -b -u -f"
+  when: (miniconda_v is failed) or (not miniconda_version in miniconda_v.stdout)
   tags:
     - Dev
     - machine-learning
