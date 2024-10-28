@@ -58,6 +58,7 @@
     - emacs
     - emacs-prerequisites
 
+# See https://github.com/emacs-mirror/emacs/blob/master/INSTALL
 - name: "emacs: build tag/commit: {{ emacs_rev }}"
   shell: |
     build_dir="{{ emacs_dir }}" compile_flags="{{ emacs_compile_flags }}" {{ role_path }}/scripts/build-emacs.sh {{ emacs_rev | quote }}
