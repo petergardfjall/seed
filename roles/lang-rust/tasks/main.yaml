@@ -13,7 +13,7 @@
 # be sure to add this directory to your PATH
 - name: "rust: install rustup under ~/.cargo/bin/"
   become: no
-  shell: "curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path"
+  shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path"
   when: check.failed
   tags:
     - Dev
