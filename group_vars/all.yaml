@@ -54,7 +54,7 @@ pkgsite_version: "latest"
 # JavaScript/NodeJS
 #
 nodejs_snap_channel: "18" # NodeJS major version
-typescript_lsp_server_version: "3.3.0"
+typescript_lsp_server_version: "4.3.3"
 
 #
 # Python
