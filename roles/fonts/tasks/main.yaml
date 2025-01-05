@@ -6,6 +6,9 @@
   with_items:
     - RobotoMono
     - JetBrainsMono
+    # The Hack font patched with glyphs for popular "iconic fonts" such as Font
+    # Awesome. Downloaded from https://www.nerdfonts.com/font-downloads.
+    - HackNerdFont
     - Hasklig
     - SourceCodePro
     - Cousine
