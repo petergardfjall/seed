@@ -27,7 +27,7 @@ go_version: "1.23.1"
 go_install_dir: "/opt/go-{{ go_version }}"
 go_path: "~/dev/go"
 # Debugger for Go
-delve_version: "v1.21.0"
+delve_version: "v1.24.0"
 # Module version to use for the offifical gopls tool (e.g. "HEAD", a branch
 # name, a tag name, or a commit hash).
 # Note: if a version fails to install try cleaning up the Go cache:
