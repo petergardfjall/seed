@@ -35,6 +35,7 @@
       # network
       - nmap
       - net-tools # ifconfig, netstat, route
+      - socat
       # graphics/media
       - libheif-examples # heif-convert: .heif -> .jpg conversion
       - scrot # screenshot
