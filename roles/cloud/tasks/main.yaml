@@ -16,16 +16,17 @@
 #
 # AWS
 #
-- name: "awscli: install"
-  become: no # not as root
-  pip:
-    executable: pip3
-    extra_args: --user # install under ~/.local
-    name: awscli
+- name: "aws-cli: install"
+  snap:
+    name:
+      - aws-cli
+    channel: "stable"
+    classic: "yes"
   tags:
     - Cloud
     - cloud
-    - awscli
+    - aws-cli
+    - aws
 
 #
 # Azure
