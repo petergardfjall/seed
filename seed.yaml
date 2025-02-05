@@ -14,7 +14,7 @@
     - internet
     - media
     - email
-    # Dev
+    # Category: Dev
     - emacs
     - lang-c++
     - lang-go
@@ -31,13 +31,15 @@
     - firewall
     - backup
     - fs-encryption
-    # Containers
+    # Category: Containers
     - docker
     - kubernetes
-    # VM
+    # Category: VM
     - vm
-    # Cloud
+    # Category: Cloud
     - cloud
+    # Category: AI
+    - ai
 
 - hosts: laptop
   gather_facts: no

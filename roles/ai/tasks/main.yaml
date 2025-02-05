@@ -1,0 +1,60 @@
+#
+# Piper [1] is a text to speech program.
+# [1] https://github.com/rhasspy/piper
+#
+- name: "piper: create /opt/piper-{{ piper_version }}"
+  file:
+    path: "/opt/piper-{{ piper_version }}"
+    state: directory
+  tags:
+    - AI
+    - ai
+    - piper
+
+- name: "piper: download"
+  unarchive:
+    creates: "/opt/piper-{{ piper_version }}/piper"
+    src: "https://github.com/rhasspy/piper/releases/download/{{ piper_version }}/piper_amd64.tar.gz"
+    remote_src: yes
+    dest: "/opt/piper-{{ piper_version }}"
+    extra_opts: ["--strip-components=1"]
+  tags:
+    - AI
+    - ai
+    - piper
+
+- name: "piper: /opt/bin/piper symlink"
+  file:
+    src: "/opt/piper-{{ piper_version }}/piper"
+    dest: "/opt/bin/piper"
+    force: yes
+    state: link
+  tags:
+    - AI
+    - ai
+    - piper
+
+- name: "piper: create /opt/piper-{{ piper_version }}/voices/"
+  file:
+    path: "/opt/piper-{{ piper_version }}/voices"
+    state: directory
+  tags:
+    - AI
+    - ai
+    - piper
+
+- name: "piper: download voices"
+  get_url:
+    url: "{{ item }}"
+    dest: "/opt/piper-{{ piper_version }}/voices/{{ item | basename}}"
+    mode: "0744"
+  loop:
+    # Note: every voice needs both a model (.onnx) and a config (.onnx.json).
+    - "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/ryan/high/en_US-ryan-high.onnx"
+    - "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/en/en_US/ryan/high/en_US-ryan-high.onnx.json"
+    - "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/sv/sv_SE/nst/medium/sv_SE-nst-medium.onnx"
+    - "https://huggingface.co/rhasspy/piper-voices/resolve/v1.0.0/sv/sv_SE/nst/medium/sv_SE-nst-medium.onnx.json"
+  tags:
+    - AI
+    - ai
+    - piper

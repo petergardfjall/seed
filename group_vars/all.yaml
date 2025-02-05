@@ -143,3 +143,8 @@ minio_client_version: "RELEASE.2022-04-07T21-43-27Z"
 # Database tools.
 #
 schemacrawler_version: "16.20.4"
+
+#
+# AI tools.
+#
+piper_version: "v1.2.0"
