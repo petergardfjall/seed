@@ -53,7 +53,7 @@ pkgsite_version: "latest"
 #
 # JavaScript/NodeJS
 #
-nodejs_snap_channel: "18" # NodeJS major version
+nodejs_snap_channel: "20/stable" # NodeJS major version
 typescript_lsp_server_version: "4.3.3"
 
 #
