@@ -135,7 +135,7 @@ mu_dir: "/opt/mu-src"
 mu_rev: "v1.4.15"
 
 # minio client
-minio_client_version: "RELEASE.2022-04-07T21-43-27Z"
+minio_client_version: "RELEASE.2025-02-21T16-00-46Z"
 
 #
 # Database tools.
