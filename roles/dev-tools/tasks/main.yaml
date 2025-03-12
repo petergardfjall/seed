@@ -148,11 +148,12 @@
     extra_args: --user # install under ~/.local
     name:
       # Install with all optional providers.
-      - python-lsp-server[all]
+      - "python-lsp-server[all]=={{ python_lsp_server_version }}"
   tags:
     - Dev
     - dev-tools
     - python-lsp-server
+    - pylsp
     - python
 
 # Generate data types and converters from JSON, JSON Schema to a multitude of
