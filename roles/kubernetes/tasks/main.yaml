@@ -282,7 +282,7 @@
 #
 
 - name: "telepresence v2: check current version"
-  shell: "/opt/bin/telepresence version | grep 'Client:'"
+  shell: '/opt/bin/telepresence version | egrep -o v[0-9\.]+'
   ignore_errors: yes
   changed_when: False # read-only: won't change machine state
   register: telepresence_v
@@ -298,7 +298,7 @@
     dest: "/opt/bin/telepresence"
     mode: "0755"
     force: yes
-  when: (telepresence_v is failed) or (not telepresence_v2_version in telepresence_v.stdout)
+  when: (telepresence_v is failed) or (not telepresence_version in telepresence_v.stdout)
   tags:
     - Containers
     - kubernetes
