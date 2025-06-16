@@ -36,8 +36,8 @@ gopls_version: "v0.18.1"
 golangci_lint_version: "v1.64.7"
 # gRPC
 protoc_version: "28.2"
-protoc_gen_go_version: "v1.36.5"
-protoc_grpc_gen_go_version: "v1.5.1"
+protoc_gen_go_version: "v1.34.0"
+protoc_grpc_gen_go_version: "v1.3.0"
 # go mod visualization
 modgv_version: "v0.2.4"
 grpcurl_version: "v1.8.2"
