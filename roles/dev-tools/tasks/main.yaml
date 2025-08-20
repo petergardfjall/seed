@@ -83,7 +83,7 @@
     recursive: yes
     dest: "/opt/tinyproxy"
     clone: yes
-    update: no
+    update: yes
     version: "{{ tinyproxy_version }}"
   tags:
     - Dev
