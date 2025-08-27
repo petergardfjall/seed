@@ -36,6 +36,60 @@
     - dev-tools
     - diffr
 
+# pueue: process queue (https://github.com/Nukesor/pueue)
+- name: "pueue: install"
+  become: no
+  shell: "{{ item }}"
+  changed_when: False # don't display as "changed"
+  loop:
+    - "~/.cargo/bin/cargo install pueue --version {{ pueue_version }}"
+  tags:
+    - Dev
+    - dev-tools
+    - pueue
+
+- name: "pueue: install daemon (pueued) config"
+  become: no
+  copy:
+    src: "files/pueue/pueue.yml"
+    dest: "~/.config/pueue/"
+  tags:
+    - Dev
+    - dev-tools
+    - pueue
+    - pueued
+
+# See https://github.com/Nukesor/pueue/wiki/Configuration.
+- name: "pueued: install systemd service config"
+  become: no
+  copy:
+    src:  "files/pueue/pueued.service"
+    dest: "~/.config/systemd/user/"
+    # dest: "{{ '~/.config/systemd/user/pueued.service' | expanduser }}"
+    mode: 0644
+  tags:
+    - Dev
+    - dev-tools
+    - pueue
+    - pueued
+
+
+# To see service status: systemctl --user status pueued.service
+# To see service log: journalctl --user -u pueued.service
+- name: "pueued: run as a user systemd service"
+  become: no
+  systemd:
+    name:  "pueued"
+    scope: "user"
+    enabled: true
+    daemon_reload: true
+    state: "restarted" # Restart to catch any config changes.
+  tags:
+    - Dev
+    - dev-tools
+    - pueue
+    - pueued
+
 - name: "yq: install"
   become: no # not as root
   pip:
