@@ -95,7 +95,7 @@
   command: "/opt/bin/go install {{ item }}"
   changed_when: False # don't view as changes in end result
   loop:
-    - "github.com/golangci/golangci-lint/cmd/golangci-lint@{{ golangci_lint_version }}"
+    - "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@{{ golangci_lint_version }}"
   tags:
     - Dev
     - go
