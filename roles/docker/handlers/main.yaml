@@ -1,0 +1,5 @@
+# Note: will run when a task uses a 'notify' with 'restart docker' as value.
+- name: restart docker
+  service:
+    name: docker
+    state: restarted

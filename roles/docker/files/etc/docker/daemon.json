@@ -1,0 +1,4 @@
+{
+  "cgroup-parent": "docker_limit.slice",
+  "dns": ["8.8.8.8", "8.8.4.4"]
+}

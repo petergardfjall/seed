@@ -28,6 +28,28 @@
     - Containers
     - docker
 
+- name: "docker: limit resource consumption"
+  copy:
+    src: "etc/systemd/system/docker_limit.slice"
+    dest: "/etc/systemd/system/docker_limit.slice"
+  notify:
+    # Call on handler to restart the systemd docker service.
+    - restart docker
+  tags:
+    - Containers
+    - docker
+
+- name: "docker: /etc/docker/daemon.json"
+  copy:
+    src: "etc/docker/daemon.json"
+    dest: "/etc/docker/daemon.json"
+  notify:
+    # Call on handler to restart the systemd docker service.
+    - restart docker
+  tags:
+    - Containers
+    - docker
+
 - name: "docker: enable"
   systemd:
     name: docker
