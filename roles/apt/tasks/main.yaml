@@ -151,6 +151,29 @@
     - hashicorp
     - vagrant
 
+- name: "apt key: clickhouse"
+  apt_key:
+    url: "https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key"
+    keyring: "/etc/apt/trusted.gpg.d/clickhouse-keyring.gpg"
+    state: present
+  tags:
+    - Base
+    - apt
+    - repos
+    - clickhouse
+
+- name: "apt repo: clickhouse"
+  apt_repository:
+    filename: "clickhouse"
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/clickhouse-keyring.gpg arch=amd64] https://packages.clickhouse.com/deb stable main"
+    state: present
+    update_cache: no
+  tags:
+    - Base
+    - apt
+    - repos
+    - clickhouse
+
 - name: "apt: update cache"
   apt:
     update_cache: yes

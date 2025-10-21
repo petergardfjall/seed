@@ -79,3 +79,17 @@
     - Dev
     - database
     - minio
+
+#
+# clickhouse-client
+#
+- name: "clickhouse: install clickhouse-client"
+  apt:
+    name: clickhouse-client
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - database
+    - clickhouse
+    - clickhouse-client
