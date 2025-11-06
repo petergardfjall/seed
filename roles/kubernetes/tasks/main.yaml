@@ -171,7 +171,7 @@
 # PGP. sops can be used by the helm secrets plugin.
 - name: "sops: install"
   become: no
-  command: "/opt/bin/go install go.mozilla.org/sops/v3/cmd/sops@{{ sops_version }}"
+  command: "/opt/bin/go install github.com/getsops/sops/v3/cmd/sops@{{ sops_version }}"
   tags:
     - Containers
     - kubernetes
