@@ -147,3 +147,8 @@ schemacrawler_version: "16.20.4"
 # AI tools.
 #
 piper_version: "v1.2.0"
+
+#
+# GitHub CLI
+#
+gh_cli_version: "v2.83.1"
