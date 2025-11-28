@@ -63,7 +63,7 @@
 - name: "pueued: install systemd service config"
   become: no
   copy:
-    src:  "files/pueue/pueued.service"
+    src: "files/pueue/pueued.service"
     dest: "~/.config/systemd/user/"
     # dest: "{{ '~/.config/systemd/user/pueued.service' | expanduser }}"
     mode: 0644
@@ -73,13 +73,12 @@
     - pueue
     - pueued
 
-
 # To see service status: systemctl --user status pueued.service
 # To see service log: journalctl --user -u pueued.service
 - name: "pueued: run as a user systemd service"
   become: no
   systemd:
-    name:  "pueued"
+    name: "pueued"
     scope: "user"
     enabled: true
     daemon_reload: true
