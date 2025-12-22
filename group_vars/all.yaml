@@ -105,6 +105,7 @@ helm_version: "3.19.0"
 helm_install_dir: "/opt/helm-{{ helm_version }}"
 helm_secrets_version: "v4.6.11"
 helm_diff_version: "3.13.1"
+helm_docs_version: "v1.14.2"
 sops_version: "v3.10.2"
 minikube_version: "1.13.0"
 # kind: kubernetes-in-docker
