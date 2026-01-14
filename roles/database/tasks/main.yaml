@@ -4,7 +4,7 @@
 
 - name: "postgresql-client: install"
   apt:
-    name: postgresql-client
+    name: postgresql-client-17
     state: latest
     install_recommends: yes
   tags:

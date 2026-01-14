@@ -77,6 +77,7 @@
 - name: "apt key: vscode"
   apt_key:
     url: "https://packages.microsoft.com/keys/microsoft.asc"
+    keyring: "/etc/apt/trusted.gpg.d/microsoft.gpg"
     state: present
   tags:
     - Base
@@ -87,7 +88,7 @@
 - name: "apt repo: vscode"
   apt_repository:
     filename: "vscode"
-    repo: "deb [arch=amd64] http://packages.microsoft.com/repos/vscode stable main"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/microsoft.gpg] http://packages.microsoft.com/repos/vscode stable main"
     state: present
     update_cache: no
   tags:
@@ -150,6 +151,33 @@
     - repos
     - hashicorp
     - vagrant
+
+# PostgreSQL database
+
+- name: "apt key: postgresql"
+  apt_key:
+    url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+    keyring: "/etc/apt/trusted.gpg.d/postgresql.gpg"
+    state: present
+  tags:
+    - Base
+    - apt
+    - repos
+    - postgres
+
+- name: "apt repo: postgresql"
+  apt_repository:
+    filename: "postgresql"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt {{ ubuntu_release }}-pgdg main"
+    state: present
+    update_cache: no
+  tags:
+    - Base
+    - apt
+    - repos
+    - postgres
+
+# ClickHouse database
 
 - name: "apt key: clickhouse"
   apt_key:
