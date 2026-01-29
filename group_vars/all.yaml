@@ -99,7 +99,7 @@ tf_install_dir: "/opt/tf-{{ tf_version }}"
 #
 # Kubernetes
 #
-kubectl_version: "1.30.1"
+kubectl_version: "1.34.0"
 kube_capacity_version: "v0.8.0"
 helm_version: "3.19.0"
 helm_install_dir: "/opt/helm-{{ helm_version }}"
