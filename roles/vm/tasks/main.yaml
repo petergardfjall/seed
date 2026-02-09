@@ -2,14 +2,6 @@
 # Virtualization
 #
 
-# Note: you may need to run these commands to complete the installation.
-#
-#   sudo dpkg-reconfigure virtualbox-dkms
-#   sudo dpkg-reconfigure virtualbox
-#
-# If Ubuntu Secure Boot is enabled these commands may require you to enter a
-# password to enroll a Machine-Owner Key (MOK). The process needs to be
-# completed on reboot, where the password will need to be entered again.
 - name: "virtualbox: install {{ packages }}"
   apt:
     name: "{{ packages }}"
@@ -17,9 +9,7 @@
     install_recommends: yes
   vars:
     packages:
-      - virtualbox
-      - virtualbox-dkms
-      - linux-headers-generic
+      - virtualbox-7.2
   tags:
     - VM
     - vm

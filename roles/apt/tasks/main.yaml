@@ -210,3 +210,31 @@
     - apt
     - repos
     - apt-update
+
+#
+# Virtualbox
+#
+- name: "apt key: virtualbox"
+  apt_key:
+    url: "https://www.virtualbox.org/download/oracle_vbox_2016.asc"
+    keyring: "/etc/apt/trusted.gpg.d/virtualbox.gpg"
+    state: present
+  tags:
+    - Base
+    - apt
+    - repos
+    - vm
+    - virtualbox
+
+- name: "apt repo: virtualbox"
+  apt_repository:
+    filename: "virtualbox"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/virtualbox.gpg] https://download.virtualbox.org/virtualbox/debian {{ ubuntu_release }} contrib"
+    state: present
+    update_cache: no
+  tags:
+    - Base
+    - apt
+    - repos
+    - vm
+    - virtualbox
