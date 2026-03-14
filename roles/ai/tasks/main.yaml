@@ -58,3 +58,27 @@
     - AI
     - ai
     - piper
+
+# Terminal-based agentic coding with Gemini.
+# Get a key from https://aistudio.google.com/apikey
+# and set GEMINI_API_KEY.
+#
+# Gemini models are described here:
+#   https://ai.google.dev/gemini-api/docs/models.
+# Can also be listed with:
+#   curl "https://generativelanguage.googleapis.com/v1beta/models?key=${GEMINI_API_KEY}"
+# See https://github.com/google-gemini/gemini-cli
+- name: "gemini-cli: install"
+  become: no
+  npm:
+    name: "{{ item }}"
+    # npm install -g <pkg>
+    global: yes
+  loop:
+    - "@google/gemini-cli"
+  tags:
+    - AI
+    - ai
+    - Dev
+    - dev-tools
+    - gemini-cli
