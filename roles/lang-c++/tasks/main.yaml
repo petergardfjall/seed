@@ -71,3 +71,19 @@
     - Dev
     - c++
     - cmake-language-server
+
+#
+# Memory profiling of C/C++ programs on Linux.
+#
+- name: "valgrind: install {{ packages }}"
+  vars:
+    packages:
+      - valgrind
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  tags:
+    - Dev
+    - c++
+    - valgrind
