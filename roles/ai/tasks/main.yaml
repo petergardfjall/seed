@@ -75,7 +75,7 @@
     # npm install -g <pkg>
     global: yes
   loop:
-    - "@google/gemini-cli"
+    - "@google/gemini-cli@{{ gemini_cli_version }}"
   tags:
     - AI
     - ai

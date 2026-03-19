@@ -149,7 +149,7 @@ schemacrawler_version: "16.20.4"
 #
 # Terminal-based AI agent. Note: 'latest' means stable (see
 # https://github.com/google-gemini/gemini-cli#stable).
-gemini_cli_version: "latest"
+gemini_cli_version: "v0.34.0"
 piper_version: "v1.2.0"
 
 #
