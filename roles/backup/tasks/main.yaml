@@ -12,14 +12,14 @@
     - rclone
 
 #
-# Duplicity
+# restic (https://restic.net/)
 #
-- name: "duplicity: install"
+- name: "restic: install"
   apt:
-    name: duplicity
+    name: "restic"
     state: latest
     install_recommends: yes
   tags:
     - Security
     - backup
-    - duplicity
+    - restic
