@@ -8,17 +8,6 @@
     - internet
     - chrome
 
-- name: "skype: install"
-  snap:
-    name:
-      - skype
-    channel: "stable"
-    classic: "yes"
-  tags:
-    - Desktop
-    - internet
-    - skype
-
 - name: "slack: install"
   snap:
     name:
