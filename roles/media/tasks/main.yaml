@@ -63,20 +63,6 @@
     - media
     - dia
 
-# Take pictures and videos from webcam.
-- name: "cheese: install"
-  apt:
-    name: "{{ packages }}"
-    state: latest
-    install_recommends: yes
-  vars:
-    packages:
-      - cheese
-  tags:
-    - Desktop
-    - media
-    - cheese
-
 - name: "vlc: install"
   apt:
     name: "{{ packages }}"
