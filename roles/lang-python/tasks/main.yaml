@@ -110,19 +110,14 @@
     - python
     - pyenv
 
-- name: "ptvsd: install python DAP server"
+- name: "debugpy: install python DAP server"
   become: no # not as root
-  pip:
-    executable: pip3
-    extra_args: --user # install under ~/.local
-    name:
-      - "ptvsd=={{ ptvsd_version }}"
-      # either ptvsd or emacs dap-mode appears to require pytest
-      - "pytest=={{ pytest_version }}"
+  community.general.pipx:
+    name: "debugpy=={{ debugpy_version }}"
   tags:
     - Dev
     - python
-    - ptvsd
+    - debugpy
     - dap
 
 # either ptvsd or emacs dap-mode appears to require pytest

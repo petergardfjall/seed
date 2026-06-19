@@ -68,7 +68,7 @@ pyenv_py_versions: ["2.7.18", "3.11.7"]
 pyenv_global_versions: "3.11.7 2.7.18"
 pyenv_virtualenv_version: "v1.1.5"
 # debug adapter protocol (DAP) server for python
-ptvsd_version: "4.3.2"
+debugpy_version: "1.8.21"
 pytest_version: "6.2.5"
 # miniconda is a minimal installer for conda: a package manager and environment
 # management system originally developed for python data scientists.
