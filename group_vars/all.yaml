@@ -46,7 +46,7 @@ go_swagger_version: "v0.33.1"
 ogen_version: "v1.20.1"
 speccy_version: "v0.11.0"
 # Go REPL.
-gomacro_version: "2ff796e"
+gomacro_version: "53dd3d4"
 godoc_version: "latest"
 pkgsite_version: "latest"
 
@@ -61,7 +61,7 @@ typescript_lsp_server_version: "4.3.3"
 #
 # Python language server: python-lsp-server (pylsp).
 python_lsp_server_version: "v1.12.2"
-pyenv_version: "v2.3.35"
+pyenv_version: "v2.7.2"
 # python versions to install in pyenv
 pyenv_py_versions: ["2.7.18", "3.11.7"]
 # interpreters to set as default, globally
@@ -103,7 +103,7 @@ kubectl_version: "1.34.0"
 kube_capacity_version: "v0.8.0"
 helm_version: "3.19.0"
 helm_install_dir: "/opt/helm-{{ helm_version }}"
-helm_secrets_version: "v4.6.11"
+helm_secrets_version: "v4.7.7"
 helm_diff_version: "3.13.1"
 helm_docs_version: "v1.14.2"
 sops_version: "v3.10.2"
