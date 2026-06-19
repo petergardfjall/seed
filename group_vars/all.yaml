@@ -1,5 +1,5 @@
 # distro codename: `lsb_release -cs`
-ubuntu_release: "noble"
+ubuntu_release: "resolute"
 
 #
 # System tools

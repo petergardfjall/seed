@@ -22,22 +22,15 @@
 #
 # chrome
 #
-- name: "apt key: google chrome"
-  apt_key:
-    url: "https://dl.google.com/linux/linux_signing_key.pub"
-    state: present
-  tags:
-    - Base
-    - apt
-    - repos
-    - chrome
-
 - name: "apt repo: google chrome"
-  apt_repository:
-    filename: "google-chrome"
-    repo: "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main"
-    state: present
-    update_cache: no
+  deb822_repository:
+    name: "google-chrome"
+    signed_by: "https://dl.google.com/linux/linux_signing_key.pub"
+    uris: "https://dl.google.com/linux/chrome/deb/"
+    architectures: "amd64"
+    suites: stable
+    components:
+      - main
   tags:
     - Base
     - apt
@@ -47,23 +40,15 @@
 #
 # Docker
 #
-- name: "apt key: docker"
-  apt_key:
-    url: "https://download.docker.com/linux/ubuntu/gpg"
-    keyring: "/etc/apt/trusted.gpg.d/docker.gpg"
-    state: present
-  tags:
-    - Base
-    - apt
-    - repos
-    - docker
-
 - name: "apt repo: docker"
-  apt_repository:
-    filename: "docker"
-    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.gpg] https://download.docker.com/linux/ubuntu {{ ubuntu_release }} stable"
-    state: present
-    update_cache: no
+  deb822_repository:
+    name: "docker"
+    signed_by: "https://download.docker.com/linux/ubuntu/gpg"
+    uris: "https://download.docker.com/linux/ubuntu"
+    architectures: "amd64"
+    suites: "{{ ubuntu_release }}"
+    components:
+      - stable
   tags:
     - Base
     - apt
@@ -74,23 +59,15 @@
 # vscode
 #
 
-- name: "apt key: vscode"
-  apt_key:
-    url: "https://packages.microsoft.com/keys/microsoft.asc"
-    keyring: "/etc/apt/trusted.gpg.d/microsoft.gpg"
-    state: present
-  tags:
-    - Base
-    - apt
-    - repos
-    - vscode
-
 - name: "apt repo: vscode"
-  apt_repository:
-    filename: "vscode"
-    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/microsoft.gpg] http://packages.microsoft.com/repos/vscode stable main"
-    state: present
-    update_cache: no
+  deb822_repository:
+    name: "vscode"
+    signed_by: "https://packages.microsoft.com/keys/microsoft.asc"
+    uris: "http://packages.microsoft.com/repos/vscode"
+    architectures: "amd64"
+    suites: stable
+    components:
+      - main
   tags:
     - Base
     - apt
@@ -101,23 +78,15 @@
 # gcloud
 #
 
-- name: "apt key: gcloud"
-  apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    keyring: /usr/share/keyrings/cloud.google.gpg
-    state: present
-  tags:
-    - Base
-    - apt
-    - repos
-    - gcloud
-
 - name: "apt repo: gcloud"
-  apt_repository:
-    filename: "gcloud"
-    repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main"
-    state: present
-    update_cache: no
+  deb822_repository:
+    name: "gcloud"
+    signed_by: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+    uris: "http://packages.cloud.google.com/apt"
+    architectures: "amd64"
+    suites: cloud-sdk
+    components:
+      - main
   tags:
     - Base
     - apt
@@ -127,24 +96,15 @@
 #
 # Hashicorp (contains vagrant, for instance).
 #
-- name: "apt key: hashicorp"
-  apt_key:
-    url: "https://apt.releases.hashicorp.com/gpg"
-    keyring: "/etc/apt/trusted.gpg.d/hashicorp.gpg"
-    state: present
-  tags:
-    - Base
-    - apt
-    - repos
-    - hashicorp
-    - vagrant
-
 - name: "apt repo: hashicorp"
-  apt_repository:
-    filename: "hashicorp"
-    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/hashicorp.gpg] https://apt.releases.hashicorp.com {{ ubuntu_release }} main"
-    state: present
-    update_cache: no
+  deb822_repository:
+    name: "hashicorp"
+    signed_by: "https://apt.releases.hashicorp.com/gpg"
+    uris: "https://apt.releases.hashicorp.com"
+    architectures: "amd64"
+    suites: "{{ ubuntu_release }}"
+    components:
+      - main
   tags:
     - Base
     - apt
@@ -154,23 +114,15 @@
 
 # PostgreSQL database
 
-- name: "apt key: postgresql"
-  apt_key:
-    url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
-    keyring: "/etc/apt/trusted.gpg.d/postgresql.gpg"
-    state: present
-  tags:
-    - Base
-    - apt
-    - repos
-    - postgres
-
 - name: "apt repo: postgresql"
-  apt_repository:
-    filename: "postgresql"
-    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/postgresql.gpg] https://apt.postgresql.org/pub/repos/apt {{ ubuntu_release }}-pgdg main"
-    state: present
-    update_cache: no
+  deb822_repository:
+    name: "postgresql"
+    signed_by: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+    uris: "https://apt.postgresql.org/pub/repos/apt"
+    architectures: "amd64"
+    suites: "{{ ubuntu_release }}-pgdg"
+    components:
+      - main
   tags:
     - Base
     - apt
@@ -179,23 +131,15 @@
 
 # ClickHouse database
 
-- name: "apt key: clickhouse"
-  apt_key:
-    url: "https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key"
-    keyring: "/etc/apt/trusted.gpg.d/clickhouse-keyring.gpg"
-    state: present
-  tags:
-    - Base
-    - apt
-    - repos
-    - clickhouse
-
 - name: "apt repo: clickhouse"
-  apt_repository:
-    filename: "clickhouse"
-    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/clickhouse-keyring.gpg arch=amd64] https://packages.clickhouse.com/deb stable main"
-    state: present
-    update_cache: no
+  deb822_repository:
+    name: "clickhouse"
+    signed_by: "https://packages.clickhouse.com/rpm/lts/repodata/repomd.xml.key"
+    uris: "https://packages.clickhouse.com/deb"
+    architectures: "amd64"
+    suites: "stable"
+    components:
+      - main
   tags:
     - Base
     - apt
@@ -214,24 +158,15 @@
 #
 # Virtualbox
 #
-- name: "apt key: virtualbox"
-  apt_key:
-    url: "https://www.virtualbox.org/download/oracle_vbox_2016.asc"
-    keyring: "/etc/apt/trusted.gpg.d/virtualbox.gpg"
-    state: present
-  tags:
-    - Base
-    - apt
-    - repos
-    - vm
-    - virtualbox
-
 - name: "apt repo: virtualbox"
-  apt_repository:
-    filename: "virtualbox"
-    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/virtualbox.gpg] https://download.virtualbox.org/virtualbox/debian {{ ubuntu_release }} contrib"
-    state: present
-    update_cache: no
+  deb822_repository:
+    name: "virtualbox"
+    signed_by: "https://www.virtualbox.org/download/oracle_vbox_2016.asc"
+    uris: "https://download.virtualbox.org/virtualbox/debian"
+    architectures: "amd64"
+    suites: "{{ ubuntu_release }}"
+    components:
+      - contrib
   tags:
     - Base
     - apt
