@@ -27,6 +27,7 @@
   vars:
     packages:
       # see https://www.emacswiki.org/emacs/EmacsSnapshotAndDebian
+      - autoconf
       - texinfo
       - xorg-dev
       - libgtk-3-dev
@@ -39,13 +40,13 @@
       - librsvg2-dev
       - libotf-dev
       - libgnutls28-dev
-      - libncurses5-dev
+      - libncurses-dev
       - libharfbuzz-dev
       - libharfbuzz-bin
       # needed for native compilation (emacs 28+)
-      - gcc-10
+      - gcc-15
       - libgccjit0
-      - libgccjit-10-dev
+      - libgccjit-15-dev
       # needed for tree-sitter integration (emacs 29+):
       # an incremental parsing system for programming tools.
       - libtree-sitter-dev

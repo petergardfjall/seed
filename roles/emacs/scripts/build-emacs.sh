@@ -57,7 +57,8 @@ log "commit to build: ${rev_commit}"
 git checkout -B ${revision}-branch ${rev_commit}
 log "building on branch ${revision}-branch (see ${build_log}) ..."
 
-export CC="gcc-10"
+export CC="/usr/bin/gcc-15"
+export CXX="/usr/bin/g++-15"
 git clean -dxf               >> ${build_log} 2>&1
 ./autogen.sh                 >> ${build_log} 2>&1
 ./configure ${compile_flags} >> ${build_log} 2>&1
