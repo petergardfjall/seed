@@ -14,13 +14,13 @@
     - ide
     - vscode
 
-- name: "vscode: install extensions"
-  become: no # not as root
-  shell: "~/dotfiles/vscode/install-extensions.sh"
-  changed_when: False # don't appear changed
-  tags:
-    - ide
-    - vscode
+# - name: "vscode: install extensions"
+#   become: no # not as root
+#   shell: "~/dotfiles/vscode/install-extensions.sh"
+#   changed_when: False # don't appear changed
+#   tags:
+#     - ide
+#     - vscode
 
 #
 # Eclipse
