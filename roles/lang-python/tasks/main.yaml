@@ -26,11 +26,8 @@
 
 - name: "ipython: install"
   become: no # not as root
-  pip:
-    executable: pip3
-    extra_args: --user # install under ~/.local
-    name:
-      - ipython
+  community.general.pipx:
+    name: ipython
   tags:
     - Dev
     - python
@@ -127,3 +124,13 @@
     - python
     - ptvsd
     - dap
+
+# either ptvsd or emacs dap-mode appears to require pytest
+- name: "pytest: install"
+  become: no # not as root
+  community.general.pipx:
+    name: "pytest=={{ pytest_version }}"
+  tags:
+    - Dev
+    - python
+    - pytest

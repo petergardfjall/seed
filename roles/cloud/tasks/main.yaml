@@ -4,10 +4,8 @@
 
 - name: "openstackclient: install"
   become: no # not as root
-  pip:
-    executable: pip3
-    extra_args: --user # install under ~/.local
-    name: openstackclient
+  community.general.pipx:
+    name: python-openstackclient
   tags:
     - Cloud
     - cloud
@@ -33,9 +31,7 @@
 #
 - name: "az: install"
   become: no # not as root
-  pip:
-    executable: pip3
-    extra_args: --user # install under ~/.local
+  community.general.pipx:
     name: azure-cli
   tags:
     - Cloud

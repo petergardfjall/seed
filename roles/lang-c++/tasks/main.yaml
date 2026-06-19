@@ -62,11 +62,8 @@
 
 - name: "cmake-language-server: install"
   become: no # not as root
-  pip:
-    executable: pip
-    extra_args: --user # install under ~/.local
-    name:
-      - cmake-language-server
+  community.general.pipx:
+    name: cmake-language-server
   tags:
     - Dev
     - c++

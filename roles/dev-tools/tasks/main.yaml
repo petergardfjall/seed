@@ -89,14 +89,11 @@
     - pueue
     - pueued
 
+# jq-like tool for yaml
 - name: "yq: install"
   become: no # not as root
-  pip:
-    executable: pip3
-    extra_args: --user # install under ~/.local
-    name:
-      # jq-like tool for yaml
-      - yq
+  community.general.pipx:
+    name: yq
   tags:
     - Dev
     - dev-tools
@@ -208,12 +205,9 @@
 # See https://github.com/python-lsp/python-lsp-server
 - name: "python-lsp-server: install"
   become: no # not as root
-  pip:
-    executable: pip3
-    extra_args: --user # install under ~/.local
-    name:
-      # Install with all optional providers.
-      - "python-lsp-server[all]=={{ python_lsp_server_version }}"
+  community.general.pipx:
+    # Install with all optional providers.
+    name: "python-lsp-server[all]=={{ python_lsp_server_version }}"
   tags:
     - Dev
     - dev-tools
