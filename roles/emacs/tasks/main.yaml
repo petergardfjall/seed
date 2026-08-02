@@ -34,7 +34,7 @@
       - libxpm-dev
       - libjpeg-dev
       - libgif-dev
-      - libtiff5-dev
+      - libtiff-dev
       - libm17n-dev
       - libpng-dev
       - librsvg2-dev
@@ -59,7 +59,8 @@
     - emacs
     - emacs-prerequisites
 
-# See https://github.com/emacs-mirror/emacs/blob/master/INSTALL
+# See: https://github.com/emacs-mirror/emacs/blob/master/INSTALL
+# See: https://github.com/kiennq/emacs-build/blob/v31.412.20260501.218ec0f6/emacs-build-linux.sh
 - name: "emacs: build tag/commit: {{ emacs_rev }}"
   shell: |
     build_dir="{{ emacs_dir }}" compile_flags="{{ emacs_compile_flags }}" {{ role_path }}/scripts/build-emacs.sh {{ emacs_rev | quote }}
