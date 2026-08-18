@@ -146,15 +146,6 @@
     - repos
     - clickhouse
 
-- name: "apt: update cache"
-  apt:
-    update_cache: yes
-  tags:
-    - Base
-    - apt
-    - repos
-    - apt-update
-
 #
 # Virtualbox
 #
@@ -173,3 +164,32 @@
     - repos
     - vm
     - virtualbox
+
+#
+# Mattermost (chat client)
+#
+- name: "apt repo: mattermost"
+  deb822_repository:
+    name: "mattermost"
+    signed_by: "https://deb.packages.mattermost.com/pubkey.gpg"
+    uris: "https://deb.packages.mattermost.com"
+    architectures: "amd64"
+    suites: "stable"
+    components:
+      - main
+  tags:
+    - Base
+    - apt
+    - repos
+    - Desktop
+    - internet
+    - mattermost
+
+- name: "apt: update cache"
+  apt:
+    update_cache: yes
+  tags:
+    - Base
+    - apt
+    - repos
+    - apt-update

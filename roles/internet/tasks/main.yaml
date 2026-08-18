@@ -18,3 +18,13 @@
     - Desktop
     - internet
     - slack
+
+- name: "mattermost: install"
+  apt:
+    name: mattermost-desktop
+    state: latest
+    install_recommends: yes
+  tags:
+    - Desktop
+    - internet
+    - mattermost
