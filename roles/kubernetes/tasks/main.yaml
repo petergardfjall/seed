@@ -301,6 +301,15 @@
     - telepresence
     - telepresence_v2
 
+# Installation notes:
+#
+# - When installing the traffic-manager in the cluster run the below command to
+#   allow intercepting pods with long-running init containers and to allow
+#   intercepting workloads with strict security-contexts.
+#   telepresence helm install --set timeouts.agentArrival=5m --set agent.securityContext.runAsNonRoot=false
+# - To allow local mounting of pod volumes make sure `user_allow_other` is
+#   enabled in `/etc/fuse.conf`.
+#
 - name: "telepresence v2: download"
   get_url:
     url: "https://github.com/telepresenceio/telepresence/releases/download/v{{ telepresence_version }}/telepresence-linux-amd64"
