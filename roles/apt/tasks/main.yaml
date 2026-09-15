@@ -94,6 +94,25 @@
     - gcloud
 
 #
+# gcsfuse
+#
+
+- name: "apt repo: gcsfuse"
+  deb822_repository:
+    name: "gcsfuse"
+    signed_by: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+    uris: "https://packages.cloud.google.com/apt"
+    architectures: "amd64"
+    suites: "gcsfuse-{{ ubuntu_release }}"
+    components:
+      - main
+  tags:
+    - Base
+    - apt
+    - repos
+    - gcsfuse
+
+#
 # Hashicorp (contains vagrant, for instance).
 #
 - name: "apt repo: hashicorp"

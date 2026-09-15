@@ -66,6 +66,22 @@
     - cloud_sql_proxy
 
 #
+# gcsfuse
+#
+- name: "gcsfuse: install"
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    install_recommends: yes
+  vars:
+    packages:
+      - gcsfuse
+  tags:
+    - Cloud
+    - cloud
+    - gcsfuse
+
+#
 # Terraform
 #
 
