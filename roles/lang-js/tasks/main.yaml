@@ -57,6 +57,8 @@
     # npm install -g <pkg>
     global: yes
   loop:
+    # See https://github.com/typescript-language-server/typescript-language-server#installing
+    - "typescript@{{ typescript_version }}"
     - "typescript-language-server@{{ typescript_lsp_server_version }}"
   tags:
     - Dev
