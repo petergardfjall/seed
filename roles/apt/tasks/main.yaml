@@ -96,7 +96,13 @@
 #
 # gcsfuse
 #
-
+# Mount GCS buckets:
+#
+#   # Mount:
+#   gcsfuse --implicit-dirs my-bucket /path/to/mount/point
+#   # Unmount:
+#   fusermount -u /path/to/mount/point
+#
 - name: "apt repo: gcsfuse"
   deb822_repository:
     name: "gcsfuse"
