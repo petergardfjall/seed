@@ -82,3 +82,27 @@
     - Dev
     - dev-tools
     - gemini-cli
+
+# Terminal-based agentic coding with https://opencode.ai/.
+# Set an OpenAI-compatible URL in the ~/.config/opencode/opencode.json
+# (see https://opencode.ai/docs/providers#custom).
+#
+# NOTE: after editing, you may need to run `opencode service restart` for it
+#       to pick up environment variables from your shell.
+#       Use `opencode auth list` to see which providers and auth it knows about.
+#       There is also `opencode --standalone auth list`.
+#
+- name: "opencode: install"
+  become: no
+  npm:
+    name: "{{ item }}"
+    # npm install -g <pkg>
+    global: yes
+  loop:
+    - "@opencode/cli@{{ opencode_cli_version }}"
+  tags:
+    - AI
+    - ai
+    - Dev
+    - dev-tools
+    - opencode-cli
